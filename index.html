@@ -471,6 +471,7 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
     </div>
   </div>
 </footer>
+<script src="https://js.puter.com/v2/"></script>
 <script>
 // ============================================================
 // TRANSLATIONS
@@ -699,14 +700,9 @@ document.querySelectorAll('.seg-btn').forEach(btn => {
 // ============================================================
 // AI CHATBOT
 // ============================================================
-// ⚠️ VAŽNO: Ovde ide BESPLATAN "Publishable" (pk_) key sa enter.pollinations.ai,
-// NE sekretni (sk_) key! pk_ je namenski napravljen da bude javan/vidljiv u
-// frontend kodu (bezbedno je da stoji ovde) i besplatan je.
-// Limit besplatnog pk_ tier-a: ~1 poruka na sat po IP adresi posetioca.
-// To znači: svaki posetilac može da pošalje ~1 poruku botu na sat, besplatno.
-// Ako ti zatreba više od toga, jedina opcija je da platiš pollen kredite
-// preko sk_ key-a (kao malopre) ili da koristiš neki drugi AI servis.
-const POLLINATIONS_API_KEY = "pk_ttyRDTqWnx2srKSM";
+// Koristimo Puter.js (js.puter.com) — potpuno besplatan AI servis bez
+// API key-a i bez backend-a. Posetilac se pri prvoj poruci prijavljuje
+// na besplatan Puter nalog (Puter to sam pita), a onda AI radi normalno.
 const SYSTEM_PROMPT = `You are the AI assistant living inside PavleVisuals — the personal website of Pavle Ćirović, a freelance video editor based in Belgrade, Serbia, with 6 years of experience on the timeline.
 YOUR IDENTITY:
 You are a smart, curious, friendly AI that happens to live on Pavle's website. You are NOT a limited FAQ bot. You can talk about anything — math, philosophy, jokes, coding, random questions, whatever the user wants. Be a real conversational partner, not a broken record.
@@ -798,43 +794,26 @@ async function chatSend() {
   inp.value = '';
   chatLoading = true;
   renderChat();
-  // Abort previous
-  if (chatAbortCtrl) chatAbortCtrl.abort();
-  chatAbortCtrl = new AbortController();
-  const signal = chatAbortCtrl.signal;
   try {
-    const body = {
-      model: 'openai',
-      messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...chatMsgs.map(m => ({ role: m.role, content: m.content }))],
-      temperature: 0.85,
-      private: true
-    };
-    let res = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ' + POLLINATIONS_API_KEY
-      },
-      body: JSON.stringify(body), signal
-    });
-    if (!res.ok) {
-      const fbBody = { ...body, model: 'mistral' };
-      res = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ' + POLLINATIONS_API_KEY
-        },
-        body: JSON.stringify(fbBody), signal
-      });
-      if (!res.ok) throw new Error('API error');
+    const puterMessages = [
+      { role: 'system', content: SYSTEM_PROMPT },
+      ...chatMsgs.map(m => ({ role: m.role, content: m.content }))
+    ];
+    const response = await puter.ai.chat(puterMessages, { model: 'gpt-5.4-nano' });
+    let reply = '';
+    if (typeof response === 'string') {
+      reply = response;
+    } else if (response?.message?.content) {
+      const c = response.message.content;
+      if (typeof c === 'string') reply = c;
+      else if (Array.isArray(c)) reply = c.map(x => x.text || '').join('');
+    } else if (response?.text) {
+      reply = response.text;
     }
-    const data = await res.json();
-    const reply = (data?.choices?.[0]?.message?.content || '').trim();
+    reply = (reply || '').trim();
     if (!reply) throw new Error('Empty');
     chatMsgs.push({ role: 'assistant', content: reply });
   } catch (err) {
-    if (err.name === 'AbortError') return;
     chatMsgs.push({ role: 'assistant', content: t.chatError });
   } finally {
     chatLoading = false;
