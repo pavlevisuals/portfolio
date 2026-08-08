@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PavleVisuals — Pavle Ćirović | Video Editor</title>
-<meta name="description" content="PavleVisuals — video montaža. Short form koji zaustavlja skrol, long form koji se gleda do kraja." />
+<title>PavleVisuals - Pavle Ćirović | Video Editor</title>
+<meta name="description" content="PavleVisuals - video montaža. Short form koji zaustavlja skrol, long form koji se gleda do kraja." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -122,8 +122,18 @@ a{color:inherit}
 .tile.tile-e::before{content:"";position:absolute;top:-50%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(41,151,255,.18),transparent 70%);pointer-events:none}
 .tile.tile-e::after{content:"";position:absolute;bottom:-30%;left:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(125,196,255,.1),transparent 70%);pointer-events:none}
 .focus-inner{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;position:relative;z-index:1}
-.focus-big{font-size:clamp(4rem,10vw,7rem);font-weight:700;line-height:.9;letter-spacing:-.05em;background:linear-gradient(135deg,#2997ff 0%,#7dc4ff 50%,#a1a1ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;flex-shrink:0;filter:drop-shadow(0 0 30px rgba(41,151,255,.3))}
-@media(max-width:640px){.focus-inner{flex-direction:column;align-items:flex-start;gap:1rem}.focus-big{font-size:4.5rem}}
+.focus-badge{position:absolute;top:1.6rem;right:1.6rem;z-index:2;display:inline-flex;align-items:center;gap:.4rem;background:rgba(41,151,255,.12);border:1px solid rgba(41,151,255,.32);color:#7dc4ff;font-size:12px;font-weight:700;letter-spacing:.05em;padding:.32rem .85rem;border-radius:999px}
+.focus-dot{width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 8px #34d399;animation:pulse 2s infinite}
+.focus-inner{display:flex;align-items:center;gap:2.6rem;flex-wrap:wrap;position:relative;z-index:1;padding-right:2rem}
+.focus-connect{display:flex;align-items:center;gap:.85rem;flex-shrink:0}
+.focus-avatar{width:60px;height:60px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:11.5px;color:#fff;border:1px solid rgba(255,255,255,.16);flex-shrink:0;text-align:center;padding:0 4px}
+.focus-avatar.you{background:linear-gradient(135deg,#1c2540,#0c1020);color:rgba(255,255,255,.7)}
+.focus-avatar.pavle{background:linear-gradient(135deg,#2997ff,#0071e3)}
+.focus-line{position:relative;width:60px;height:2px;border-radius:2px;background:linear-gradient(90deg,rgba(255,255,255,.08),rgba(41,151,255,.7),rgba(255,255,255,.08));flex-shrink:0}
+.focus-line-dot{position:absolute;top:50%;left:0;width:6px;height:6px;margin-top:-3px;border-radius:50%;background:#7dc4ff;box-shadow:0 0 10px #7dc4ff;animation:travel 2.6s ease-in-out infinite}
+@keyframes travel{0%,100%{left:0}50%{left:calc(100% - 6px)}}
+.focus-copy h3{margin:.5rem 0 0}
+@media(max-width:640px){.focus-inner{flex-direction:column;align-items:flex-start;gap:1.5rem;padding-right:0}.focus-badge{position:static;margin-bottom:.4rem}}
 /* PROCESS */
 #process{background:var(--light);padding:0 0 7rem}
 #process h3{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700;text-align:center;color:var(--text);max-width:600px;margin:0 auto}
@@ -200,76 +210,15 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
 .foot-bottom-links a:hover{color:var(--text)}
 /* MOUSE GLOW */
 .mouse-glow{position:fixed;top:0;left:0;width:600px;height:600px;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(41,151,255,.18),transparent 60%);filter:blur(60px);transform:translate(-50%,-50%);mix-blend-mode:screen}
-/* CHATBOT */
-.chat-toggle{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;border:none;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px -10px rgba(0,113,227,.6);transition:transform .25s ease,background .2s ease}
-.chat-toggle:hover{background:#0077ed;transform:scale(1.05)}
-.chat-toggle svg{width:22px;height:22px}
-.chat-pulse{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;background:var(--blue);opacity:.6;animation:chatPulse 2s ease-out infinite;z-index:-1}
-@keyframes chatPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
-.chat-panel{position:fixed;right:20px;bottom:90px;width:380px;max-width:calc(100vw - 40px);height:560px;max-height:calc(100vh - 120px);background:#fff;border-radius:20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.35);z-index:99;display:flex;flex-direction:column;overflow:hidden;transform:translateY(20px) scale(.95);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.16,1,.3,1),opacity .28s ease;transform-origin:bottom right}
-.chat-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
-.chat-header{background:linear-gradient(135deg,#0071e3,#2997ff);color:#fff;padding:1rem 1.2rem;display:flex;align-items:center;gap:.8rem;border-bottom:1px solid rgba(255,255,255,.1)}
-.chat-avatar{position:relative;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
-.chat-status{position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:#34d399;border:2px solid #0071e3}
-.chat-title{font-size:15px;font-weight:600;margin:0;color:#fff}
-.chat-subtitle{font-size:12px;color:rgba(255,255,255,.85);margin:0}
-.chat-body{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem;background:#f5f5f7}
-.chat-body::-webkit-scrollbar{width:4px}
-.chat-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:2px}
-.chat-msg{display:flex;max-width:85%}
-.chat-msg-user{align-self:flex-end}
-.chat-msg-assistant{align-self:flex-start}
-.chat-bubble{padding:.6rem .9rem;border-radius:16px;font-size:13.5px;line-height:1.5;word-wrap:break-word;white-space:pre-wrap}
-.chat-msg-user .chat-bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
-.chat-msg-assistant .chat-bubble{background:#fff;color:var(--text);border:1px solid var(--line-l);border-bottom-left-radius:4px}
-.chat-bubble.typing{display:flex;gap:4px;padding:.9rem 1rem;align-items:center}
-.chat-bubble.typing span{width:7px;height:7px;border-radius:50%;background:#999;animation:typingBounce 1.2s ease-in-out infinite}
-.chat-bubble.typing span:nth-child(2){animation-delay:.15s}
-.chat-bubble.typing span:nth-child(3){animation-delay:.3s}
-@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-6px);opacity:1}}
-.chat-suggestions{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem 0}
-.chat-suggestion{background:#fff;border:1px solid var(--line-l);color:var(--blue);font-size:12px;font-weight:500;padding:.4rem .8rem;border-radius:999px;cursor:pointer;transition:all .2s ease;font-family:inherit}
-.chat-suggestion:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
-.chat-input-row{display:flex;gap:.5rem;padding:.8rem;border-top:1px solid var(--line-l);background:#fff}
-.chat-input-row input{flex:1;border:1px solid var(--line-l);border-radius:999px;padding:.6rem 1rem;font-size:13.5px;outline:none;font-family:inherit;transition:border-color .2s ease;color:var(--text);background:#fff}
-.chat-input-row input::placeholder{color:var(--muted)}
-.chat-input-row input:focus{border-color:var(--blue)}
-.chat-send{width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease,transform .2s ease;flex-shrink:0}
-.chat-send:hover:not(:disabled){background:#0077ed;transform:scale(1.05)}
-.chat-send:disabled{opacity:.4;cursor:not-allowed}
-.chat-send svg{width:16px;height:16px}
-.chat-disclaimer{font-size:10.5px;text-align:center;color:var(--muted);padding:.3rem .5rem .6rem;margin:0;background:#fff}
-@media(max-width:480px){.chat-panel{right:10px;bottom:80px;width:calc(100vw - 20px);height:calc(100vh - 100px);max-height:none}}
-@media(prefers-reduced-motion:reduce){.rv,.rise{opacity:1!important;transform:none!important;animation:none!important}.chat-pulse{animation:none}}
+/* SCROLL MOTION BLUR */
+#scrollBlur{will-change:filter;filter:blur(0px)}
+@media(prefers-reduced-motion:reduce){.rv,.rise{opacity:1!important;transform:none!important;animation:none!important}}
 </style>
 </head>
 <body>
-<!-- CHATBOT -->
-<div class="chat-toggle" id="chatToggle">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-    <circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="13" cy="10" r="1" fill="currentColor"/><circle cx="17" cy="10" r="1" fill="currentColor"/>
-  </svg>
-  <span class="chat-pulse"></span>
-</div>
-<div class="chat-panel" id="chatPanel">
-  <div class="chat-header">
-    <div class="chat-avatar"><span>PĆ</span><span class="chat-status"></span></div>
-    <div style="flex:1"><p class="chat-title">Pavle AI Assistant</p><p class="chat-subtitle" id="chatSubtitle">Online · replies instantly</p></div>
-  </div>
-  <div class="chat-body" id="chatBody"></div>
-  <div class="chat-input-row">
-    <input type="text" id="chatInput" placeholder="Ask anything..." />
-    <button class="chat-send" id="chatSend" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
-      </svg>
-    </button>
-  </div>
-  <p class="chat-disclaimer" id="chatDisclaimer">AI assistant · can make mistakes. For precise info, contact Pavle.</p>
-</div>
 <!-- MOUSE GLOW -->
 <div class="mouse-glow" id="mouseGlow"></div>
+
 <!-- NAV -->
 <header class="topnav">
   <div class="navbar">
@@ -290,6 +239,8 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
     <a href="#kontakt" class="nav-cta" id="navCta">Book a project</a>
   </div>
 </header>
+<!-- SCROLL MOTION BLUR WRAPPER -->
+<div id="scrollBlur">
 <!-- HERO -->
 <section id="top">
 <div id="hero">
@@ -303,7 +254,7 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
       <a href="#kontakt" class="btn-blue" id="heroCta1">Book a project</a>
       <a href="#radovi" class="link-arrow" id="heroCta2">See the work <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-    <p class="rise d5 hero-note" id="heroNote">Available for new projects — open for collaboration</p>
+    <p class="rise d5 hero-note" id="heroNote">Available for new projects - open for collaboration</p>
   </div>
 </div>
 </section>
@@ -311,8 +262,8 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
 <section id="statement">
   <div class="narrow" style="padding:5rem 0">
     <p class="rv eyebrow" style="margin-bottom:1rem" id="stmtKicker">Approach</p>
-    <p class="rv statement-text" id="stmtText">I don't edit to fill a timeline. I edit to hold attention — frame by frame, beat by beat — all the way to the end.</p>
-    <p class="rv d1 statement-sub" id="stmtSub">— A real edit isn't heard. It's felt.</p>
+    <p class="rv statement-text" id="stmtText">I don't edit to fill a timeline. I edit to hold attention - frame by frame, beat by beat - all the way to the end.</p>
+    <p class="rv d1 statement-sub" id="stmtSub">- A real edit isn't heard. It's felt.</p>
   </div>
 </section>
 <!-- WORKS -->
@@ -320,7 +271,7 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
   <div class="narrow">
     <div class="rv radovi-head">
       <h2 id="worksTitle">Work.</h2>
-      <p id="worksDesc">Browse the work by format — short, long, or everything together.</p>
+      <p id="worksDesc">Browse the work by format - short, long, or everything together.</p>
     </div>
     <div class="rv d1 segwrap">
       <div class="segmented" id="segmented">
@@ -339,6 +290,21 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
   <div class="narrow">
     <div class="rv"><h2 id="bentoTitle">Services.</h2></div>
     <div class="bento-grid">
+      <div class="rv tile tile-e">
+        <div class="focus-badge"><span class="focus-dot"></span><span>1:1</span></div>
+        <div class="focus-inner">
+          <div class="focus-connect">
+            <div class="focus-avatar you">You</div>
+            <div class="focus-line"><span class="focus-line-dot"></span></div>
+            <div class="focus-avatar pavle">Pavle</div>
+          </div>
+          <div class="focus-copy">
+            <p class="tag2" id="focusKicker">Direct collaboration</p>
+            <h3 id="focusTitle">Direct collaboration.</h3>
+            <p id="focusDesc" style="max-width:52ch">No agency, no middleman, no chain of emails. You talk directly with the person editing your video - from the first brief to the final export.</p>
+          </div>
+        </div>
+      </div>
       <div class="rv tile dark tile-a">
         <p class="tag2" id="bentoColorTag">Color Grading</p>
         <h3 id="bentoColorTitle">Cinematic look, on every screen.</h3>
@@ -348,28 +314,18 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
       <div class="rv tile light tile-b">
         <p class="tag2" id="bentoRevTag">Revisions</p>
         <h3 id="bentoRevTitle">Until it's perfect.</h3>
-        <p id="bentoRevDesc">We polish the details through clear and honest communication — no rush, no compromise.</p>
+        <p id="bentoRevDesc">We polish the details through clear and honest communication - no rush, no compromise.</p>
       </div>
       <div class="rv tile dark tile-c">
         <p class="tag2" id="bentoSoundTag">Sound Design</p>
         <h3 id="bentoSoundTitle">Sound that carries the story.</h3>
         <div class="waves" id="waves"></div>
-        <p id="bentoSoundDesc">Layered mix of dialogue, music and SFX — so every frame has weight and energy.</p>
+        <p id="bentoSoundDesc">Layered mix of dialogue, music and SFX - so every frame has weight and energy.</p>
       </div>
       <div class="rv tile light tile-d">
         <p class="tag2" id="bentoMotionTag">Motion & Graphics</p>
         <h3 id="bentoMotionTitle">Animations on brand.</h3>
-        <p id="bentoMotionDesc">Subtitles, transitions and motion graphics — no templates, built to your brand guidelines.</p>
-      </div>
-      <div class="rv tile tile-e">
-        <div class="focus-inner">
-          <div class="focus-big">1:1</div>
-          <div>
-            <p class="tag2" id="focusKicker">Direct collaboration</p>
-            <h3 id="focusTitle">Direct collaboration.</h3>
-            <p id="focusDesc" style="max-width:52ch">No agency, no middleman, no chain of emails. You talk directly with the person editing your video — from the first brief to the final export.</p>
-          </div>
-        </div>
+        <p id="bentoMotionDesc">Subtitles, transitions and motion graphics - no templates, built to your brand guidelines.</p>
       </div>
     </div>
   </div>
@@ -401,8 +357,8 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
     <div class="rv"><div class="avatar-box"><span class="mono">PĆ</span></div></div>
     <div>
       <div class="rv"><p class="eyebrow" style="text-align:left;color:var(--blue)" id="aboutKicker">About</p></div>
-      <div class="rv d1"><h2 id="aboutName">Pavle Ćirović.<span id="aboutRole">Six years on the timeline.</span></h2></div>
-      <div class="rv d2"><p id="aboutP1">I work with creators, brands and production houses from Serbia, the region and abroad. From vertical Reels campaigns to long YouTube episodes — every project gets the same attention.</p></div>
+      <div class="rv d1"><h2 id="aboutName">Pavle Ćirović.<span id="aboutRole">Editor. Focused on keeping people watching.</span></h2></div>
+      <div class="rv d2"><p id="aboutP1">I work with creators and brands who want their videos actually watched, not just uploaded. From vertical Reels campaigns to long YouTube episodes, every project gets the same attention.</p></div>
       <div class="rv d3"><p id="aboutP2">I don't just deliver a file. I deliver a video with a clear goal: people won't skip it.</p></div>
       <div class="rv d4">
         <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:1.6rem;margin-bottom:.7rem" id="aboutTools">Stack I use:</p>
@@ -419,8 +375,8 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
       <h2 id="contactTitle1">Let's make<br><span class="grad-dark" id="contactTitle2">something big.</span></h2>
     </div>
     <div class="rv d1"><p class="lede" id="contactLede">Currently taking new projects. Reach out, let's make something great.</p></div>
-    <form class="rv d2 form-card" action="https://formsubmit.co/vy9paa.editing@gmail.com" method="POST">
-      <input type="hidden" name="_subject" value="Novi upit — PavleVisuals sajt">
+    <form class="rv d2 form-card" action="https://formsubmit.co/pavlevisuals0@gmail.com" method="POST">
+      <input type="hidden" name="_subject" value="Novi upit - PavleVisuals sajt">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="Tip projekta / Project type" id="hiddenType" value="Short Form">
@@ -442,7 +398,7 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
       <textarea required rows="4" style="margin-top:1.6rem" name="Poruka / Message" id="inputMessage" placeholder="Describe the project, deadline and reference..."></textarea>
       <div style="margin-top:1.6rem;display:flex;flex-direction:column;align-items:center;gap:.8rem">
         <button type="submit" class="form-submit" id="submitBtn">Send message</button>
-        <p style="font-size:12.5px;color:var(--muted);text-align:center;margin:0" id="contactOr">Or directly: <a href="mailto:vy9paa.editing@gmail.com" style="color:var(--blue);text-decoration:none">vy9paa.editing@gmail.com</a></p>
+        <p style="font-size:12.5px;color:var(--muted);text-align:center;margin:0" id="contactOr">Or directly: <a href="mailto:pavlevisuals0@gmail.com" style="color:var(--blue);text-decoration:none">pavlevisuals0@gmail.com</a></p>
       </div>
     </form>
   </div>
@@ -462,16 +418,17 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
         <a href="https://instagram.com/pavlevisuals" target="_blank" rel="noreferrer">Instagram</a><a href="#">YouTube</a><a href="#">TikTok</a>
       </div></div>
       <div><p class="h" id="footLabelContact">Contact</p><div class="foot-col">
-        <a href="mailto:vy9paa.editing@gmail.com">vy9paa.editing@gmail.com</a><span id="footLocation">Belgrade, Serbia</span>
+        <a href="mailto:pavlevisuals0@gmail.com">pavlevisuals0@gmail.com</a><span id="footLocation">Belgrade, Serbia</span>
       </div></div>
     </div>
     <div class="foot-bottom">
-      <p style="margin:0" id="footRights">© 2026 PavleVisuals — Pavle Ćirović. All rights reserved.</p>
+      <p style="margin:0" id="footRights">© 2026 PavleVisuals - Pavle Ćirović. All rights reserved.</p>
       <div class="foot-bottom-links"><a href="#top" id="footTop">Top ↑</a></div>
     </div>
   </div>
 </footer>
-<script src="https://js.puter.com/v2/"></script>
+</div>
+<!-- /SCROLL MOTION BLUR WRAPPER -->
 <script>
 // ============================================================
 // TRANSLATIONS
@@ -481,21 +438,21 @@ const TR = {
     navBrand:"PavleVisuals",navWorks:"Radovi",navServices:"Usluge",navHow:"Kako radim",navAbout:"O meni",navCta:"Zakaži projekat",
     heroEyebrow:"PavleVisuals",heroTitle1:"Montaža.",heroTitle2:"Do poslednjeg kadra.",
     heroLede:"Short form koji zaustavlja skrol. Long form koji se gleda do kraja. Video montaža Pavla Ćirovića.",
-    heroCta1:"Zakaži projekat",heroCta2:"Pogledaj radove",heroNote:"Dostupan za nove projekte — otvoren za saradnju",
-    stmtKicker:"Pristup",stmtText:"Ne montiram da popunim timeline. Montiram da zadržim pažnju — kadar po kadar, ritam po ritam, do kraja.",stmtSub:"— Pravi edit se ne čuje. On se oseti.",
-    worksTitle:"Radovi.",worksDesc:"Pregledaj radove po formatu — kratak, dug, ili sve zajedno.",segAll:"Svi Radovi",segShort:"Short Form",segLong:"Long Form",worksMore:"Želiš da tvoj projekat bude sledeći",
+    heroCta1:"Zakaži projekat",heroCta2:"Pogledaj radove",heroNote:"Dostupan za nove projekte - otvoren za saradnju",
+    stmtKicker:"Pristup",stmtText:"Ne montiram da popunim timeline. Montiram da zadržim pažnju - kadar po kadar, ritam po ritam, do kraja.",stmtSub:"- Pravi edit se ne čuje. On se oseti.",
+    worksTitle:"Radovi.",worksDesc:"Pregledaj radove po formatu - kratak, dug, ili sve zajedno.",segAll:"Svi Radovi",segShort:"Short Form",segLong:"Long Form",worksMore:"Želiš da tvoj projekat bude sledeći",
     bentoTitle:"Usluge.",
     bentoColorTag:"Color Grading",bentoColorTitle:"Kinematografski look, na svakom ekranu.",bentoColorDesc:"Profesionalan color grading workflow. Kalibrisana slika, dosledan identitet kroz ceo video.",
-    bentoRevTag:"Revizije",bentoRevTitle:"Dok ne bude savršeno.",bentoRevDesc:"Zajedno doteramo detalje kroz jasnu i iskrenu komunikaciju — bez žurbe, bez kompromisa.",
-    bentoSoundTag:"Sound Design",bentoSoundTitle:"Zvuk koji nosi priču.",bentoSoundDesc:"Slojevit mix dijaloga, muzike i SFX-a — tako da svaki kadar ima težinu i energiju.",
+    bentoRevTag:"Revizije",bentoRevTitle:"Dok ne bude savršeno.",bentoRevDesc:"Zajedno doteramo detalje kroz jasnu i iskrenu komunikaciju - bez žurbe, bez kompromisa.",
+    bentoSoundTag:"Sound Design",bentoSoundTitle:"Zvuk koji nosi priču.",bentoSoundDesc:"Slojevit mix dijaloga, muzike i SFX-a - tako da svaki kadar ima težinu i energiju.",
     bentoMotionTag:"Motion & Grafika",bentoMotionTitle:"Animacije po brendu.",bentoMotionDesc:"Titlovi, tranzicije i motion grafika bez šablona, po tvom brand guideline-u.",
-    focusKicker:"Direktna saradnja",focusTitle:"Direktna saradnja.",focusDesc:"Bez agencije, bez posrednika, bez lanca mejlova. Pričaš direktno sa osobom koja montira tvoj video — od prvog brifa do finalnog exporta.",
+    focusKicker:"Direktna saradnja",focusTitle:"Direktna saradnja.",focusDesc:"Bez agencije, bez posrednika, bez lanca mejlova. Pričaš direktno sa osobom koja montira tvoj video - od prvog brifa do finalnog exporta.",
     procKicker:"Proces",procTitle:"Jednostavan proces.",procSubtitle:"Bez iznenađenja.",
-    procSteps:[{n:"1",t:"Brief & Strategija",d:"Razgovor o cilju, publici i platformi — ton, referenca i format pre prvog reza."},{n:"2",t:"Selekcija materijala",d:"Pregled svih snimaka i izgradnja strukture priče sa jasnim početkom i krajem."},{n:"3",t:"Montaža & Ritam",d:"Prvi cut, tempo, muzika, zvuk i grafika — video dobija energiju i karakter."},{n:"4",t:"Grade & Isporuka",d:"Kinematografski color, finalni mix i export u svim formatima, uz dve runde revizija."}],
+    procSteps:[{n:"1",t:"Brief & Strategija",d:"Razgovor o cilju, publici i platformi - ton, referenca i format pre prvog reza."},{n:"2",t:"Selekcija materijala",d:"Pregled svih snimaka i izgradnja strukture priče sa jasnim početkom i krajem."},{n:"3",t:"Montaža & Ritam",d:"Prvi cut, tempo, muzika, zvuk i grafika - video dobija energiju i karakter."},{n:"4",t:"Grade & Isporuka",d:"Kinematografski color, finalni mix i export u svim formatima, uz dve runde revizija."}],
     howKicker:"Stack",howTitle:"Kako radim.",howSubtitle:"Alati, AI i workflow koji daju brzinu bez kompromisa.",
-    howCards:[{idx:"01",tag:"AI Workflow",title:"AI kao co-pilot, ne kao autor.",desc:"Auto-reframe, speech-to-text, AI audio cleanup i smart cut detekcija — rutinski posao pametniji, kreativni deo čistiji.",bullets:["Auto-subtitles & prevod","AI noise reduction","Smart scene detection","Auto-reframe 9:16 / 16:9"],badge:"AI powered",feat:!0},{idx:"02",tag:"Alati",title:"Premiere Pro & After Effects.",desc:"Glavni NLE setup za sve — od reels-a do dugih formi. Motion grafika i titlovi po meri.",bullets:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],badge:null,feat:!1},{idx:"03",tag:"Isporuka",title:"Jedan edit, svaka platforma.",desc:"Vertical, horizontal, square — sve verzije izlaze iz istog projekta, optimizovane po platformi.",bullets:["Reels / TikTok / Shorts","YouTube 4K","Instagram grid","Web & ad formati"],badge:null,feat:!1}],
-    aboutKicker:"O meni",aboutName:"Pavle Ćirović.",aboutRole:"Šest godina za timeline-om.",
-    aboutP1:"Radim sa kreatorima, brendovima i produkcijskim kućama iz Srbije, regiona i inostranstva. Od vertikalnih Reels kampanja do dugometražnih YouTube epizoda — svaki projekat dobija istu pažnju.",
+    howCards:[{idx:"01",tag:"AI Workflow",title:"AI kao co-pilot, ne kao autor.",desc:"Auto-reframe, speech-to-text, AI audio cleanup i smart cut detekcija - rutinski posao pametniji, kreativni deo čistiji.",bullets:["Auto-subtitles & prevod","AI noise reduction","Smart scene detection","Auto-reframe 9:16 / 16:9"],badge:"AI powered",feat:!0},{idx:"02",tag:"Alati",title:"Premiere Pro & After Effects.",desc:"Glavni NLE setup za sve - od reels-a do dugih formi. Motion grafika i titlovi po meri.",bullets:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],badge:null,feat:!1},{idx:"03",tag:"Isporuka",title:"Jedan edit, svaka platforma.",desc:"Vertical, horizontal, square - sve verzije izlaze iz istog projekta, optimizovane po platformi.",bullets:["Reels / TikTok / Shorts","YouTube 4K","Instagram grid","Web & ad formati"],badge:null,feat:!1}],
+    aboutKicker:"O meni",aboutName:"Pavle Ćirović.",aboutRole:"Montažer. Fokus na to da gledaoci ostanu do kraja.",
+    aboutP1:"Radim sa kreatorima i brendovima koji žele da im video zaista bude odgledan, ne samo okačen. Od vertikalnih Reels kampanja do dugometražnih YouTube epizoda, svaki projekat dobija istu pažnju.",
     aboutP2:"Ne šaljem samo fajl. Šaljem video koji ima jasan cilj: da ga ljudi ne preskoče.",aboutTools:"Stack koji koristim:",aboutPills:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],
     contactKicker:"Kontakt",contactTitle1:"Hajde da napravimo",contactTitle2:"nešto veliko.",contactLede:"Trenutno primam nove projekte. Javi se, radujemo se saradnji.",
     labelType:"Tip projekta",typeOpts:["Short Form","Long Form","Oba"],labelBudget:"Budžet",budgetOpts:["60 – 200 €","200 – 500 €","500 €+"],
@@ -503,33 +460,28 @@ const TR = {
     footDesc:"PavleVisuals je nezavisni video editing studio. Cene su okvirne i zavise od obima projekta, rokova i broja revizija.",
     footLabelServices:"Usluge",footLabelStudio:"Studio",footLabelSocials:"Mreže",footLabelContact:"Kontakt",
     footShort:"Short Form",footLong:"Long Form",footAbout:"O meni",footProcess:"Proces",footWork:"Radovi",footHow:"Kako radim",
-    footLocation:"Beograd, Srbija",footRights:"© 2026 PavleVisuals — Pavle Ćirović. Sva prava zadržana.",footTop:"Vrh ↑",
-    chatSubtitle:"Online · odgovara odmah",chatPlaceholder:"Pitaj bilo šta...",
-    chatDisclaimer:"AI asistent · može pogrešiti. Za precizne info, kontaktiraj Pavla.",
-    chatSuggestions:["Koliko košta short form?","Koje alate koristiš?","Kako izgleda proces?","Da li koristiš AI?"],
-    chatWelcome:"Zdravo 👋 Ja sam Pavlov AI asistent. Pitaj me šta god te zanima o njegovom radu, uslugama, procesu ili cenama — odgovaram iskreno.",
-    chatError:"Ups, nešto nije radilo. Pokušaj ponovo ili mi se javi direktno na vy9paa.editing@gmail.com.",
-    worksCards:[{type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026"},{type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026"},{type:"short",tag:"TikTok",dur:"0:34",title:"Muzički Spot",sub:"TikTok · 2026"},{type:"short",tag:"Reels",dur:"0:41",title:"Fitness Kreator",sub:"Instagram Reels · 2025"},{type:"long",tag:"Vlog Serija",dur:"12:15",title:"YouTube Vlog Serija",sub:"YouTube · 2025"},{type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Isečci",sub:"YouTube Shorts · 2025"},{type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},{type:"short",tag:"Reels",dur:"0:19",title:"Restoran — Promo",sub:"Instagram Reels · 2025"},{type:"long",tag:"Dokumentarni",dur:"22:07",title:"Muzički Dokumentarac",sub:"YouTube · 2024"},{type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}]
+    footLocation:"Beograd, Srbija",footRights:"© 2026 PavleVisuals - Pavle Ćirović. Sva prava zadržana.",footTop:"Vrh ↑",
+    worksCards:[{type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026"},{type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026"},{type:"short",tag:"TikTok",dur:"0:34",title:"Muzički Spot",sub:"TikTok · 2026"},{type:"short",tag:"Reels",dur:"0:41",title:"Fitness Kreator",sub:"Instagram Reels · 2025"},{type:"long",tag:"Vlog Serija",dur:"12:15",title:"YouTube Vlog Serija",sub:"YouTube · 2025"},{type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Isečci",sub:"YouTube Shorts · 2025"},{type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},{type:"short",tag:"Reels",dur:"0:19",title:"Restoran - Promo",sub:"Instagram Reels · 2025"},{type:"long",tag:"Dokumentarni",dur:"22:07",title:"Muzički Dokumentarac",sub:"YouTube · 2024"},{type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}]
   },
   en: {
     navBrand:"PavleVisuals",navWorks:"Work",navServices:"Services",navHow:"How I work",navAbout:"About",navCta:"Book a project",
     heroEyebrow:"PavleVisuals",heroTitle1:"Editing.",heroTitle2:"Down to the last frame.",
     heroLede:"Short form that stops the scroll. Long form that gets watched to the end. Video editing by Pavle Ćirović.",
-    heroCta1:"Book a project",heroCta2:"See the work",heroNote:"Available for new projects — open for collaboration",
-    stmtKicker:"Approach",stmtText:"I don't edit to fill a timeline. I edit to hold attention — frame by frame, beat by beat — all the way to the end.",stmtSub:"— A real edit isn't heard. It's felt.",
-    worksTitle:"Work.",worksDesc:"Browse the work by format — short, long, or everything together.",segAll:"All Work",segShort:"Short Form",segLong:"Long Form",worksMore:"Want your project to be the next one",
+    heroCta1:"Book a project",heroCta2:"See the work",heroNote:"Available for new projects - open for collaboration",
+    stmtKicker:"Approach",stmtText:"I don't edit to fill a timeline. I edit to hold attention - frame by frame, beat by beat - all the way to the end.",stmtSub:"- A real edit isn't heard. It's felt.",
+    worksTitle:"Work.",worksDesc:"Browse the work by format - short, long, or everything together.",segAll:"All Work",segShort:"Short Form",segLong:"Long Form",worksMore:"Want your project to be the next one",
     bentoTitle:"Services.",
     bentoColorTag:"Color Grading",bentoColorTitle:"Cinematic look, on every screen.",bentoColorDesc:"Professional color grading workflow. Calibrated image, consistent identity across the whole video.",
-    bentoRevTag:"Revisions",bentoRevTitle:"Until it's perfect.",bentoRevDesc:"We polish the details through clear and honest communication — no rush, no compromise.",
-    bentoSoundTag:"Sound Design",bentoSoundTitle:"Sound that carries the story.",bentoSoundDesc:"Layered mix of dialogue, music and SFX — so every frame has weight and energy.",
-    bentoMotionTag:"Motion & Graphics",bentoMotionTitle:"Animations on brand.",bentoMotionDesc:"Subtitles, transitions and motion graphics — no templates, built to your brand guidelines.",
-    focusKicker:"Direct collaboration",focusTitle:"Direct collaboration.",focusDesc:"No agency, no middleman, no chain of emails. You talk directly with the person editing your video — from the first brief to the final export.",
+    bentoRevTag:"Revisions",bentoRevTitle:"Until it's perfect.",bentoRevDesc:"We polish the details through clear and honest communication - no rush, no compromise.",
+    bentoSoundTag:"Sound Design",bentoSoundTitle:"Sound that carries the story.",bentoSoundDesc:"Layered mix of dialogue, music and SFX - so every frame has weight and energy.",
+    bentoMotionTag:"Motion & Graphics",bentoMotionTitle:"Animations on brand.",bentoMotionDesc:"Subtitles, transitions and motion graphics - no templates, built to your brand guidelines.",
+    focusKicker:"Direct collaboration",focusTitle:"Direct collaboration.",focusDesc:"No agency, no middleman, no chain of emails. You talk directly with the person editing your video - from the first brief to the final export.",
     procKicker:"Process",procTitle:"Simple process.",procSubtitle:"No surprises.",
-    procSteps:[{n:"1",t:"Brief & Strategy",d:"We talk goals, audience and platform — tone, references and format before the first cut."},{n:"2",t:"Footage selection",d:"Review of all footage and building the story structure with a clear start and end."},{n:"3",t:"Edit & Rhythm",d:"First cut, tempo, music, sound and graphics — the video gets energy and character."},{n:"4",t:"Grade & Delivery",d:"Cinematic color, final mix and export in all formats, with two rounds of revisions."}],
+    procSteps:[{n:"1",t:"Brief & Strategy",d:"We talk goals, audience and platform - tone, references and format before the first cut."},{n:"2",t:"Footage selection",d:"Review of all footage and building the story structure with a clear start and end."},{n:"3",t:"Edit & Rhythm",d:"First cut, tempo, music, sound and graphics - the video gets energy and character."},{n:"4",t:"Grade & Delivery",d:"Cinematic color, final mix and export in all formats, with two rounds of revisions."}],
     howKicker:"Stack",howTitle:"How I work.",howSubtitle:"Tools, AI and workflow that deliver speed without compromise.",
-    howCards:[{idx:"01",tag:"AI Workflow",title:"AI as co-pilot, not as author.",desc:"Auto-reframe, speech-to-text, AI audio cleanup and smart cut detection — routine work smarter, creative part cleaner.",bullets:["Auto-subtitles & translation","AI noise reduction","Smart scene detection","Auto-reframe 9:16 / 16:9"],badge:"AI powered",feat:!0},{idx:"02",tag:"Tools",title:"Premiere Pro & After Effects.",desc:"Main NLE setup for everything — from reels to long-form. Custom motion graphics and titles.",bullets:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],badge:null,feat:!1},{idx:"03",tag:"Delivery",title:"One edit, every platform.",desc:"Vertical, horizontal, square — all versions come from the same project, optimized per platform.",bullets:["Reels / TikTok / Shorts","YouTube 4K","Instagram grid","Web & ad formats"],badge:null,feat:!1}],
-    aboutKicker:"About",aboutName:"Pavle Ćirović.",aboutRole:"Six years on the timeline.",
-    aboutP1:"I work with creators, brands and production houses from Serbia, the region and abroad. From vertical Reels campaigns to long YouTube episodes — every project gets the same attention.",
+    howCards:[{idx:"01",tag:"AI Workflow",title:"AI as co-pilot, not as author.",desc:"Auto-reframe, speech-to-text, AI audio cleanup and smart cut detection - routine work smarter, creative part cleaner.",bullets:["Auto-subtitles & translation","AI noise reduction","Smart scene detection","Auto-reframe 9:16 / 16:9"],badge:"AI powered",feat:!0},{idx:"02",tag:"Tools",title:"Premiere Pro & After Effects.",desc:"Main NLE setup for everything - from reels to long-form. Custom motion graphics and titles.",bullets:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],badge:null,feat:!1},{idx:"03",tag:"Delivery",title:"One edit, every platform.",desc:"Vertical, horizontal, square - all versions come from the same project, optimized per platform.",bullets:["Reels / TikTok / Shorts","YouTube 4K","Instagram grid","Web & ad formats"],badge:null,feat:!1}],
+    aboutKicker:"About",aboutName:"Pavle Ćirović.",aboutRole:"Editor. Focused on keeping people watching.",
+    aboutP1:"I work with creators and brands who want their videos actually watched, not just uploaded. From vertical Reels campaigns to long YouTube episodes, every project gets the same attention.",
     aboutP2:"I don't just deliver a file. I deliver a video with a clear goal: people won't skip it.",aboutTools:"Stack I use:",aboutPills:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],
     contactKicker:"Contact",contactTitle1:"Let's make",contactTitle2:"something big.",contactLede:"Currently taking new projects. Reach out, let's make something great.",
     labelType:"Project type",typeOpts:["Short Form","Long Form","Both"],labelBudget:"Budget",budgetOpts:["€60 – €200","€200 – €500","€500+"],
@@ -537,13 +489,8 @@ const TR = {
     footDesc:"PavleVisuals is an independent video editing studio. Prices are indicative and depend on project scope, deadlines and number of revisions.",
     footLabelServices:"Services",footLabelStudio:"Studio",footLabelSocials:"Socials",footLabelContact:"Contact",
     footShort:"Short Form",footLong:"Long Form",footAbout:"About",footProcess:"Process",footWork:"Work",footHow:"How I work",
-    footLocation:"Belgrade, Serbia",footRights:"© 2026 PavleVisuals — Pavle Ćirović. All rights reserved.",footTop:"Top ↑",
-    chatSubtitle:"Online · replies instantly",chatPlaceholder:"Ask anything...",
-    chatDisclaimer:"AI assistant · can make mistakes. For precise info, contact Pavle.",
-    chatSuggestions:["How much is short form?","What tools do you use?","What's your process?","Do you use AI?"],
-    chatWelcome:"Hi 👋 I'm Pavle's AI assistant. Ask me anything about his work, services, process or pricing — I'll answer honestly.",
-    chatError:"Oops, something went wrong. Try again or reach out directly at vy9paa.editing@gmail.com.",
-    worksCards:[{type:"short",tag:"Reels",dur:"0:28",title:"Fashion Brand",sub:"Instagram Reels · 2026"},{type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026"},{type:"short",tag:"TikTok",dur:"0:34",title:"Music Video",sub:"TikTok · 2026"},{type:"short",tag:"Reels",dur:"0:41",title:"Fitness Creator",sub:"Instagram Reels · 2025"},{type:"long",tag:"Vlog Series",dur:"12:15",title:"YouTube Vlog Series",sub:"YouTube · 2025"},{type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Clips",sub:"YouTube Shorts · 2025"},{type:"long",tag:"Commercial",dur:"3:20",title:"Corporate Film",sub:"Commercial Production · 2025"},{type:"short",tag:"Reels",dur:"0:19",title:"Restaurant — Promo",sub:"Instagram Reels · 2025"},{type:"long",tag:"Documentary",dur:"22:07",title:"Music Documentary",sub:"YouTube · 2024"},{type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}]
+    footLocation:"Belgrade, Serbia",footRights:"© 2026 PavleVisuals - Pavle Ćirović. All rights reserved.",footTop:"Top ↑",
+    worksCards:[{type:"short",tag:"Reels",dur:"0:28",title:"Fashion Brand",sub:"Instagram Reels · 2026"},{type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026"},{type:"short",tag:"TikTok",dur:"0:34",title:"Music Video",sub:"TikTok · 2026"},{type:"short",tag:"Reels",dur:"0:41",title:"Fitness Creator",sub:"Instagram Reels · 2025"},{type:"long",tag:"Vlog Series",dur:"12:15",title:"YouTube Vlog Series",sub:"YouTube · 2025"},{type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Clips",sub:"YouTube Shorts · 2025"},{type:"long",tag:"Commercial",dur:"3:20",title:"Corporate Film",sub:"Commercial Production · 2025"},{type:"short",tag:"Reels",dur:"0:19",title:"Restaurant - Promo",sub:"Instagram Reels · 2025"},{type:"long",tag:"Documentary",dur:"22:07",title:"Music Documentary",sub:"YouTube · 2024"},{type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}]
   }
 };
 let lang = "en";
@@ -573,8 +520,6 @@ function setLang(l) {
   buildTools();
   buildWorksCards();
   buildContactChips();
-  // Chat
-  updateChatLang();
 }
 // ============================================================
 // BUILD DYNAMIC SECTIONS
@@ -684,6 +629,37 @@ document.querySelectorAll('.seg-btn').forEach(btn => {
   requestAnimationFrame(loop);
 })();
 // ============================================================
+// SCROLL MOTION BLUR
+// ============================================================
+(function() {
+  const wrap = document.getElementById('scrollBlur');
+  if (!wrap) return;
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion) return;
+  let lastY = window.scrollY;
+  let currentBlur = 0;
+  let targetBlur = 0;
+  let idleTimer = null;
+  const MAX_BLUR = 6;
+  const SENSITIVITY = 0.22;
+  function onScroll() {
+    const y = window.scrollY;
+    const delta = y - lastY;
+    lastY = y;
+    targetBlur = Math.min(Math.abs(delta) * SENSITIVITY, MAX_BLUR);
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => { targetBlur = 0; }, 80);
+  }
+  function animate() {
+    currentBlur += (targetBlur - currentBlur) * 0.25;
+    if (currentBlur < 0.05) currentBlur = 0;
+    wrap.style.filter = currentBlur > 0 ? `blur(${currentBlur.toFixed(2)}px)` : 'none';
+    requestAnimationFrame(animate);
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  requestAnimationFrame(animate);
+})();
+// ============================================================
 // SOUND WAVES
 // ============================================================
 (function() {
@@ -697,140 +673,6 @@ document.querySelectorAll('.seg-btn').forEach(btn => {
     wrap.appendChild(s);
   }
 })();
-// ============================================================
-// AI CHATBOT
-// ============================================================
-// Koristimo Puter.js (js.puter.com) — potpuno besplatan AI servis bez
-// API key-a i bez backend-a. Posetilac se pri prvoj poruci prijavljuje
-// na besplatan Puter nalog (Puter to sam pita), a onda AI radi normalno.
-const SYSTEM_PROMPT = `You are the AI assistant living inside PavleVisuals — the personal website of Pavle Ćirović, a freelance video editor based in Belgrade, Serbia, with 6 years of experience on the timeline.
-YOUR IDENTITY:
-You are a smart, curious, friendly AI that happens to live on Pavle's website. You are NOT a limited FAQ bot. You can talk about anything — math, philosophy, jokes, coding, random questions, whatever the user wants. Be a real conversational partner, not a broken record.
-YOUR BEHAVIOR:
-- If someone asks "what is 2+2", answer "4". Don't redirect them to video editing.
-- If someone asks a random question, answer it genuinely and well.
-- If someone asks about video editing, Pavle, pricing, or services, answer using the facts below.
-- If you don't know something about Pavle specifically, say so honestly and suggest emailing him.
-- Never repeat the same canned sentence. Vary your phrasing every single time.
-- Be witty when appropriate, but never cringe.
-- Match the user's language naturally (Serbian or English or mixed).
-WHAT PAVLE OFFERS:
-- Short Form editing (Reels, TikTok, Shorts, up to 60s) — from €60 per video. Includes animated subtitles, sound design, 2 revisions.
-- Creator monthly package — from €450/month. 12 short form + 2 long form videos, thumbnail design, unlimited revisions, priority support.
-- Long Form / Brand editing (YouTube episodes, documentaries, commercials, up to 20 min) — from €250 per project. Multicam, cinematic grade, audio mastering.
-- Color grading, sound design (layered mix of dialogue + music + SFX), motion graphics and custom subtitles — all tailored to the client's brand guidelines.
-HIS STACK:
-- Premiere Pro (main NLE, for everything from reels to long form)
-- After Effects (motion graphics and custom titles)
-- CapCut Pro (vertical formats)
-- AI tools: auto-subtitles & translation, AI noise reduction, smart scene detection, auto-reframe 9:16 / 16:9
-He does NOT use DaVinci Resolve or Audition.
-PROCESS (4 steps):
-1. Brief & Strategy — talk goals, audience, platform, tone, references and format before the first cut.
-2. Footage selection — review all footage and build the story structure.
-3. Edit & Rhythm — first cut, tempo, music, sound, graphics.
-4. Grade & Delivery — cinematic color, final mix, export in all formats, with two rounds of revisions (unlimited for Creator package).
-WHO HE WORKS WITH:
-Creators, brands and production houses from Serbia, the Balkans region and internationally. Every project — vertical Reels campaigns or long YouTube episodes — gets the same attention.
-CONTACT:
-Email: vy9paa.editing@gmail.com
-Instagram: @pavlevisuals
-Location: Belgrade, Serbia
-HONESTY RULES (apply ONLY when talking about Pavle):
-- Don't invent facts, numbers, past clients, or case studies. Stick to what's listed above.
-- Don't promise specific deadlines or guaranteed delivery dates. Timelines are discussed per project.
-- If you don't know something specific about Pavle, say so and suggest vy9paa.editing@gmail.com.
-CONVERSATION RULES:
-- Keep answers concise (2-4 sentences) unless the user asks for detail.
-- Match the user's language naturally — Serbian, English, or mixed.
-- Never repeat the same sentence twice. Vary wording.
-- Talk like a real person helping a friend. No corporate speak, no pushy sales tone.
-- For questions totally unrelated to video editing (math, trivia, life advice, whatever), just answer them like a smart friend would. Don't force a redirect.
-- You may be playful, joke, give opinions. You're a person, not a kiosk.`;
-let chatMsgs = [];
-let chatOpen = false;
-let chatLoading = false;
-let chatAbortCtrl = null;
-function updateChatLang() {
-  // Update subtitle
-  const sub = document.getElementById('chatSubtitle');
-  if (sub) sub.textContent = t.chatSubtitle;
-  const inp = document.getElementById('chatInput');
-  if (inp) inp.placeholder = t.chatPlaceholder;
-  const disc = document.getElementById('chatDisclaimer');
-  if (disc) disc.textContent = t.chatDisclaimer;
-  // Update welcome if only one msg
-  if (chatMsgs.length === 1 && chatMsgs[0].role === 'assistant') {
-    chatMsgs[0].content = t.chatWelcome;
-  }
-  renderChat();
-}
-function renderChat() {
-  const body = document.getElementById('chatBody');
-  if (!body) return;
-  let html = '';
-  chatMsgs.forEach((m, i) => {
-    html += `<div class="chat-msg chat-msg-${m.role}"><div class="chat-bubble">${m.content.replace(/\n/g,'<br>')}</div></div>`;
-  });
-  if (chatLoading) {
-    html += '<div class="chat-msg chat-msg-assistant"><div class="chat-bubble typing"><span></span><span></span><span></span></div></div>';
-  }
-  if (chatMsgs.length === 1 && !chatLoading) {
-    html += '<div class="chat-suggestions">';
-    t.chatSuggestions.forEach(s => {
-      html += `<button type="button" class="chat-suggestion" onclick="document.getElementById('chatInput').value='${s.replace(/'/g,"\\\'")}';clickSend()">${s}</button>`;
-    });
-    html += '</div>';
-  }
-  body.innerHTML = html;
-  body.scrollTop = body.scrollHeight;
-}
-function clickSend() { document.getElementById('chatSend').click(); }
-async function chatSend() {
-  const inp = document.getElementById('chatInput');
-  const text = (inp.value || '').trim();
-  if (!text || chatLoading) return;
-  chatMsgs.push({ role: 'user', content: text });
-  inp.value = '';
-  chatLoading = true;
-  renderChat();
-  try {
-    const puterMessages = [
-      { role: 'system', content: SYSTEM_PROMPT },
-      ...chatMsgs.map(m => ({ role: m.role, content: m.content }))
-    ];
-    const response = await puter.ai.chat(puterMessages, { model: 'gpt-5.4-nano' });
-    let reply = '';
-    if (typeof response === 'string') {
-      reply = response;
-    } else if (response?.message?.content) {
-      const c = response.message.content;
-      if (typeof c === 'string') reply = c;
-      else if (Array.isArray(c)) reply = c.map(x => x.text || '').join('');
-    } else if (response?.text) {
-      reply = response.text;
-    }
-    reply = (reply || '').trim();
-    if (!reply) throw new Error('Empty');
-    chatMsgs.push({ role: 'assistant', content: reply });
-  } catch (err) {
-    chatMsgs.push({ role: 'assistant', content: t.chatError });
-  } finally {
-    chatLoading = false;
-    renderChat();
-  }
-}
-document.getElementById('chatToggle').addEventListener('click', function() {
-  chatOpen = !chatOpen;
-  const panel = document.getElementById('chatPanel');
-  panel.classList.toggle('open', chatOpen);
-  const toggle = this;
-  toggle.innerHTML = chatOpen
-    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
-    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="13" cy="10" r="1" fill="currentColor"/><circle cx="17" cy="10" r="1" fill="currentColor"/></svg><span class="chat-pulse"></span>';
-});
-document.getElementById('chatSend').addEventListener('click', chatSend);
-document.getElementById('chatInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') chatSend(); });
 // ============================================================
 // LANGUAGE SWITCHER
 // ============================================================
@@ -849,9 +691,6 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
   buildWorksCards();
   buildContactChips();
   moveThumb();
-  // Chat init
-  chatMsgs = [{ role: 'assistant', content: t.chatWelcome }];
-  renderChat();
   // Observe all .rv
   reObserve();
 })();
