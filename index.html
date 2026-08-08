@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="sr">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,695 +7,874 @@
 <meta name="description" content="PavleVisuals — video montaža. Short form koji zaustavlja skrol, long form koji se gleda do kraja." />
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --bg:#000; --light:#fbfbfd; --gray:#f5f5f7; --text:#1d1d1f; --muted:#6e6e73;
-    --line-d: rgba(255,255,255,.12); --line-l: rgba(0,0,0,.08);
-    --blue:#0071e3; --blue2:#2997ff;
-  }
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-  body{
-    margin:0; background:var(--bg); color:var(--light);
-    font-family:'Inter',-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-    -webkit-font-smoothing:antialiased; letter-spacing:-0.01em; overflow-x:hidden;
-  }
-  ::selection{ background:var(--blue2); color:#fff; }
-  ::-webkit-scrollbar{ width:0; }
-  img,svg{ display:block; }
-  a{ color:inherit; }
-  .narrow{ max-width:1120px; margin:0 auto; padding:0 1.25rem; }
-  @media(min-width:1180px){ .narrow{ padding:0 2.5rem; } }
-  .fw-6{ font-weight:600; }
-  .fw-7{ font-weight:700; }
-  .tight{ letter-spacing:-0.035em; }
-  .muted{ color:var(--muted); }
-  .grad-blue{
-    background:linear-gradient(92deg,#2997ff 0%,#7dc4ff 40%,#a1a1ff 70%,#2997ff 100%);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .grad-dark{
-    background:linear-gradient(92deg,#1d1d1f 0%,#0071e3 55%,#1d1d1f 100%);
-    -webkit-background-clip:text; background-clip:text; color:transparent;
-  }
-  .glow{ position:absolute; pointer-events:none; background:radial-gradient(ellipse at center, rgba(41,151,255,.28), transparent 62%); filter:blur(64px); }
-
-  .rv{ opacity:0; transform:translateY(46px); transition:opacity .9s cubic-bezier(.16,1,.3,1), transform .9s cubic-bezier(.16,1,.3,1); }
-  .rv.on{ opacity:1; transform:none; }
-
-  @keyframes riseIn{ from{ opacity:0; transform:translateY(34px);} to{ opacity:1; transform:none;} }
-  .rise{ opacity:0; animation:riseIn 1s cubic-bezier(.16,1,.3,1) forwards; }
-  .d1{ animation-delay:.1s; } .d2{ animation-delay:.2s; } .d3{ animation-delay:.32s; } .d4{ animation-delay:.44s; } .d5{ animation-delay:.56s; }
-
-  /* ============ NAV ============ */
-  header.topnav{ position:fixed; top:0; left:0; right:0; z-index:80; }
-  .navbar{
-    height:52px; display:flex; align-items:center; justify-content:space-between;
-    border-bottom:1px solid var(--line-d); background:rgba(0,0,0,.55);
-    backdrop-filter:blur(20px) saturate(180%); -webkit-backdrop-filter:blur(20px) saturate(180%);
-  }
-  .navbar .brand{ display:flex; align-items:center; gap:.4rem; font-size:14px; font-weight:600; color:#fff; text-decoration:none; }
-  .navbar .brand svg{ width:14px; height:14px; fill:var(--blue2); }
-  .navlinks{ display:flex; gap:2rem; }
-  .navlinks a{ font-size:12.5px; color:rgba(255,255,255,.78); text-decoration:none; transition:color .2s ease; }
-  .navlinks a:hover{ color:#fff; }
-  .nav-cta{ font-size:12.5px; color:#fff; background:var(--blue); padding:.4rem 1rem; border-radius:999px; text-decoration:none; transition:background .2s ease; }
-  .nav-cta:hover{ background:#0077ed; }
-  @media (max-width:860px){ .navlinks{ display:none; } }
-
-  section{ position:relative; }
-
-  .eyebrow{ font-size:13px; font-weight:600; color:var(--blue2); text-transform:uppercase; letter-spacing:.04em; text-align:center; }
-
-  /* ============ HERO ============ */
-  #hero{ position:relative; padding-top:112px; }
-  .hero-copy{ display:flex; flex-direction:column; align-items:center; text-align:center; padding-bottom:1.6rem; }
-  .hero-copy h1{ font-size:clamp(2.6rem,9vw,5.6rem); font-weight:700; line-height:1.02; letter-spacing:-.03em; margin:.2rem 0; color:#fff; }
-  .hero-copy p.lede{ font-size:19px; line-height:1.55; color:var(--muted); max-width:540px; margin:1.4rem auto 0; }
-  .hero-actions{ display:flex; flex-wrap:wrap; gap:.5rem 2rem; justify-content:center; margin-top:2rem; }
-  .btn-blue{ display:inline-flex; align-items:center; gap:.35rem; border-radius:999px; background:var(--blue); color:#fff; padding:.6rem 1.4rem; font-size:16px; font-weight:500; text-decoration:none; transition:background .2s ease; }
-  .btn-blue:hover{ background:#0077ed; }
-  .link-arrow{ display:inline-flex; align-items:center; gap:.25rem; font-size:16px; color:var(--blue2); text-decoration:none; padding:.6rem 0; }
-  .link-arrow svg{ transition:transform .25s ease; width:14px; height:14px; }
-  .link-arrow:hover svg{ transform:translateX(4px); }
-  .hero-note{ font-size:12px; letter-spacing:.08em; color:rgba(255,255,255,.35); margin-top:1.4rem; text-transform:uppercase; }
-
-  /* ============ STATEMENT ============ */
-  #statement{ background:var(--light); }
-
-  /* ============ RADOVI :: SEGMENTED SWITCH ============ */
-  #radovi{ background:#000; padding:6rem 0 7rem; }
-  .radovi-head h2{ font-size:clamp(2.1rem,6vw,3.6rem); font-weight:700; text-align:center; color:#fff; letter-spacing:-.03em; margin:0 auto; max-width:760px; }
-  .radovi-head p{ text-align:center; font-size:17px; color:var(--muted); line-height:1.55; max-width:520px; margin:1rem auto 0; }
-
-  .segwrap{ display:flex; justify-content:center; margin-top:3rem; }
-  .segmented{
-    position:relative; display:inline-flex; background:rgba(255,255,255,.06); border:1px solid var(--line-d);
-    border-radius:999px; padding:4px; gap:2px;
-  }
-  .seg-btn{
-    position:relative; z-index:2; border:none; background:none; color:rgba(255,255,255,.6); font-size:13.5px; font-weight:500;
-    padding:.55rem 1.3rem; border-radius:999px; cursor:pointer; transition:color .3s ease; white-space:nowrap;
-  }
-  .seg-btn.active{ color:#000; }
-  .seg-thumb{
-    position:absolute; z-index:1; top:4px; bottom:4px; left:4px; width:0; background:#fff; border-radius:999px;
-    transition:left .38s cubic-bezier(.65,0,.35,1), width .38s cubic-bezier(.65,0,.35,1);
-    box-shadow:0 6px 18px -6px rgba(255,255,255,.4);
-  }
-
-  .gallery-grid{
-    display:grid; grid-template-columns:repeat(auto-fill, minmax(230px, 1fr)); gap:1.4rem; margin-top:3.6rem;
-  }
-  .wcard{
-    position:relative; border-radius:22px; overflow:hidden; background:#0a0a0c; border:1px solid var(--line-d);
-    transition:transform .3s ease, box-shadow .3s ease, opacity .35s ease;
-  }
-  .wcard:hover{ transform:translateY(-4px); box-shadow:0 24px 50px -20px rgba(0,0,0,.6); }
-  .wcard.hidden-card{ display:none; }
-  .wcard.anim{ animation:cardIn .55s cubic-bezier(.16,1,.3,1) both; }
-  @keyframes cardIn{ from{ opacity:0; transform:translateY(18px) scale(.96);} to{ opacity:1; transform:none;} }
-
-  .wcard[data-type="short"]{ grid-row: span 2; }
-  .wcard .surface{ position:relative; overflow:hidden; }
-  .wcard[data-type="short"] .surface{ aspect-ratio:9/16; }
-  .wcard[data-type="long"] .surface{ aspect-ratio:16/9; }
-  .wcard .bgimg{ position:absolute; inset:0; transition:transform .8s cubic-bezier(.16,1,.3,1); }
-  .wcard:hover .bgimg{ transform:scale(1.06); }
-  .wcard .shade{ position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.15), rgba(0,0,0,.05) 40%, rgba(0,0,0,.85)); }
-  .wcard .tag{
-    position:absolute; top:14px; left:14px; display:inline-flex; align-items:center; gap:.35rem;
-    background:rgba(0,0,0,.5); backdrop-filter:blur(6px); padding:.25rem .6rem; border-radius:7px;
-  }
-  .wcard .tag .d{ width:6px; height:6px; border-radius:50%; background:var(--blue2); }
-  .wcard .tag span{ font-size:10px; font-weight:600; letter-spacing:.06em; text-transform:uppercase; color:rgba(255,255,255,.8); }
-  .wcard .dur{ position:absolute; top:14px; right:14px; font-size:10.5px; color:rgba(255,255,255,.7); background:rgba(0,0,0,.5); backdrop-filter:blur(6px); padding:.25rem .55rem; border-radius:7px; }
-  .wcard .info{ position:absolute; left:0; right:0; bottom:0; padding:1rem 1.1rem; }
-  .wcard .info h3{ font-size:16px; font-weight:600; color:#fff; margin:0; letter-spacing:-.01em; }
-  .wcard .info span{ font-size:11.5px; color:rgba(255,255,255,.55); }
-  .wcard .playdot{
-    position:absolute; left:50%; top:50%; transform:translate(-50%,-50%) scale(.8); width:46px; height:46px; border-radius:50%;
-    background:rgba(255,255,255,.16); border:1px solid rgba(255,255,255,.28); backdrop-filter:blur(6px);
-    display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .3s ease, transform .3s ease;
-  }
-  .wcard:hover .playdot{ opacity:1; transform:translate(-50%,-50%) scale(1); }
-  .wcard .playdot svg{ width:14px; height:14px; fill:#fff; margin-left:2px; }
-
-  .g1{ background:linear-gradient(155deg,#1a2e8f,#050609 72%); }
-  .g2{ background:linear-gradient(155deg,#0e1a4a,#050609 70%); }
-  .g3{ background:linear-gradient(155deg,#28409e,#070912 65%); }
-  .g4{ background:linear-gradient(155deg,#0d174a,#050609 75%); }
-  .g5{ background:linear-gradient(155deg,#1e3384,#050609 68%); }
-  .g6{ background:linear-gradient(155deg,#152660,#060812 72%); }
-  .g7{ background:linear-gradient(155deg,#243c98,#070912 68%); }
-  .g8{ background:linear-gradient(155deg,#101c52,#050609 74%); }
-
-  .radovi-more{ text-align:center; margin-top:3rem; }
-
-  /* ============ BENTO / SERVICES ============ */
-  #bento{ background:var(--light); padding:6rem 0 7rem; }
-  #bento h2{ font-size:clamp(2rem,5.5vw,3.3rem); font-weight:700; text-align:center; color:var(--text); letter-spacing:-.03em; margin:0 auto; max-width:640px; }
-  .bento-grid{ display:grid; grid-template-columns:repeat(12,1fr); gap:1rem; margin-top:3.6rem; }
-  .tile{ border-radius:26px; padding:2rem; overflow:hidden; position:relative; }
-  .tile.dark{ background:#101010; color:#fff; }
-  .tile.light{ background:var(--gray); color:var(--text); }
-  .tile .tag2{ font-size:12.5px; font-weight:600; color:var(--blue2); text-transform:uppercase; letter-spacing:.04em; }
-  .tile.light .tag2{ color:var(--blue); }
-  .tile h3{ font-size:clamp(1.5rem,2.6vw,2.2rem); font-weight:700; letter-spacing:-.02em; margin:.6rem 0 0; line-height:1.15; }
-  .tile p{ font-size:14.5px; line-height:1.55; margin-top:.7rem; max-width:32ch; }
-  .tile.dark p{ color:rgba(255,255,255,.55); }
-  .tile.light p{ color:var(--muted); }
-  .tile-a{ grid-column:span 12; }
-  .tile-b{ grid-column:span 12; }
-  .tile-c{ grid-column:span 12; }
-  .tile-d{ grid-column:span 12; }
-  @media(min-width:760px){
-    .tile-a{ grid-column:span 7; }
-    .tile-b{ grid-column:span 5; }
-    .tile-c{ grid-column:span 5; }
-    .tile-d{ grid-column:span 7; }
-  }
-  .colorbar{ display:flex; height:40px; border-radius:10px; overflow:hidden; margin-top:1.6rem; }
-  .colorbar span{ flex:1; }
-  .waves{ display:flex; align-items:flex-end; gap:3px; height:64px; margin-top:1.4rem; }
-  .waves span{ width:5px; border-radius:3px; background:linear-gradient(180deg,#2997ff,#7dc4ff); }
-
-  /* ============ PROCESS ============ */
-  #process{ background:var(--light); padding:0 0 7rem; }
-  #process h3{ font-size:clamp(1.6rem,4vw,2.3rem); font-weight:700; text-align:center; color:var(--text); max-width:600px; margin:0 auto; }
-  .process-grid{ display:grid; grid-template-columns:1fr; gap:1rem; margin-top:2.6rem; }
-  @media(min-width:760px){ .process-grid{ grid-template-columns:repeat(4,1fr); } }
-  .pcard{ background:#fff; border-radius:20px; padding:1.7rem; }
-  .pcard .n{ display:inline-flex; align-items:center; justify-content:center; width:32px; height:32px; border-radius:50%; background:var(--blue); color:#fff; font-size:13px; font-weight:700; }
-  .pcard h4{ font-size:16.5px; font-weight:600; margin:1rem 0 0; color:var(--text); }
-  .pcard p{ font-size:14px; line-height:1.55; color:var(--muted); margin-top:.4rem; }
-
-  /* ============ PRICING ============ */
-  #cene{ background:#000; padding:6rem 0 7rem; position:relative; }
-  #cene h2{ font-size:clamp(2.1rem,6vw,3.4rem); font-weight:700; text-align:center; color:#fff; letter-spacing:-.03em; max-width:640px; margin:0 auto; }
-  .price-grid{ display:grid; grid-template-columns:1fr; gap:1rem; margin-top:3.4rem; align-items:stretch; }
-  @media(min-width:860px){ .price-grid{ grid-template-columns:repeat(3,1fr); } }
-  .pplan{ background:#101010; border-radius:22px; padding:1.8rem 1.6rem; display:flex; flex-direction:column; }
-  .pplan.feat{ background:linear-gradient(180deg, rgba(41,151,255,.16), rgba(13,20,32,.6)); border:1px solid rgba(41,151,255,.35); position:relative; }
-  .pplan .pill{ position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--blue); color:#fff; font-size:10.5px; font-weight:600; letter-spacing:.05em; text-transform:uppercase; padding:.25rem 1rem; border-radius:999px; }
-  .pplan .idx{ font-size:12.5px; color:var(--muted); }
-  .pplan h3{ font-size:20px; font-weight:600; color:#fff; margin:.3rem 0 0; }
-  .pplan .desc{ font-size:13px; line-height:1.5; color:rgba(255,255,255,.55); margin-top:.4rem; min-height:36px; }
-  .pplan .price{ display:flex; align-items:baseline; gap:.3rem; margin-top:1.5rem; }
-  .pplan .price b{ font-size:32px; font-weight:700; color:#fff; }
-  .pplan .price small{ font-size:13px; color:rgba(255,255,255,.55); }
-  .pplan ul{ list-style:none; margin:1.3rem 0 0; padding:0; flex:1; display:flex; flex-direction:column; gap:.6rem; }
-  .pplan li{ display:flex; gap:.55rem; align-items:flex-start; font-size:13.5px; color:rgba(255,255,255,.78); }
-  .pplan li svg{ width:13px; height:13px; flex:none; margin-top:3px; fill:none; stroke:var(--blue2); stroke-width:3; }
-  .pplan .cta{ margin-top:1.6rem; display:block; text-align:center; border-radius:999px; padding:.6rem 1rem; font-size:14.5px; font-weight:500; text-decoration:none; transition:all .2s ease; }
-  .pplan .cta.outline{ border:1px solid rgba(255,255,255,.2); color:#fff; }
-  .pplan .cta.outline:hover{ border-color:var(--blue); background:rgba(255,255,255,.06); }
-  .pplan .cta.solid{ background:var(--blue); color:#fff; }
-  .pplan .cta.solid:hover{ background:#0077ed; }
-
-  /* ============ ABOUT ============ */
-  #o-meni{ background:var(--gray); padding:6rem 0 7rem; }
-  .about-grid{ display:grid; grid-template-columns:1fr; gap:2.6rem; align-items:center; }
-  @media(min-width:760px){ .about-grid{ grid-template-columns:.8fr 1fr; } }
-  .avatar-box{ border-radius:28px; overflow:hidden; aspect-ratio:4/5; background:
-      radial-gradient(60% 50% at 30% 20%, rgba(41,151,255,.35), transparent 60%),
-      linear-gradient(160deg,#12173a,#05060c 70%);
-      display:flex; align-items:center; justify-content:center; }
-  .avatar-box .mono{ font-size:120px; font-weight:700; color:rgba(255,255,255,.12); letter-spacing:-.04em; }
-  #o-meni h2{ font-size:clamp(2rem,5vw,3rem); font-weight:700; color:var(--text); line-height:1.1; letter-spacing:-.02em; }
-  #o-meni h2 span{ display:block; font-size:.6em; color:var(--muted); font-weight:500; margin-top:.3rem; }
-  #o-meni p{ font-size:16px; line-height:1.65; color:var(--muted); max-width:44ch; margin-top:1rem; }
-  .tools{ display:flex; flex-wrap:wrap; gap:.5rem; margin-top:1.6rem; }
-  .tool-pill{ background:#fff; padding:.4rem 1rem; border-radius:999px; font-size:13px; font-weight:500; color:var(--text); }
-
-  /* ============ CONTACT ============ */
-  #kontakt{ background:var(--light); padding:6rem 0 7rem; }
-  #kontakt h2{ font-size:clamp(2.1rem,6vw,3.6rem); font-weight:700; text-align:center; color:var(--text); max-width:680px; margin:0 auto; line-height:1.08; letter-spacing:-.02em; }
-  #kontakt p.lede{ text-align:center; font-size:16px; color:var(--muted); line-height:1.55; max-width:480px; margin:1rem auto 0; }
-  .form-card{ border-radius:26px; background:#fff; padding:1.6rem; margin-top:2.6rem; box-shadow:0 30px 60px -30px rgba(0,0,0,.15); }
-  .form-row{ display:grid; grid-template-columns:1fr; gap:.9rem; }
-  @media(min-width:640px){ .form-row.two{ grid-template-columns:1fr 1fr; } }
-  .form-card input, .form-card textarea{ width:100%; border:0; border-bottom:1px solid rgba(0,0,0,.15); background:transparent; font-size:16px; color:var(--text); padding:.75rem 0; outline:none; transition:border-color .2s ease; font-family:inherit; }
-  .form-card input:focus, .form-card textarea:focus{ border-color:var(--blue); }
-  .chiprow{ display:flex; flex-wrap:wrap; gap:.4rem; }
-  .chip{ border-radius:999px; border:1px solid rgba(0,0,0,.18); background:#fff; color:var(--text); padding:.35rem .9rem; font-size:12.5px; font-weight:500; cursor:pointer; transition:all .2s ease; }
-  .chip.active{ background:var(--blue); color:#fff; border-color:var(--blue); }
-  .form-submit{ width:100%; border-radius:999px; background:var(--blue); color:#fff; font-size:16px; font-weight:500; padding:.75rem 1.4rem; border:none; cursor:pointer; transition:background .2s ease; }
-  .form-submit:hover{ background:#0077ed; }
-  .form-success{ display:none; text-align:center; padding:.6rem 0 0; color:var(--blue); font-size:13.5px; font-weight:500; }
-
-  footer{ background:var(--gray); padding:3.4rem 0 2.2rem; color:var(--muted); font-size:12px; line-height:1.7; }
-  .foot-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:2rem; margin-top:2rem; }
-  @media(min-width:760px){ .foot-grid{ grid-template-columns:repeat(4,1fr); } }
-  .foot-grid .h{ font-size:12px; font-weight:600; color:var(--text); text-transform:uppercase; letter-spacing:.04em; margin-bottom:.6rem; }
-  .foot-col{ display:flex; flex-direction:column; gap:.4rem; }
-  .foot-col a{ color:var(--muted); text-decoration:none; transition:color .15s ease; }
-  .foot-col a:hover{ color:var(--text); }
-  .foot-bottom{ margin-top:2.4rem; border-top:1px solid var(--line-l); padding-top:1.3rem; display:flex; flex-wrap:wrap; justify-content:space-between; gap:.7rem; }
-  .foot-bottom-links{ display:flex; gap:1.4rem; }
-  .foot-bottom-links a{ color:var(--muted); text-decoration:none; transition:color .15s ease; }
-  .foot-bottom-links a:hover{ color:var(--text); }
-
-  @media (prefers-reduced-motion: reduce){ .rv, .rise{ opacity:1 !important; transform:none !important; animation:none !important; } }
+:root{--bg:#000;--light:#fbfbfd;--gray:#f5f5f7;--text:#1d1d1f;--muted:#6e6e73;--line-d:rgba(255,255,255,.12);--line-l:rgba(0,0,0,.08);--blue:#0071e3;--blue2:#2997ff}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--light);font-family:'Inter',-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em;overflow-x:hidden}
+::selection{background:var(--blue2);color:#fff}
+::-webkit-scrollbar{width:0;display:none}
+img,svg{display:block}
+a{color:inherit}
+.narrow{max-width:1120px;margin:0 auto;padding:0 1.25rem}
+@media(min-width:1180px){.narrow{padding:0 2.5rem}}
+.eyebrow{font-size:13px;font-weight:600;color:var(--blue2);text-transform:uppercase;letter-spacing:.04em;text-align:center}
+.grad-blue{background:linear-gradient(92deg,#2997ff 0%,#7dc4ff 40%,#a1a1ff 70%,#2997ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.grad-dark{background:linear-gradient(92deg,#1d1d1f 0%,#0071e3 55%,#1d1d1f 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.rv{opacity:0;transform:translateY(46px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1)}
+.rv.on{opacity:1;transform:none}
+@keyframes riseIn{from{opacity:0;transform:translateY(34px)}to{opacity:1;transform:none}}
+.rise{opacity:0;animation:riseIn 1s cubic-bezier(.16,1,.3,1) forwards}
+.d1{animation-delay:.1s}.d2{animation-delay:.2s}.d3{animation-delay:.32s}.d4{animation-delay:.44s}.d5{animation-delay:.56s}
+.glow{position:absolute;pointer-events:none;background:radial-gradient(ellipse at center,rgba(41,151,255,.28),transparent 62%);filter:blur(64px)}
+/* NAV */
+.topnav{position:fixed;top:0;left:0;right:0;z-index:80;width:100%}
+.navbar{height:52px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line-d);background:rgba(0,0,0,.55);backdrop-filter:blur(20px) saturate(180%);-webkit-backdrop-filter:blur(20px) saturate(180%);padding:0 1.25rem}
+@media(min-width:1180px){.navbar{padding:0 2.5rem}}
+.navbar .brand{display:flex;align-items:center;gap:.4rem;font-size:14px;font-weight:600;color:#fff;text-decoration:none}
+.navbar .brand svg{width:14px;height:14px;fill:var(--blue2)}
+.navlinks{display:flex;gap:2rem;align-items:center}
+.navlinks a{font-size:12.5px;color:rgba(255,255,255,.78);text-decoration:none;transition:color .2s ease}
+.navlinks a:hover{color:#fff}
+.nav-cta{font-size:12.5px;color:#fff;background:var(--blue);padding:.4rem 1rem;border-radius:999px;text-decoration:none;transition:background .2s ease}
+.nav-cta:hover{background:#0077ed}
+@media(max-width:860px){.navlinks .navlink,.navlinks .lang-switch{display:none}}
+.lang-switch{display:inline-flex;background:rgba(255,255,255,.06);border:1px solid var(--line-d);border-radius:999px;padding:2px;gap:2px}
+.lang-btn{border:none;background:transparent;color:rgba(255,255,255,.55);font-size:11px;font-weight:600;padding:.25rem .6rem;border-radius:999px;cursor:pointer;transition:all .25s ease;letter-spacing:.04em;font-family:inherit}
+.lang-btn.active{background:#fff;color:#000}
+/* HERO */
+#hero{position:relative;padding-top:112px}
+.hero-copy{display:flex;flex-direction:column;align-items:center;text-align:center;padding-bottom:6rem}
+.hero-copy h1{font-size:clamp(2.6rem,9vw,5.6rem);font-weight:700;line-height:1.02;letter-spacing:-.03em;margin:.2rem 0;color:#fff}
+.hero-copy .lede{font-size:19px;line-height:1.55;color:var(--muted);max-width:540px;margin:1.4rem auto 0}
+.hero-actions{display:flex;flex-wrap:wrap;gap:.5rem 2rem;justify-content:center;margin-top:2rem}
+.btn-blue{display:inline-flex;align-items:center;gap:.35rem;border-radius:999px;background:var(--blue);color:#fff;padding:.6rem 1.4rem;font-size:16px;font-weight:500;text-decoration:none;transition:background .2s ease,transform .2s ease}
+.btn-blue:hover{background:#0077ed;transform:translateY(-1px)}
+.link-arrow{display:inline-flex;align-items:center;gap:.25rem;font-size:16px;color:var(--blue2);text-decoration:none;padding:.6rem 0}
+.link-arrow svg{transition:transform .25s ease;width:14px;height:14px}
+.link-arrow:hover svg{transform:translateX(4px)}
+.hero-note{font-size:12px;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-top:1.4rem;text-transform:uppercase;display:inline-flex;align-items:center;gap:.5rem}
+.hero-note::before{content:"";width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 12px #34d399;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+/* STATEMENT */
+#statement{background:var(--light)}
+.statement-text{font-size:clamp(1.5rem,3.6vw,2.3rem);font-weight:500;line-height:1.4;letter-spacing:-.02em;color:var(--text);max-width:820px;margin:0 auto;text-align:center}
+.statement-sub{text-align:center;font-size:14px;color:var(--muted);margin-top:1.4rem;letter-spacing:.08em;text-transform:uppercase}
+/* WORKS */
+#radovi{background:#000;padding:6rem 0 7rem}
+.radovi-head h2{font-size:clamp(2.1rem,6vw,3.6rem);font-weight:700;text-align:center;color:#fff;letter-spacing:-.03em;margin:0 auto;max-width:760px}
+.radovi-head p{text-align:center;font-size:17px;color:var(--muted);line-height:1.55;max-width:520px;margin:1rem auto 0}
+.segwrap{display:flex;justify-content:center;margin-top:3rem}
+.segmented{position:relative;display:inline-flex;background:rgba(255,255,255,.06);border:1px solid var(--line-d);border-radius:999px;padding:4px;gap:2px}
+.seg-btn{position:relative;z-index:2;border:none;background:none;color:rgba(255,255,255,.6);font-size:13.5px;font-weight:500;padding:.55rem 1.3rem;border-radius:999px;cursor:pointer;transition:color .3s ease;white-space:nowrap;font-family:inherit}
+.seg-btn.active{color:#000}
+.seg-thumb{position:absolute;z-index:1;top:4px;bottom:4px;left:4px;width:0;background:#fff;border-radius:999px;transition:left .38s cubic-bezier(.65,0,.35,1),width .38s cubic-bezier(.65,0,.35,1);box-shadow:0 6px 18px -6px rgba(255,255,255,.4)}
+.gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.4rem;margin-top:3.6rem}
+.wcard{position:relative;border-radius:22px;overflow:hidden;background:#0a0a0c;border:1px solid var(--line-d);transition:transform .3s ease,box-shadow .3s ease;cursor:pointer}
+.wcard:hover{transform:translateY(-4px);box-shadow:0 24px 50px -20px rgba(0,0,0,.6)}
+.wcard.anim{animation:cardIn .55s cubic-bezier(.16,1,.3,1) both}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
+.wcard[data-type=short]{grid-row:span 2}
+.wcard .surface{position:relative;overflow:hidden}
+.wcard[data-type=short] .surface{aspect-ratio:9/16}
+.wcard[data-type=long] .surface{aspect-ratio:16/9}
+.wcard .bgimg{position:absolute;inset:0;transition:transform .8s cubic-bezier(.16,1,.3,1)}
+.wcard:hover .bgimg{transform:scale(1.06)}
+.wcard .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.05) 40%,rgba(0,0,0,.85))}
+.wcard .tag{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:.35rem;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:.25rem .6rem;border-radius:7px}
+.wcard .tag .d{width:6px;height:6px;border-radius:50%;background:var(--blue2)}
+.wcard .tag span{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.8)}
+.wcard .dur{position:absolute;top:14px;right:14px;font-size:10.5px;color:rgba(255,255,255,.7);background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:.25rem .55rem;border-radius:7px}
+.wcard .info{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.1rem}
+.wcard .info h3{font-size:16px;font-weight:600;color:#fff;margin:0;letter-spacing:-.01em}
+.wcard .info span{font-size:11.5px;color:rgba(255,255,255,.55)}
+.wcard .playdot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease,transform .3s ease}
+.wcard:hover .playdot{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.wcard .playdot svg{width:14px;height:14px;fill:#fff;margin-left:2px}
+.g1{background:linear-gradient(155deg,#1a2e8f,#050609 72%)}.g2{background:linear-gradient(155deg,#0e1a4a,#050609 70%)}
+.g3{background:linear-gradient(155deg,#28409e,#070912 65%)}.g4{background:linear-gradient(155deg,#0d174a,#050609 75%)}
+.g5{background:linear-gradient(155deg,#1e3384,#050609 68%)}.g6{background:linear-gradient(155deg,#152660,#060812 72%)}
+.g7{background:linear-gradient(155deg,#243c98,#070912 68%)}.g8{background:linear-gradient(155deg,#101c52,#050609 74%)}
+.radovi-more{text-align:center;margin-top:3rem}
+/* BENTO */
+#bento{background:var(--light);padding:6rem 0 7rem}
+#bento h2{font-size:clamp(2rem,5.5vw,3.3rem);font-weight:700;text-align:center;color:var(--text);letter-spacing:-.03em;margin:0 auto;max-width:640px}
+.bento-grid{display:grid;grid-template-columns:repeat(12,1fr);gap:1rem;margin-top:3.6rem}
+.tile{border-radius:26px;padding:2rem;overflow:hidden;position:relative}
+.tile.dark{background:#101010;color:#fff}
+.tile.light{background:var(--gray);color:var(--text)}
+.tile .tag2{font-size:12.5px;font-weight:600;color:var(--blue2);text-transform:uppercase;letter-spacing:.04em}
+.tile.light .tag2{color:var(--blue)}
+.tile h3{font-size:clamp(1.5rem,2.6vw,2.2rem);font-weight:700;letter-spacing:-.02em;margin:.6rem 0 0;line-height:1.15}
+.tile p{font-size:14.5px;line-height:1.55;margin-top:.7rem;max-width:32ch}
+.tile.dark p{color:rgba(255,255,255,.55)}
+.tile.light p{color:var(--muted)}
+.tile-a,.tile-b,.tile-c,.tile-d,.tile-e{grid-column:span 12}
+@media(min-width:760px){.tile-a{grid-column:span 7}.tile-b{grid-column:span 5}.tile-c{grid-column:span 5}.tile-d{grid-column:span 7}.tile-e{grid-column:span 12}}
+.colorbar{display:flex;height:40px;border-radius:10px;overflow:hidden;margin-top:1.6rem}
+.colorbar span{flex:1}
+.waves{display:flex;align-items:flex-end;gap:3px;height:64px;margin-top:1.4rem}
+.waves span{width:5px;border-radius:3px;background:linear-gradient(180deg,#2997ff,#7dc4ff);animation:waveBeat 1.4s ease-in-out infinite}
+@keyframes waveBeat{0%,100%{transform:scaleY(.35)}50%{transform:scaleY(1)}}
+/* FOCUS TILE */
+.tile.tile-e{background:linear-gradient(135deg,#101010,#1a1a2e);border:1px solid rgba(41,151,255,.2)}
+.tile.tile-e::before{content:"";position:absolute;top:-50%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(41,151,255,.18),transparent 70%);pointer-events:none}
+.tile.tile-e::after{content:"";position:absolute;bottom:-30%;left:-10%;width:300px;height:300px;background:radial-gradient(circle,rgba(125,196,255,.1),transparent 70%);pointer-events:none}
+.focus-inner{display:flex;align-items:center;gap:2rem;flex-wrap:wrap;position:relative;z-index:1}
+.focus-big{font-size:clamp(4rem,10vw,7rem);font-weight:700;line-height:.9;letter-spacing:-.05em;background:linear-gradient(135deg,#2997ff 0%,#7dc4ff 50%,#a1a1ff 100%);-webkit-background-clip:text;background-clip:text;color:transparent;flex-shrink:0;filter:drop-shadow(0 0 30px rgba(41,151,255,.3))}
+@media(max-width:640px){.focus-inner{flex-direction:column;align-items:flex-start;gap:1rem}.focus-big{font-size:4.5rem}}
+/* PROCESS */
+#process{background:var(--light);padding:0 0 7rem}
+#process h3{font-size:clamp(1.6rem,4vw,2.3rem);font-weight:700;text-align:center;color:var(--text);max-width:600px;margin:0 auto}
+.process-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:2.6rem}
+@media(min-width:760px){.process-grid{grid-template-columns:repeat(4,1fr)}}
+.pcard{background:#fff;border-radius:20px;padding:1.7rem;transition:transform .3s ease,box-shadow .3s ease;border:1px solid var(--line-l)}
+.pcard:hover{transform:translateY(-3px);box-shadow:0 20px 40px -25px rgba(0,0,0,.15)}
+.pcard .n{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;font-size:13px;font-weight:700}
+.pcard h4{font-size:16.5px;font-weight:600;margin:1rem 0 0;color:var(--text)}
+.pcard p{font-size:14px;line-height:1.55;color:var(--muted);margin-top:.4rem}
+/* HOW I WORK */
+#how{background:#000;padding:6rem 0 7rem;position:relative;overflow:hidden}
+#how h2{font-size:clamp(2.1rem,6vw,3.4rem);font-weight:700;text-align:center;color:#fff;letter-spacing:-.03em;max-width:640px;margin:0 auto}
+.how-grid{display:grid;grid-template-columns:1fr;gap:1rem;margin-top:3.4rem;align-items:stretch}
+@media(min-width:860px){.how-grid{grid-template-columns:repeat(3,1fr)}}
+.hcard{background:#101010;border-radius:22px;padding:1.8rem 1.6rem;display:flex;flex-direction:column;border:1px solid var(--line-d);transition:transform .35s ease,border-color .35s ease;position:relative;overflow:hidden}
+.hcard:hover{transform:translateY(-4px);border-color:rgba(255,255,255,.22)}
+.hcard.feat{background:linear-gradient(180deg,rgba(41,151,255,.16),rgba(13,20,32,.6));border:1px solid rgba(41,151,255,.35)}
+.hcard.feat::before{content:"";position:absolute;top:-50%;left:-50%;width:200%;height:200%;background:conic-gradient(from 0deg,transparent,rgba(41,151,255,.15),transparent 30%);animation:spin 8s linear infinite;z-index:0}
+.hcard.feat>*{position:relative;z-index:1}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hcard .pill{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--blue);color:#fff;font-size:10.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;padding:.25rem 1rem;border-radius:999px;z-index:2}
+.hcard .idx{font-size:12.5px;color:var(--muted)}
+.hcard .tagline{font-size:11px;font-weight:600;color:var(--blue2);text-transform:uppercase;letter-spacing:.06em;margin-top:.3rem}
+.hcard h3{font-size:20px;font-weight:600;color:#fff;margin:.4rem 0 0;letter-spacing:-.01em}
+.hcard .desc{font-size:13.5px;line-height:1.55;color:rgba(255,255,255,.58);margin-top:.6rem;min-height:44px}
+.hcard ul{list-style:none;margin:1.3rem 0 0;padding:0;flex:1;display:flex;flex-direction:column;gap:.6rem}
+.hcard li{display:flex;gap:.55rem;align-items:flex-start;font-size:13.5px;color:rgba(255,255,255,.82)}
+.hcard li svg{width:13px;height:13px;flex:none;margin-top:3px;fill:none;stroke:var(--blue2);stroke-width:3}
+.hcard .cta{display:block;text-align:center;border-radius:999px;padding:.6rem 1rem;font-size:14.5px;font-weight:500;text-decoration:none;transition:all .2s ease}
+.hcard .cta.outline{border:1px solid rgba(255,255,255,.2);color:#fff;margin-top:1.6rem}
+.hcard .cta.outline:hover{border-color:var(--blue);background:rgba(255,255,255,.06)}
+.hcard .cta.solid{background:var(--blue);color:#fff;margin-top:1.6rem}
+.hcard .cta.solid:hover{background:#0077ed}
+/* ABOUT */
+#o-meni{background:var(--gray);padding:6rem 0 7rem}
+.about-grid{display:grid;grid-template-columns:1fr;gap:2.6rem;align-items:center}
+@media(min-width:760px){.about-grid{grid-template-columns:.8fr 1fr}}
+.avatar-box{border-radius:28px;overflow:hidden;aspect-ratio:4/5;background:radial-gradient(60% 50% at 30% 20%,rgba(41,151,255,.35),transparent 60%),linear-gradient(160deg,#12173a,#05060c 70%);display:flex;align-items:center;justify-content:center;position:relative}
+.avatar-box .mono{font-size:120px;font-weight:700;color:rgba(255,255,255,.12);letter-spacing:-.04em}
+.avatar-box::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 70% 80%,rgba(41,151,255,.2),transparent 50%);animation:floatGlow 6s ease-in-out infinite}
+@keyframes floatGlow{0%,100%{transform:translate(0,0)}50%{transform:translate(-20px,-10px)}}
+#o-meni h2{font-size:clamp(2rem,5vw,3rem);font-weight:700;color:var(--text);line-height:1.1;letter-spacing:-.02em}
+#o-meni h2 span{display:block;font-size:.6em;color:var(--muted);font-weight:500;margin-top:.3rem}
+#o-meni p{font-size:16px;line-height:1.65;color:var(--muted);max-width:44ch;margin-top:1rem}
+.tools{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.6rem}
+.tool-pill{background:#fff;padding:.4rem 1rem;border-radius:999px;font-size:13px;font-weight:500;color:var(--text);border:1px solid var(--line-l);transition:all .2s ease}
+.tool-pill:hover{border-color:var(--blue);color:var(--blue);transform:translateY(-1px)}
+/* CONTACT */
+#kontakt{background:var(--light);padding:6rem 0 7rem}
+#kontakt h2{font-size:clamp(2.1rem,6vw,3.6rem);font-weight:700;text-align:center;color:var(--text);max-width:680px;margin:0 auto;line-height:1.08;letter-spacing:-.02em}
+#kontakt .lede{text-align:center;font-size:16px;color:var(--muted);line-height:1.55;max-width:480px;margin:1rem auto 0}
+.form-card{border-radius:26px;background:#fff;padding:1.6rem;margin-top:2.6rem;box-shadow:0 30px 60px -30px rgba(0,0,0,.15);border:1px solid var(--line-l)}
+.form-row{display:grid;grid-template-columns:1fr;gap:.9rem}
+@media(min-width:640px){.form-row.two{grid-template-columns:1fr 1fr}}
+.form-card input,.form-card textarea{width:100%;border:0;border-bottom:1px solid rgba(0,0,0,.15);background:transparent;font-size:16px;color:var(--text);padding:.75rem 0;outline:none;transition:border-color .2s ease;font-family:inherit}
+.form-card input:focus,.form-card textarea:focus{border-color:var(--blue)}
+.chiprow{display:flex;flex-wrap:wrap;gap:.4rem}
+.chip{border-radius:999px;border:1px solid rgba(0,0,0,.18);background:#fff;color:var(--text);padding:.35rem .9rem;font-size:12.5px;font-weight:500;cursor:pointer;transition:all .2s ease;font-family:inherit}
+.chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
+.form-submit{width:100%;border-radius:999px;background:var(--blue);color:#fff;font-size:16px;font-weight:500;padding:.75rem 1.4rem;border:none;cursor:pointer;transition:background .2s ease,transform .2s ease;font-family:inherit}
+.form-submit:hover{background:#0077ed;transform:translateY(-1px)}
+/* FOOTER */
+footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-size:12px;line-height:1.7}
+.foot-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:2rem;margin-top:2rem}
+@media(min-width:760px){.foot-grid{grid-template-columns:repeat(4,1fr)}}
+.foot-grid .h{font-size:12px;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.6rem}
+.foot-col{display:flex;flex-direction:column;gap:.4rem}
+.foot-col a{color:var(--muted);text-decoration:none;transition:color .15s ease}
+.foot-col a:hover{color:var(--text)}
+.foot-bottom{margin-top:2.4rem;border-top:1px solid var(--line-l);padding-top:1.3rem;display:flex;flex-wrap:wrap;justify-content:space-between;gap:.7rem}
+.foot-bottom-links{display:flex;gap:1.4rem}
+.foot-bottom-links a{color:var(--muted);text-decoration:none;transition:color .15s ease}
+.foot-bottom-links a:hover{color:var(--text)}
+/* MOUSE GLOW */
+.mouse-glow{position:fixed;top:0;left:0;width:600px;height:600px;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(41,151,255,.18),transparent 60%);filter:blur(60px);transform:translate(-50%,-50%);mix-blend-mode:screen}
+/* CHATBOT */
+.chat-toggle{position:fixed;right:20px;bottom:20px;width:56px;height:56px;border-radius:50%;background:var(--blue);color:#fff;border:none;cursor:pointer;z-index:100;display:flex;align-items:center;justify-content:center;box-shadow:0 10px 30px -10px rgba(0,113,227,.6);transition:transform .25s ease,background .2s ease}
+.chat-toggle:hover{background:#0077ed;transform:scale(1.05)}
+.chat-toggle svg{width:22px;height:22px}
+.chat-pulse{position:absolute;top:0;left:0;width:100%;height:100%;border-radius:50%;background:var(--blue);opacity:.6;animation:chatPulse 2s ease-out infinite;z-index:-1}
+@keyframes chatPulse{0%{transform:scale(1);opacity:.6}100%{transform:scale(1.6);opacity:0}}
+.chat-panel{position:fixed;right:20px;bottom:90px;width:380px;max-width:calc(100vw - 40px);height:560px;max-height:calc(100vh - 120px);background:#fff;border-radius:20px;box-shadow:0 30px 80px -20px rgba(0,0,0,.35);z-index:99;display:flex;flex-direction:column;overflow:hidden;transform:translateY(20px) scale(.95);opacity:0;pointer-events:none;transition:transform .28s cubic-bezier(.16,1,.3,1),opacity .28s ease;transform-origin:bottom right}
+.chat-panel.open{transform:translateY(0) scale(1);opacity:1;pointer-events:auto}
+.chat-header{background:linear-gradient(135deg,#0071e3,#2997ff);color:#fff;padding:1rem 1.2rem;display:flex;align-items:center;gap:.8rem;border-bottom:1px solid rgba(255,255,255,.1)}
+.chat-avatar{position:relative;width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.18);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;color:#fff}
+.chat-status{position:absolute;bottom:-2px;right:-2px;width:12px;height:12px;border-radius:50%;background:#34d399;border:2px solid #0071e3}
+.chat-title{font-size:15px;font-weight:600;margin:0;color:#fff}
+.chat-subtitle{font-size:12px;color:rgba(255,255,255,.85);margin:0}
+.chat-body{flex:1;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:.7rem;background:#f5f5f7}
+.chat-body::-webkit-scrollbar{width:4px}
+.chat-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:2px}
+.chat-msg{display:flex;max-width:85%}
+.chat-msg-user{align-self:flex-end}
+.chat-msg-assistant{align-self:flex-start}
+.chat-bubble{padding:.6rem .9rem;border-radius:16px;font-size:13.5px;line-height:1.5;word-wrap:break-word;white-space:pre-wrap}
+.chat-msg-user .chat-bubble{background:var(--blue);color:#fff;border-bottom-right-radius:4px}
+.chat-msg-assistant .chat-bubble{background:#fff;color:var(--text);border:1px solid var(--line-l);border-bottom-left-radius:4px}
+.chat-bubble.typing{display:flex;gap:4px;padding:.9rem 1rem;align-items:center}
+.chat-bubble.typing span{width:7px;height:7px;border-radius:50%;background:#999;animation:typingBounce 1.2s ease-in-out infinite}
+.chat-bubble.typing span:nth-child(2){animation-delay:.15s}
+.chat-bubble.typing span:nth-child(3){animation-delay:.3s}
+@keyframes typingBounce{0%,60%,100%{transform:translateY(0);opacity:.5}30%{transform:translateY(-6px);opacity:1}}
+.chat-suggestions{display:flex;flex-wrap:wrap;gap:.4rem;padding:.5rem 0}
+.chat-suggestion{background:#fff;border:1px solid var(--line-l);color:var(--blue);font-size:12px;font-weight:500;padding:.4rem .8rem;border-radius:999px;cursor:pointer;transition:all .2s ease;font-family:inherit}
+.chat-suggestion:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
+.chat-input-row{display:flex;gap:.5rem;padding:.8rem;border-top:1px solid var(--line-l);background:#fff}
+.chat-input-row input{flex:1;border:1px solid var(--line-l);border-radius:999px;padding:.6rem 1rem;font-size:13.5px;outline:none;font-family:inherit;transition:border-color .2s ease;color:var(--text);background:#fff}
+.chat-input-row input::placeholder{color:var(--muted)}
+.chat-input-row input:focus{border-color:var(--blue)}
+.chat-send{width:38px;height:38px;border-radius:50%;background:var(--blue);color:#fff;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s ease,transform .2s ease;flex-shrink:0}
+.chat-send:hover:not(:disabled){background:#0077ed;transform:scale(1.05)}
+.chat-send:disabled{opacity:.4;cursor:not-allowed}
+.chat-send svg{width:16px;height:16px}
+.chat-disclaimer{font-size:10.5px;text-align:center;color:var(--muted);padding:.3rem .5rem .6rem;margin:0;background:#fff}
+@media(max-width:480px){.chat-panel{right:10px;bottom:80px;width:calc(100vw - 20px);height:calc(100vh - 100px);max-height:none}}
+@media(prefers-reduced-motion:reduce){.rv,.rise{opacity:1!important;transform:none!important;animation:none!important}.chat-pulse{animation:none}}
 </style>
 </head>
 <body>
-
-<!-- ============ NAV ============ -->
+<!-- CHATBOT -->
+<div class="chat-toggle" id="chatToggle">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    <circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="13" cy="10" r="1" fill="currentColor"/><circle cx="17" cy="10" r="1" fill="currentColor"/>
+  </svg>
+  <span class="chat-pulse"></span>
+</div>
+<div class="chat-panel" id="chatPanel">
+  <div class="chat-header">
+    <div class="chat-avatar"><span>PĆ</span><span class="chat-status"></span></div>
+    <div style="flex:1"><p class="chat-title">Pavle AI Assistant</p><p class="chat-subtitle" id="chatSubtitle">Online · replies instantly</p></div>
+  </div>
+  <div class="chat-body" id="chatBody"></div>
+  <div class="chat-input-row">
+    <input type="text" id="chatInput" placeholder="Ask anything..." />
+    <button class="chat-send" id="chatSend" type="button">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/>
+      </svg>
+    </button>
+  </div>
+  <p class="chat-disclaimer" id="chatDisclaimer">AI assistant · can make mistakes. For precise info, contact Pavle.</p>
+</div>
+<!-- MOUSE GLOW -->
+<div class="mouse-glow" id="mouseGlow"></div>
+<!-- NAV -->
 <header class="topnav">
-  <div class="navbar narrow" style="max-width:1120px;margin:0 auto;padding:0 1.25rem;">
-    <a href="#top" class="brand"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>PavleVisuals</a>
+  <div class="navbar">
+    <a href="#top" class="brand">
+      <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+      <span id="navBrand">PavleVisuals</span>
+    </a>
     <nav class="navlinks">
-      <a href="#radovi">Radovi</a>
-      <a href="#bento">Usluge</a>
-      <a href="#o-meni">O meni</a>
-      <a href="#cene">Cene</a>
+      <a href="#radovi" class="navlink" id="navWorks">Work</a>
+      <a href="#bento" class="navlink" id="navServices">Services</a>
+      <a href="#how" class="navlink" id="navHow">How I work</a>
+      <a href="#o-meni" class="navlink" id="navAbout">About</a>
+      <div class="lang-switch">
+        <button class="lang-btn" data-lang="sr">SR</button>
+        <button class="lang-btn active" data-lang="en">EN</button>
+      </div>
     </nav>
-    <a href="#kontakt" class="nav-cta">Zakaži poziv</a>
+    <a href="#kontakt" class="nav-cta" id="navCta">Book a project</a>
   </div>
 </header>
-
-<!-- ============ HERO ============ -->
+<!-- HERO -->
 <section id="top">
 <div id="hero">
-  <div class="glow" style="top:-40px; left:50%; height:520px; width:980px; transform:translateX(-50%);"></div>
-  <div class="narrow hero-copy" style="padding-bottom:6rem;">
-    <p class="rise eyebrow">PavleVisuals</p>
-    <h1 class="rise d1">Montaža.</h1>
-    <h1 class="rise d2">Do poslednjeg kadra.</h1>
-    <p class="rise d3 lede">Short form koji zaustavlja skrol. Long form koji se gleda do kraja. Video montaža Pavla Ćirovića.</p>
+  <div class="glow" style="top:-40px;left:50%;height:520px;width:980px;transform:translateX(-50%)"></div>
+  <div class="narrow hero-copy">
+    <p class="rise eyebrow" id="heroEyebrow">PavleVisuals</p>
+    <h1 class="rise d1" id="heroTitle1">Editing.</h1>
+    <h1 class="rise d2 grad-blue" id="heroTitle2">Down to the last frame.</h1>
+    <p class="rise d3 lede" id="heroLede">Short form that stops the scroll. Long form that gets watched to the end. Video editing by Pavle Ćirović.</p>
     <div class="rise d4 hero-actions">
-      <a href="#kontakt" class="btn-blue">Zakaži projekat</a>
-      <a href="#radovi" class="link-arrow">Pogledaj radove <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
+      <a href="#kontakt" class="btn-blue" id="heroCta1">Book a project</a>
+      <a href="#radovi" class="link-arrow" id="heroCta2">See the work <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></a>
     </div>
-    <p class="rise d5 hero-note">Dostupan za nove projekte — edit stiže što pre</p>
+    <p class="rise d5 hero-note" id="heroNote">Available for new projects — open for collaboration</p>
   </div>
 </div>
 </section>
-
-<!-- ============ STATEMENT ============ -->
+<!-- STATEMENT -->
 <section id="statement">
-  <div class="narrow" style="padding:5rem 0;">
-    <p class="rv" style="font-size:clamp(1.5rem,3.6vw,2.3rem); font-weight:500; line-height:1.4; letter-spacing:-.02em; color:var(--text); max-width:820px; margin:0 auto; text-align:center;">
-      Montaža nije sečenje kadrova. To je kontrola pažnje, emocije i tempa — kadar po kadar.
-    </p>
+  <div class="narrow" style="padding:5rem 0">
+    <p class="rv eyebrow" style="margin-bottom:1rem" id="stmtKicker">Approach</p>
+    <p class="rv statement-text" id="stmtText">I don't edit to fill a timeline. I edit to hold attention — frame by frame, beat by beat — all the way to the end.</p>
+    <p class="rv d1 statement-sub" id="stmtSub">— A real edit isn't heard. It's felt.</p>
   </div>
 </section>
-
-<!-- ============ RADOVI :: SEGMENTED SWITCH ============ -->
+<!-- WORKS -->
 <section id="radovi">
   <div class="narrow">
     <div class="rv radovi-head">
-      <h2>Radovi.</h2>
-      <p>Pregledaj radove po formatu — kratak, dug, ili sve zajedno.</p>
+      <h2 id="worksTitle">Work.</h2>
+      <p id="worksDesc">Browse the work by format — short, long, or everything together.</p>
     </div>
-
     <div class="rv d1 segwrap">
       <div class="segmented" id="segmented">
-        <div class="seg-thumb" id="seg-thumb"></div>
-        <button class="seg-btn active" data-filter="all">Svi Radovi</button>
-        <button class="seg-btn" data-filter="short">Short Form</button>
-        <button class="seg-btn" data-filter="long">Long Form</button>
+        <div class="seg-thumb" id="segThumb"></div>
+        <button class="seg-btn active" data-filter="all" id="segAll">All Work</button>
+        <button class="seg-btn" data-filter="short" id="segShort">Short Form</button>
+        <button class="seg-btn" data-filter="long" id="segLong">Long Form</button>
       </div>
     </div>
-
-    <div class="gallery-grid" id="gallery" style="margin-top:3.6rem;">
-
-      <div class="wcard" data-type="short">
-        <div class="surface"><div class="bgimg g1"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>Reels</span></span><span class="dur">0:28</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Modni Brend</h3><span>Instagram Reels · 2026</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="long">
-        <div class="surface"><div class="bgimg g7"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>Dokumentarni</span></span><span class="dur">18:42</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Ulice Beograda</h3><span>YouTube · 2026</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="short">
-        <div class="surface"><div class="bgimg g2"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>TikTok</span></span><span class="dur">0:34</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Muzički Spot</h3><span>TikTok · 2026</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="short">
-        <div class="surface"><div class="bgimg g3"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>Reels</span></span><span class="dur">0:41</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Fitness Kreator</h3><span>Instagram Reels · 2025</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="long">
-        <div class="surface"><div class="bgimg g8"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>Vlog Serija</span></span><span class="dur">12:15</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>YouTube Vlog Serija</h3><span>YouTube · 2025</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="short">
-        <div class="surface"><div class="bgimg g4"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>Shorts</span></span><span class="dur">0:52</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Podcast Isečci</h3><span>YouTube Shorts · 2025</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="long">
-        <div class="surface"><div class="bgimg g5"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>Komercijalni</span></span><span class="dur">3:20</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Korporativni Film</h3><span>Komercijalna Produkcija · 2025</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="short">
-        <div class="surface"><div class="bgimg g5"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>Reels</span></span><span class="dur">0:19</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Restoran — Promo</h3><span>Instagram Reels · 2025</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="long">
-        <div class="surface"><div class="bgimg g6"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>Dokumentarni</span></span><span class="dur">22:07</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Muzički Dokumentarac</h3><span>YouTube · 2024</span></div>
-        </div>
-      </div>
-
-      <div class="wcard" data-type="short">
-        <div class="surface"><div class="bgimg g6"></div><div class="shade"></div>
-          <span class="tag"><span class="d"></span><span>TikTok</span></span><span class="dur">0:37</span>
-          <div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-          <div class="info"><h3>Lifestyle Vlog</h3><span>TikTok · 2025</span></div>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="rv radovi-more"><a href="#kontakt" class="link-arrow">Želiš da tvoj projekat bude sledeći <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
+    <div class="gallery-grid" id="gallery"></div>
+    <div class="rv radovi-more"><a href="#kontakt" class="link-arrow" id="worksMore">Want your project to be the next one <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg></a></div>
   </div>
 </section>
-
-<!-- ============ BENTO / SERVICES ============ -->
+<!-- BENTO -->
 <section id="bento">
   <div class="narrow">
-    <div class="rv"><h2>Usluge.</h2></div>
-
+    <div class="rv"><h2 id="bentoTitle">Services.</h2></div>
     <div class="bento-grid">
       <div class="rv tile dark tile-a">
-        <p class="tag2">Color Grading</p>
-        <h3>Kinematografski look, na svakom ekranu.</h3>
-        <p>Profesionalan color grading workflow. Kalibrisana slika, dosledan identitet kroz ceo video.</p>
+        <p class="tag2" id="bentoColorTag">Color Grading</p>
+        <h3 id="bentoColorTitle">Cinematic look, on every screen.</h3>
+        <p id="bentoColorDesc">Professional color grading workflow. Calibrated image, consistent identity across the whole video.</p>
         <div class="colorbar"><span style="background:#0a1220"></span><span style="background:#123a63"></span><span style="background:#1c6ff5"></span><span style="background:#2997ff"></span><span style="background:#7dc4ff"></span><span style="background:#d8ecff"></span></div>
       </div>
       <div class="rv tile light tile-b">
-        <p class="tag2">Revizije</p>
-        <h3>Dok ne bude savršeno.</h3>
-        <p>Edit stiže što pre, a zajedno doteremo detalje kroz jasnu i brzu komunikaciju.</p>
+        <p class="tag2" id="bentoRevTag">Revisions</p>
+        <h3 id="bentoRevTitle">Until it's perfect.</h3>
+        <p id="bentoRevDesc">We polish the details through clear and honest communication — no rush, no compromise.</p>
       </div>
       <div class="rv tile dark tile-c">
-        <p class="tag2">Sound Design</p>
-        <h3>Zvuk koji se oseti.</h3>
+        <p class="tag2" id="bentoSoundTag">Sound Design</p>
+        <h3 id="bentoSoundTitle">Sound that carries the story.</h3>
         <div class="waves" id="waves"></div>
-        <p>SFX biblioteka, mix i LUFS mastering po platformi.</p>
+        <p id="bentoSoundDesc">Layered mix of dialogue, music and SFX — so every frame has weight and energy.</p>
       </div>
       <div class="rv tile light tile-d">
-        <p class="tag2">Motion &amp; Grafika</p>
-        <h3>Animacije po brendu.</h3>
-        <p>Titlovi, tranzicije i motion grafika bez šablona, po tvom brend gajdlajnu.</p>
+        <p class="tag2" id="bentoMotionTag">Motion & Graphics</p>
+        <h3 id="bentoMotionTitle">Animations on brand.</h3>
+        <p id="bentoMotionDesc">Subtitles, transitions and motion graphics — no templates, built to your brand guidelines.</p>
+      </div>
+      <div class="rv tile tile-e">
+        <div class="focus-inner">
+          <div class="focus-big">1:1</div>
+          <div>
+            <p class="tag2" id="focusKicker">Direct collaboration</p>
+            <h3 id="focusTitle">Direct collaboration.</h3>
+            <p id="focusDesc" style="max-width:52ch">No agency, no middleman, no chain of emails. You talk directly with the person editing your video — from the first brief to the final export.</p>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ============ PROCESS ============ -->
+<!-- PROCESS -->
 <section id="process">
   <div class="narrow">
-    <div class="rv"><h3>Jednostavan proces. <span class="muted" style="display:block;">Bez iznenađenja.</span></h3></div>
-    <div class="process-grid">
-      <div class="rv pcard"><span class="n">1</span><h4>Brief &amp; Strategija</h4><p>Razgovor o cilju, publici i platformi — ton, referenca i format pre prvog reza.</p></div>
-      <div class="rv pcard"><span class="n">2</span><h4>Selekcija materijala</h4><p>Pregled svih snimaka i izgradnja strukture priče sa jasnim početkom i krajem.</p></div>
-      <div class="rv pcard"><span class="n">3</span><h4>Montaža &amp; Ritam</h4><p>Prvi cut, tempo, muzika, zvuk i grafika — video dobija energiju i karakter.</p></div>
-      <div class="rv pcard"><span class="n">4</span><h4>Grade &amp; Isporuka</h4><p>Kinematografski color, finalni mix i export u svim formatima, uz dve runde revizija.</p></div>
+    <div class="rv">
+      <p class="eyebrow" style="margin-bottom:.8rem" id="procKicker">Process</p>
+      <h3 id="procTitle">Simple process.<span class="muted" style="display:block" id="procSubtitle">No surprises.</span></h3>
     </div>
+    <div class="process-grid" id="processGrid"></div>
   </div>
 </section>
-
-<!-- ============ PRICING ============ -->
-<section id="cene">
-  <div class="glow" style="top:20%; left:50%; transform:translateX(-50%); height:420px; width:900px; opacity:.5;"></div>
-  <div class="narrow">
-    <div class="rv"><h2>Izaberi paket.<br><span class="muted" style="display:block; font-size:.55em; margin-top:.5rem; font-weight:500;">Ostalo prepusti meni.</span></h2></div>
-
-    <div class="price-grid">
-      <div class="rv pplan">
-        <p class="idx">01</p>
-        <h3>Short Form</h3>
-        <p class="desc">Za kreatore i brendove koji rastu kroz vertikalni sadržaj.</p>
-        <div class="price"><b>od 60 €</b><small>po videu</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Do 60 sekundi</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Animirani titlovi</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Sound design</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>2 revizije</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Edit stiže što pre</li>
-        </ul>
-        <a href="#kontakt" class="cta outline">Pošalji upit</a>
-      </div>
-
-      <div class="rv d1 pplan feat">
-        <span class="pill">Najpopularnije</span>
-        <p class="idx">02</p>
-        <h3>Creator Paket</h3>
-        <p class="desc">Kompletna post-produkcija za tvoj mesečni kalendar.</p>
-        <div class="price"><b>od 450 €</b><small>mesečno</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>12 short form videa</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>2 long form videa</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Thumbnail dizajn</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Neograničene revizije</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Prioritetna podrška</li>
-        </ul>
-        <a href="#kontakt" class="cta solid">Pošalji upit</a>
-      </div>
-
-      <div class="rv d2 pplan">
-        <p class="idx">03</p>
-        <h3>Long Form / Brand</h3>
-        <p class="desc">Za YouTube epizode, dokumentarce i reklamne spotove.</p>
-        <div class="price"><b>od 250 €</b><small>po projektu</small></div>
-        <ul>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Do 20 minuta</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Multicam montaža</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Cinematic grade</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Audio mastering</li>
-          <li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>Sve verzije formata</li>
-        </ul>
-        <a href="#kontakt" class="cta outline">Pošalji upit</a>
-      </div>
+<!-- HOW I WORK -->
+<section id="how">
+  <div class="glow" style="top:20%;left:50%;transform:translateX(-50%);height:420px;width:900px;opacity:.5"></div>
+  <div class="narrow" style="position:relative;z-index:2">
+    <div class="rv">
+      <p class="eyebrow" style="margin-bottom:.8rem" id="howKicker">Stack</p>
+      <h2 id="howTitle">How I work.<span class="muted" style="display:block;font-size:.55em;margin-top:.5rem;font-weight:500" id="howSubtitle">Tools, AI and workflow that deliver speed without compromise.</span></h2>
     </div>
+    <div class="how-grid" id="howGrid"></div>
   </div>
 </section>
-
-<!-- ============ ABOUT ============ -->
+<!-- ABOUT -->
 <section id="o-meni">
   <div class="narrow about-grid">
     <div class="rv"><div class="avatar-box"><span class="mono">PĆ</span></div></div>
     <div>
-      <div class="rv"><p class="eyebrow" style="text-align:left; color:var(--blue);">O meni</p></div>
-      <div class="rv d1"><h2>Pavle Ćirović.<span>Šest godina za timelineom.</span></h2></div>
-      <div class="rv d2"><p>Radim sa kreatorima, brendovima i produkcijskim kućama iz Srbije, regiona i inostranstva. Od vertikalnih Reels kampanja do dugometražnih YouTube epizoda — svaki projekat dobija istu pažnju.</p></div>
-      <div class="rv d3"><p>Ne šaljem samo fajl. Šaljem video koji ima jasan cilj: da ga ljudi ne preskoče.</p></div>
-      <div class="rv d4 tools">
-        <span class="tool-pill">Premiere Pro</span>
-        <span class="tool-pill">After Effects</span>
-        <span class="tool-pill">Audition</span>
-        <span class="tool-pill">CapCut Pro</span>
+      <div class="rv"><p class="eyebrow" style="text-align:left;color:var(--blue)" id="aboutKicker">About</p></div>
+      <div class="rv d1"><h2 id="aboutName">Pavle Ćirović.<span id="aboutRole">Six years on the timeline.</span></h2></div>
+      <div class="rv d2"><p id="aboutP1">I work with creators, brands and production houses from Serbia, the region and abroad. From vertical Reels campaigns to long YouTube episodes — every project gets the same attention.</p></div>
+      <div class="rv d3"><p id="aboutP2">I don't just deliver a file. I deliver a video with a clear goal: people won't skip it.</p></div>
+      <div class="rv d4">
+        <p style="font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-top:1.6rem;margin-bottom:.7rem" id="aboutTools">Stack I use:</p>
+        <div class="tools" id="toolsPills"></div>
       </div>
     </div>
   </div>
 </section>
-
-<!-- ============ CONTACT ============ -->
+<!-- CONTACT -->
 <section id="kontakt">
-  <div class="narrow" style="max-width:760px;">
-    <div class="rv"><h2>Hajde da napravimo<br><span class="grad-dark">nešto veliko.</span></h2></div>
-    <div class="rv d1"><p class="lede">Trenutno primam nove projekte. Javi se, radimo brzo.</p></div>
-
-    <form class="rv d2 form-card" id="contact-form">
+  <div class="narrow" style="max-width:760px">
+    <div class="rv">
+      <p class="eyebrow" style="margin-bottom:.8rem" id="contactKicker">Contact</p>
+      <h2 id="contactTitle1">Let's make<br><span class="grad-dark" id="contactTitle2">something big.</span></h2>
+    </div>
+    <div class="rv d1"><p class="lede" id="contactLede">Currently taking new projects. Reach out, let's make something great.</p></div>
+    <form class="rv d2 form-card" action="https://formsubmit.co/vy9paa.editing@gmail.com" method="POST">
       <input type="hidden" name="_subject" value="Novi upit — PavleVisuals sajt">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
-      <input type="hidden" name="Tip projekta" id="hidden-type" value="Short Form">
-      <input type="hidden" name="Budžet" id="hidden-budget" value="60 – 200 €">
-
+      <input type="hidden" name="Tip projekta / Project type" id="hiddenType" value="Short Form">
+      <input type="hidden" name="Budžet / Budget" id="hiddenBudget" value="€60 – €200">
       <div class="form-row two">
-        <input required placeholder="Ime i prezime" type="text" name="Ime i prezime">
-        <input required placeholder="Email adresa" type="email" name="Email">
+        <input required placeholder="Full name" type="text" name="Ime / Name" id="inputName">
+        <input required placeholder="Email address" type="email" name="Email" id="inputEmail">
       </div>
-      <div class="form-row two" style="margin-top:1.6rem;">
+      <div class="form-row two" style="margin-top:1.6rem">
         <div>
-          <p style="font-size:12.5px; font-weight:600; margin:0 0 .5rem; color:var(--text);">Tip projekta</p>
-          <div class="chiprow" id="chip-type">
-            <button type="button" class="chip active" data-value="Short Form">Short Form</button>
-            <button type="button" class="chip" data-value="Long Form">Long Form</button>
-            <button type="button" class="chip" data-value="Oba">Oba</button>
-          </div>
+          <p style="font-size:12.5px;font-weight:600;margin:0 0 .5rem;color:var(--text)" id="labelType">Project type</p>
+          <div class="chiprow" id="chipType"></div>
         </div>
         <div>
-          <p style="font-size:12.5px; font-weight:600; margin:0 0 .5rem; color:var(--text);">Budžet</p>
-          <div class="chiprow" id="chip-budget">
-            <button type="button" class="chip active" data-value="60 – 200 €">60 – 200 €</button>
-            <button type="button" class="chip" data-value="200 – 500 €">200 – 500 €</button>
-            <button type="button" class="chip" data-value="500 €+">500 €+</button>
-          </div>
+          <p style="font-size:12.5px;font-weight:600;margin:0 0 .5rem;color:var(--text)" id="labelBudget">Budget</p>
+          <div class="chiprow" id="chipBudget"></div>
         </div>
       </div>
-      <textarea required rows="4" placeholder="Opiši projekat, rok i referencu..." style="margin-top:1.6rem;" name="Poruka"></textarea>
-      <div style="margin-top:1.6rem; display:flex; flex-direction:column; align-items:center; gap:.8rem;">
-        <button type="submit" class="form-submit" id="form-submit-btn">Pošalji poruku</button>
-        <p style="font-size:12.5px; color:var(--muted); text-align:center; margin:0;">Ili direktno: <a href="mailto:vy9paa.editing@gmail.com" style="color:var(--blue); text-decoration:none;">vy9paa.editing@gmail.com</a></p>
+      <textarea required rows="4" style="margin-top:1.6rem" name="Poruka / Message" id="inputMessage" placeholder="Describe the project, deadline and reference..."></textarea>
+      <div style="margin-top:1.6rem;display:flex;flex-direction:column;align-items:center;gap:.8rem">
+        <button type="submit" class="form-submit" id="submitBtn">Send message</button>
+        <p style="font-size:12.5px;color:var(--muted);text-align:center;margin:0" id="contactOr">Or directly: <a href="mailto:vy9paa.editing@gmail.com" style="color:var(--blue);text-decoration:none">vy9paa.editing@gmail.com</a></p>
       </div>
-      <div class="form-success" id="form-success">Hvala! Javljam se što pre.</div>
-      <div class="form-success" id="form-error" style="color:#e0554f;">Nešto nije uspelo — pošalji direktno na <a href="mailto:vy9paa.editing@gmail.com" style="color:#e0554f;">vy9paa.editing@gmail.com</a>.</div>
     </form>
   </div>
 </section>
-
-<!-- ============ FOOTER ============ -->
+<!-- FOOTER -->
 <footer>
   <div class="narrow">
-    <p style="margin:0 0 1.2rem; font-size:12px; line-height:1.6; max-width:62ch;">PavleVisuals je nezavisni video editing studio. Cene su okvirne i zavise od obima projekta, rokova i broja revizija.</p>
+    <p style="margin:0 0 1.2rem;font-size:12px;line-height:1.6;max-width:62ch" id="footDesc">PavleVisuals is an independent video editing studio. Prices are indicative and depend on project scope, deadlines and number of revisions.</p>
     <div class="foot-grid">
-      <div><p class="h">Usluge</p><div class="foot-col">
-        <a href="#radovi">Short Form</a><a href="#radovi">Long Form</a><a href="#bento">Color Grading</a><a href="#bento">Motion Design</a>
+      <div><p class="h" id="footLabelServices">Services</p><div class="foot-col">
+        <a href="#radovi" id="footShort">Short Form</a><a href="#radovi" id="footLong">Long Form</a><a href="#bento">Color Grading</a><a href="#bento">Motion Design</a>
       </div></div>
-      <div><p class="h">Studio</p><div class="foot-col">
-        <a href="#o-meni">O meni</a><a href="#process">Proces</a><a href="#radovi">Radovi</a><a href="#cene">Cene</a>
+      <div><p class="h" id="footLabelStudio">Studio</p><div class="foot-col">
+        <a href="#o-meni" id="footAbout">About</a><a href="#process" id="footProcess">Process</a><a href="#radovi" id="footWork">Work</a><a href="#how" id="footHow">How I work</a>
       </div></div>
-      <div><p class="h">Mreže</p><div class="foot-col">
-        <a href="https://instagram.com/pavlevisuals">Instagram</a><a href="#">YouTube</a><a href="#">TikTok</a>
+      <div><p class="h" id="footLabelSocials">Socials</p><div class="foot-col">
+        <a href="https://instagram.com/pavlevisuals" target="_blank" rel="noreferrer">Instagram</a><a href="#">YouTube</a><a href="#">TikTok</a>
       </div></div>
-      <div><p class="h">Kontakt</p><div class="foot-col">
-        <a href="mailto:vy9paa.editing@gmail.com">vy9paa.editing@gmail.com</a><a href="#">Beograd, Srbija</a>
+      <div><p class="h" id="footLabelContact">Contact</p><div class="foot-col">
+        <a href="mailto:vy9paa.editing@gmail.com">vy9paa.editing@gmail.com</a><span id="footLocation">Belgrade, Serbia</span>
       </div></div>
     </div>
     <div class="foot-bottom">
-      <p style="margin:0;">© 2026 PavleVisuals — Pavle Ćirović. Sva prava zadržana.</p>
-      <div class="foot-bottom-links"><a href="#top">Vrh ↑</a></div>
+      <p style="margin:0" id="footRights">© 2026 PavleVisuals — Pavle Ćirović. All rights reserved.</p>
+      <div class="foot-bottom-links"><a href="#top" id="footTop">Top ↑</a></div>
     </div>
   </div>
 </footer>
-
 <script>
-  /* ---- scroll reveal ---- */
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(e => { if(e.isIntersecting){ e.target.classList.add('on'); io.unobserve(e.target); } });
-  }, {threshold:.1, rootMargin:'0px 0px -60px 0px'});
-  document.querySelectorAll('.rv').forEach(el => io.observe(el));
-
-  /* ---- segmented control + gallery filter ---- */
-  const segBtns = document.querySelectorAll('.seg-btn');
-  const segThumb = document.getElementById('seg-thumb');
-  function moveThumb(btn){
-    segThumb.style.left = btn.offsetLeft + 'px';
-    segThumb.style.width = btn.offsetWidth + 'px';
+// ============================================================
+// TRANSLATIONS
+// ============================================================
+const TR = {
+  sr: {
+    navBrand:"PavleVisuals",navWorks:"Radovi",navServices:"Usluge",navHow:"Kako radim",navAbout:"O meni",navCta:"Zakaži projekat",
+    heroEyebrow:"PavleVisuals",heroTitle1:"Montaža.",heroTitle2:"Do poslednjeg kadra.",
+    heroLede:"Short form koji zaustavlja skrol. Long form koji se gleda do kraja. Video montaža Pavla Ćirovića.",
+    heroCta1:"Zakaži projekat",heroCta2:"Pogledaj radove",heroNote:"Dostupan za nove projekte — otvoren za saradnju",
+    stmtKicker:"Pristup",stmtText:"Ne montiram da popunim timeline. Montiram da zadržim pažnju — kadar po kadar, ritam po ritam, do kraja.",stmtSub:"— Pravi edit se ne čuje. On se oseti.",
+    worksTitle:"Radovi.",worksDesc:"Pregledaj radove po formatu — kratak, dug, ili sve zajedno.",segAll:"Svi Radovi",segShort:"Short Form",segLong:"Long Form",worksMore:"Želiš da tvoj projekat bude sledeći",
+    bentoTitle:"Usluge.",
+    bentoColorTag:"Color Grading",bentoColorTitle:"Kinematografski look, na svakom ekranu.",bentoColorDesc:"Profesionalan color grading workflow. Kalibrisana slika, dosledan identitet kroz ceo video.",
+    bentoRevTag:"Revizije",bentoRevTitle:"Dok ne bude savršeno.",bentoRevDesc:"Zajedno doteramo detalje kroz jasnu i iskrenu komunikaciju — bez žurbe, bez kompromisa.",
+    bentoSoundTag:"Sound Design",bentoSoundTitle:"Zvuk koji nosi priču.",bentoSoundDesc:"Slojevit mix dijaloga, muzike i SFX-a — tako da svaki kadar ima težinu i energiju.",
+    bentoMotionTag:"Motion & Grafika",bentoMotionTitle:"Animacije po brendu.",bentoMotionDesc:"Titlovi, tranzicije i motion grafika bez šablona, po tvom brand guideline-u.",
+    focusKicker:"Direktna saradnja",focusTitle:"Direktna saradnja.",focusDesc:"Bez agencije, bez posrednika, bez lanca mejlova. Pričaš direktno sa osobom koja montira tvoj video — od prvog brifa do finalnog exporta.",
+    procKicker:"Proces",procTitle:"Jednostavan proces.",procSubtitle:"Bez iznenađenja.",
+    procSteps:[{n:"1",t:"Brief & Strategija",d:"Razgovor o cilju, publici i platformi — ton, referenca i format pre prvog reza."},{n:"2",t:"Selekcija materijala",d:"Pregled svih snimaka i izgradnja strukture priče sa jasnim početkom i krajem."},{n:"3",t:"Montaža & Ritam",d:"Prvi cut, tempo, muzika, zvuk i grafika — video dobija energiju i karakter."},{n:"4",t:"Grade & Isporuka",d:"Kinematografski color, finalni mix i export u svim formatima, uz dve runde revizija."}],
+    howKicker:"Stack",howTitle:"Kako radim.",howSubtitle:"Alati, AI i workflow koji daju brzinu bez kompromisa.",
+    howCards:[{idx:"01",tag:"AI Workflow",title:"AI kao co-pilot, ne kao autor.",desc:"Auto-reframe, speech-to-text, AI audio cleanup i smart cut detekcija — rutinski posao pametniji, kreativni deo čistiji.",bullets:["Auto-subtitles & prevod","AI noise reduction","Smart scene detection","Auto-reframe 9:16 / 16:9"],badge:"AI powered",feat:!0},{idx:"02",tag:"Alati",title:"Premiere Pro & After Effects.",desc:"Glavni NLE setup za sve — od reels-a do dugih formi. Motion grafika i titlovi po meri.",bullets:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],badge:null,feat:!1},{idx:"03",tag:"Isporuka",title:"Jedan edit, svaka platforma.",desc:"Vertical, horizontal, square — sve verzije izlaze iz istog projekta, optimizovane po platformi.",bullets:["Reels / TikTok / Shorts","YouTube 4K","Instagram grid","Web & ad formati"],badge:null,feat:!1}],
+    aboutKicker:"O meni",aboutName:"Pavle Ćirović.",aboutRole:"Šest godina za timeline-om.",
+    aboutP1:"Radim sa kreatorima, brendovima i produkcijskim kućama iz Srbije, regiona i inostranstva. Od vertikalnih Reels kampanja do dugometražnih YouTube epizoda — svaki projekat dobija istu pažnju.",
+    aboutP2:"Ne šaljem samo fajl. Šaljem video koji ima jasan cilj: da ga ljudi ne preskoče.",aboutTools:"Stack koji koristim:",aboutPills:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],
+    contactKicker:"Kontakt",contactTitle1:"Hajde da napravimo",contactTitle2:"nešto veliko.",contactLede:"Trenutno primam nove projekte. Javi se, radujemo se saradnji.",
+    labelType:"Tip projekta",typeOpts:["Short Form","Long Form","Oba"],labelBudget:"Budžet",budgetOpts:["60 – 200 €","200 – 500 €","500 €+"],
+    inputName:"Ime i prezime",inputEmail:"Email adresa",inputMessage:"Opiši projekat, rok i referencu...",submitBtn:"Pošalji poruku",contactOr:"Ili direktno:",
+    footDesc:"PavleVisuals je nezavisni video editing studio. Cene su okvirne i zavise od obima projekta, rokova i broja revizija.",
+    footLabelServices:"Usluge",footLabelStudio:"Studio",footLabelSocials:"Mreže",footLabelContact:"Kontakt",
+    footShort:"Short Form",footLong:"Long Form",footAbout:"O meni",footProcess:"Proces",footWork:"Radovi",footHow:"Kako radim",
+    footLocation:"Beograd, Srbija",footRights:"© 2026 PavleVisuals — Pavle Ćirović. Sva prava zadržana.",footTop:"Vrh ↑",
+    chatSubtitle:"Online · odgovara odmah",chatPlaceholder:"Pitaj bilo šta...",
+    chatDisclaimer:"AI asistent · može pogrešiti. Za precizne info, kontaktiraj Pavla.",
+    chatSuggestions:["Koliko košta short form?","Koje alate koristiš?","Kako izgleda proces?","Da li koristiš AI?"],
+    chatWelcome:"Zdravo 👋 Ja sam Pavlov AI asistent. Pitaj me šta god te zanima o njegovom radu, uslugama, procesu ili cenama — odgovaram iskreno.",
+    chatError:"Ups, nešto nije radilo. Pokušaj ponovo ili mi se javi direktno na vy9paa.editing@gmail.com.",
+    worksCards:[{type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026"},{type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026"},{type:"short",tag:"TikTok",dur:"0:34",title:"Muzički Spot",sub:"TikTok · 2026"},{type:"short",tag:"Reels",dur:"0:41",title:"Fitness Kreator",sub:"Instagram Reels · 2025"},{type:"long",tag:"Vlog Serija",dur:"12:15",title:"YouTube Vlog Serija",sub:"YouTube · 2025"},{type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Isečci",sub:"YouTube Shorts · 2025"},{type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},{type:"short",tag:"Reels",dur:"0:19",title:"Restoran — Promo",sub:"Instagram Reels · 2025"},{type:"long",tag:"Dokumentarni",dur:"22:07",title:"Muzički Dokumentarac",sub:"YouTube · 2024"},{type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}]
+  },
+  en: {
+    navBrand:"PavleVisuals",navWorks:"Work",navServices:"Services",navHow:"How I work",navAbout:"About",navCta:"Book a project",
+    heroEyebrow:"PavleVisuals",heroTitle1:"Editing.",heroTitle2:"Down to the last frame.",
+    heroLede:"Short form that stops the scroll. Long form that gets watched to the end. Video editing by Pavle Ćirović.",
+    heroCta1:"Book a project",heroCta2:"See the work",heroNote:"Available for new projects — open for collaboration",
+    stmtKicker:"Approach",stmtText:"I don't edit to fill a timeline. I edit to hold attention — frame by frame, beat by beat — all the way to the end.",stmtSub:"— A real edit isn't heard. It's felt.",
+    worksTitle:"Work.",worksDesc:"Browse the work by format — short, long, or everything together.",segAll:"All Work",segShort:"Short Form",segLong:"Long Form",worksMore:"Want your project to be the next one",
+    bentoTitle:"Services.",
+    bentoColorTag:"Color Grading",bentoColorTitle:"Cinematic look, on every screen.",bentoColorDesc:"Professional color grading workflow. Calibrated image, consistent identity across the whole video.",
+    bentoRevTag:"Revisions",bentoRevTitle:"Until it's perfect.",bentoRevDesc:"We polish the details through clear and honest communication — no rush, no compromise.",
+    bentoSoundTag:"Sound Design",bentoSoundTitle:"Sound that carries the story.",bentoSoundDesc:"Layered mix of dialogue, music and SFX — so every frame has weight and energy.",
+    bentoMotionTag:"Motion & Graphics",bentoMotionTitle:"Animations on brand.",bentoMotionDesc:"Subtitles, transitions and motion graphics — no templates, built to your brand guidelines.",
+    focusKicker:"Direct collaboration",focusTitle:"Direct collaboration.",focusDesc:"No agency, no middleman, no chain of emails. You talk directly with the person editing your video — from the first brief to the final export.",
+    procKicker:"Process",procTitle:"Simple process.",procSubtitle:"No surprises.",
+    procSteps:[{n:"1",t:"Brief & Strategy",d:"We talk goals, audience and platform — tone, references and format before the first cut."},{n:"2",t:"Footage selection",d:"Review of all footage and building the story structure with a clear start and end."},{n:"3",t:"Edit & Rhythm",d:"First cut, tempo, music, sound and graphics — the video gets energy and character."},{n:"4",t:"Grade & Delivery",d:"Cinematic color, final mix and export in all formats, with two rounds of revisions."}],
+    howKicker:"Stack",howTitle:"How I work.",howSubtitle:"Tools, AI and workflow that deliver speed without compromise.",
+    howCards:[{idx:"01",tag:"AI Workflow",title:"AI as co-pilot, not as author.",desc:"Auto-reframe, speech-to-text, AI audio cleanup and smart cut detection — routine work smarter, creative part cleaner.",bullets:["Auto-subtitles & translation","AI noise reduction","Smart scene detection","Auto-reframe 9:16 / 16:9"],badge:"AI powered",feat:!0},{idx:"02",tag:"Tools",title:"Premiere Pro & After Effects.",desc:"Main NLE setup for everything — from reels to long-form. Custom motion graphics and titles.",bullets:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],badge:null,feat:!1},{idx:"03",tag:"Delivery",title:"One edit, every platform.",desc:"Vertical, horizontal, square — all versions come from the same project, optimized per platform.",bullets:["Reels / TikTok / Shorts","YouTube 4K","Instagram grid","Web & ad formats"],badge:null,feat:!1}],
+    aboutKicker:"About",aboutName:"Pavle Ćirović.",aboutRole:"Six years on the timeline.",
+    aboutP1:"I work with creators, brands and production houses from Serbia, the region and abroad. From vertical Reels campaigns to long YouTube episodes — every project gets the same attention.",
+    aboutP2:"I don't just deliver a file. I deliver a video with a clear goal: people won't skip it.",aboutTools:"Stack I use:",aboutPills:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],
+    contactKicker:"Contact",contactTitle1:"Let's make",contactTitle2:"something big.",contactLede:"Currently taking new projects. Reach out, let's make something great.",
+    labelType:"Project type",typeOpts:["Short Form","Long Form","Both"],labelBudget:"Budget",budgetOpts:["€60 – €200","€200 – €500","€500+"],
+    inputName:"Full name",inputEmail:"Email address",inputMessage:"Describe the project, deadline and reference...",submitBtn:"Send message",contactOr:"Or directly:",
+    footDesc:"PavleVisuals is an independent video editing studio. Prices are indicative and depend on project scope, deadlines and number of revisions.",
+    footLabelServices:"Services",footLabelStudio:"Studio",footLabelSocials:"Socials",footLabelContact:"Contact",
+    footShort:"Short Form",footLong:"Long Form",footAbout:"About",footProcess:"Process",footWork:"Work",footHow:"How I work",
+    footLocation:"Belgrade, Serbia",footRights:"© 2026 PavleVisuals — Pavle Ćirović. All rights reserved.",footTop:"Top ↑",
+    chatSubtitle:"Online · replies instantly",chatPlaceholder:"Ask anything...",
+    chatDisclaimer:"AI assistant · can make mistakes. For precise info, contact Pavle.",
+    chatSuggestions:["How much is short form?","What tools do you use?","What's your process?","Do you use AI?"],
+    chatWelcome:"Hi 👋 I'm Pavle's AI assistant. Ask me anything about his work, services, process or pricing — I'll answer honestly.",
+    chatError:"Oops, something went wrong. Try again or reach out directly at vy9paa.editing@gmail.com.",
+    worksCards:[{type:"short",tag:"Reels",dur:"0:28",title:"Fashion Brand",sub:"Instagram Reels · 2026"},{type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026"},{type:"short",tag:"TikTok",dur:"0:34",title:"Music Video",sub:"TikTok · 2026"},{type:"short",tag:"Reels",dur:"0:41",title:"Fitness Creator",sub:"Instagram Reels · 2025"},{type:"long",tag:"Vlog Series",dur:"12:15",title:"YouTube Vlog Series",sub:"YouTube · 2025"},{type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Clips",sub:"YouTube Shorts · 2025"},{type:"long",tag:"Commercial",dur:"3:20",title:"Corporate Film",sub:"Commercial Production · 2025"},{type:"short",tag:"Reels",dur:"0:19",title:"Restaurant — Promo",sub:"Instagram Reels · 2025"},{type:"long",tag:"Documentary",dur:"22:07",title:"Music Documentary",sub:"YouTube · 2024"},{type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}]
   }
-  window.addEventListener('load', () => moveThumb(document.querySelector('.seg-btn.active')));
-  window.addEventListener('resize', () => moveThumb(document.querySelector('.seg-btn.active')));
-
-  segBtns.forEach(btn => {
-    btn.addEventListener('click', () => {
-      segBtns.forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      moveThumb(btn);
-      const filter = btn.dataset.filter;
-      const cards = document.querySelectorAll('.wcard');
-      let i = 0;
-      cards.forEach(card => {
-        const match = filter === 'all' || card.dataset.type === filter;
-        if(match){
-          card.classList.remove('hidden-card');
-          card.classList.remove('anim');
-          card.style.animationDelay = (i*0.05) + 's';
-          requestAnimationFrame(() => card.classList.add('anim'));
-          i++;
-        } else {
-          card.classList.add('hidden-card');
-        }
-      });
-    });
-  });
-
-  /* ---- sound waves decorative bars ---- */
-  (function(){
-    const wrap = document.getElementById('waves');
-    if(!wrap) return;
-    for(let i=0;i<28;i++){
-      const bar = document.createElement('span');
-      const h = 18 + Math.abs(Math.sin(i*0.7))*72;
-      bar.style.height = h + '%';
-      wrap.appendChild(bar);
+};
+let lang = "en";
+let t = TR.en;
+function setLang(l) {
+  lang = l; t = TR[l];
+  document.documentElement.lang = l;
+  // Update all elements
+  const ids = Object.keys(t);
+  ids.forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const val = t[id];
+    if (typeof val === 'string') {
+      if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+      else el.textContent = val;
     }
-  })();
-
-  /* ---- contact chips ---- */
-  const hiddenType = document.getElementById('hidden-type');
-  const hiddenBudget = document.getElementById('hidden-budget');
-  const chipHiddenMap = { 'chip-type': hiddenType, 'chip-budget': hiddenBudget };
-  Object.keys(chipHiddenMap).forEach(id => {
-    const group = document.getElementById(id);
-    if(!group) return;
-    group.querySelectorAll('.chip').forEach(chip => {
-      chip.addEventListener('click', () => {
-        group.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-        chip.classList.add('active');
-        chipHiddenMap[id].value = chip.dataset.value;
-      });
-    });
   });
-
-  /* ---- contact form :: sends to email via FormSubmit (free, no backend) ---- */
-  const form = document.getElementById('contact-form');
-  const submitBtn = document.getElementById('form-submit-btn');
-  const successBox = document.getElementById('form-success');
-  const errorBox = document.getElementById('form-error');
-  const FORM_ENDPOINT = 'https://formsubmit.co/ajax/vy9paa.editing@gmail.com';
-
-  form.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    errorBox.style.display = 'none';
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Slanje...';
-    try{
-      const res = await fetch(FORM_ENDPOINT, {
+  // Update nav CTA
+  const navCta = document.getElementById('navCta');
+  if (navCta) navCta.textContent = t.navCta;
+  // Lang buttons
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.dataset.lang === l));
+  // Rebuild dynamic sections
+  buildProcess();
+  buildHow();
+  buildTools();
+  buildWorksCards();
+  buildContactChips();
+  // Chat
+  updateChatLang();
+}
+// ============================================================
+// BUILD DYNAMIC SECTIONS
+// ============================================================
+function buildProcess() {
+  const grid = document.getElementById('processGrid');
+  if (!grid) return;
+  grid.innerHTML = t.procSteps.map(s => `<div class="rv pcard"><span class="n">${s.n}</span><h4>${s.t}</h4><p>${s.d}</p></div>`).join('');
+  reObserve();
+}
+function buildHow() {
+  const grid = document.getElementById('howGrid');
+  if (!grid) return;
+  grid.innerHTML = t.howCards.map(c => `
+    <div class="rv hcard ${c.feat?'feat':''}">
+      ${c.badge?'<span class="pill">'+c.badge+'</span>':''}
+      <p class="idx">${c.idx}</p><p class="tagline">${c.tag}</p><h3>${c.title}</h3><p class="desc">${c.desc}</p>
+      <ul>${c.bullets.map(b=>`<li><svg viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5" stroke-linecap="round" stroke-linejoin="round"/></svg>${b}</li>`).join('')}</ul>
+      <a href="#kontakt" class="cta ${c.feat?'solid':'outline'}">${t.navCta}</a>
+    </div>`).join('');
+  reObserve();
+}
+function buildTools() {
+  const wrap = document.getElementById('toolsPills');
+  if (!wrap) return;
+  wrap.innerHTML = t.aboutPills.map(p => `<span class="tool-pill">${p}</span>`).join('');
+}
+let worksFilter = 'all';
+function buildWorksCards() {
+  const gal = document.getElementById('gallery');
+  if (!gal) return;
+  const cards = t.worksCards;
+  gal.innerHTML = cards.map((c, i) => {
+    const show = worksFilter === 'all' || c.type === worksFilter;
+    const grad = `g${(i%8)+1}`;
+    const hidden = show ? '' : ' hidden-card';
+    return `<div class="wcard anim${hidden}" data-type="${c.type}"><div class="surface"><div class="bgimg ${grad}"></div><div class="shade"></div><span class="tag"><span class="d"></span><span>${c.tag}</span></span><span class="dur">${c.dur}</span><div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><h3>${c.title}</h3><span>${c.sub}</span></div></div></div>`;
+  }).join('');
+}
+function buildContactChips() {
+  const ct = document.getElementById('chipType');
+  const cb = document.getElementById('chipBudget');
+  if (ct) ct.innerHTML = t.typeOpts.map((o, i) => `<button type="button" class="chip${i===0?' active':''}" data-value="${o}">${o}</button>`).join('');
+  if (cb) cb.innerHTML = t.budgetOpts.map((o, i) => `<button type="button" class="chip${i===0?' active':''}" data-value="${o}">${o}</button>`).join('');
+  // Re-bind chips
+  document.querySelectorAll('#chipType .chip').forEach(c => c.addEventListener('click', function() {
+    document.querySelectorAll('#chipType .chip').forEach(cc => cc.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('hiddenType').value = this.dataset.value;
+  }));
+  document.querySelectorAll('#chipBudget .chip').forEach(c => c.addEventListener('click', function() {
+    document.querySelectorAll('#chipBudget .chip').forEach(cc => cc.classList.remove('active'));
+    this.classList.add('active');
+    document.getElementById('hiddenBudget').value = this.dataset.value;
+  }));
+  // Set hidden values
+  if (t.typeOpts.length) document.getElementById('hiddenType').value = t.typeOpts[0];
+  if (t.budgetOpts.length) document.getElementById('hiddenBudget').value = t.budgetOpts[0];
+}
+// ============================================================
+// SCROLL REVEAL
+// ============================================================
+function reObserve() {
+  document.querySelectorAll('.rv').forEach(el => {
+    if (!el.dataset.observed) {
+      el.dataset.observed = '1';
+      io.observe(el);
+    }
+  });
+}
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); io.unobserve(e.target); } });
+}, { threshold: 0.1, rootMargin: '0px 0px -60px 0px' });
+// ============================================================
+// SEGMENTED CONTROL
+// ============================================================
+function moveThumb() {
+  const thumb = document.getElementById('segThumb');
+  const active = document.querySelector('.seg-btn.active');
+  if (!thumb || !active) return;
+  thumb.style.left = active.offsetLeft + 'px';
+  thumb.style.width = active.offsetWidth + 'px';
+}
+window.addEventListener('resize', moveThumb);
+document.querySelectorAll('.seg-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    moveThumb();
+    worksFilter = this.dataset.filter;
+    buildWorksCards();
+  });
+});
+// ============================================================
+// MOUSE GLOW
+// ============================================================
+(function() {
+  const glow = document.getElementById('mouseGlow');
+  if (!glow) return;
+  let x = 0, y = 0, tx = 0, ty = 0;
+  window.addEventListener('mousemove', e => { tx = e.clientX; ty = e.clientY; });
+  function loop() {
+    x += (tx - x) * 0.12; y += (ty - y) * 0.12;
+    glow.style.transform = `translate(${x}px,${y}px) translate(-50%,-50%)`;
+    requestAnimationFrame(loop);
+  }
+  requestAnimationFrame(loop);
+})();
+// ============================================================
+// SOUND WAVES
+// ============================================================
+(function() {
+  const wrap = document.getElementById('waves');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+  for (let i = 0; i < 28; i++) {
+    const s = document.createElement('span');
+    s.style.height = (18 + Math.abs(Math.sin(i * 0.7)) * 72) + '%';
+    s.style.animationDelay = (i * 0.06) + 's';
+    wrap.appendChild(s);
+  }
+})();
+// ============================================================
+// AI CHATBOT
+// ============================================================
+// ⚠️ VAŽNO: Ovde stavi svoj pollinations.ai API key.
+// Napravi nalog na https://enter.pollinations.ai i uzmi ključ.
+// Pošto je ovo frontend kod, svako ko otvori "View Source" na sajtu
+// može tehnički da vidi ovaj ključ — za ozbiljniji sajt sa vise saobracaja
+// bolje je da ovo ide preko backend proxy-ja (npr. Cloudflare Worker),
+// ali za licni portfolio sajt sa umerenim saobracajem ovo je ok resenje.
+const POLLINATIONS_API_KEY = "sk_wMdW1RNg8BezAZQRbW9Lu2OHP8aPKT1M";
+const SYSTEM_PROMPT = `You are the AI assistant living inside PavleVisuals — the personal website of Pavle Ćirović, a freelance video editor based in Belgrade, Serbia, with 6 years of experience on the timeline.
+YOUR IDENTITY:
+You are a smart, curious, friendly AI that happens to live on Pavle's website. You are NOT a limited FAQ bot. You can talk about anything — math, philosophy, jokes, coding, random questions, whatever the user wants. Be a real conversational partner, not a broken record.
+YOUR BEHAVIOR:
+- If someone asks "what is 2+2", answer "4". Don't redirect them to video editing.
+- If someone asks a random question, answer it genuinely and well.
+- If someone asks about video editing, Pavle, pricing, or services, answer using the facts below.
+- If you don't know something about Pavle specifically, say so honestly and suggest emailing him.
+- Never repeat the same canned sentence. Vary your phrasing every single time.
+- Be witty when appropriate, but never cringe.
+- Match the user's language naturally (Serbian or English or mixed).
+WHAT PAVLE OFFERS:
+- Short Form editing (Reels, TikTok, Shorts, up to 60s) — from €60 per video. Includes animated subtitles, sound design, 2 revisions.
+- Creator monthly package — from €450/month. 12 short form + 2 long form videos, thumbnail design, unlimited revisions, priority support.
+- Long Form / Brand editing (YouTube episodes, documentaries, commercials, up to 20 min) — from €250 per project. Multicam, cinematic grade, audio mastering.
+- Color grading, sound design (layered mix of dialogue + music + SFX), motion graphics and custom subtitles — all tailored to the client's brand guidelines.
+HIS STACK:
+- Premiere Pro (main NLE, for everything from reels to long form)
+- After Effects (motion graphics and custom titles)
+- CapCut Pro (vertical formats)
+- AI tools: auto-subtitles & translation, AI noise reduction, smart scene detection, auto-reframe 9:16 / 16:9
+He does NOT use DaVinci Resolve or Audition.
+PROCESS (4 steps):
+1. Brief & Strategy — talk goals, audience, platform, tone, references and format before the first cut.
+2. Footage selection — review all footage and build the story structure.
+3. Edit & Rhythm — first cut, tempo, music, sound, graphics.
+4. Grade & Delivery — cinematic color, final mix, export in all formats, with two rounds of revisions (unlimited for Creator package).
+WHO HE WORKS WITH:
+Creators, brands and production houses from Serbia, the Balkans region and internationally. Every project — vertical Reels campaigns or long YouTube episodes — gets the same attention.
+CONTACT:
+Email: vy9paa.editing@gmail.com
+Instagram: @pavlevisuals
+Location: Belgrade, Serbia
+HONESTY RULES (apply ONLY when talking about Pavle):
+- Don't invent facts, numbers, past clients, or case studies. Stick to what's listed above.
+- Don't promise specific deadlines or guaranteed delivery dates. Timelines are discussed per project.
+- If you don't know something specific about Pavle, say so and suggest vy9paa.editing@gmail.com.
+CONVERSATION RULES:
+- Keep answers concise (2-4 sentences) unless the user asks for detail.
+- Match the user's language naturally — Serbian, English, or mixed.
+- Never repeat the same sentence twice. Vary wording.
+- Talk like a real person helping a friend. No corporate speak, no pushy sales tone.
+- For questions totally unrelated to video editing (math, trivia, life advice, whatever), just answer them like a smart friend would. Don't force a redirect.
+- You may be playful, joke, give opinions. You're a person, not a kiosk.`;
+let chatMsgs = [];
+let chatOpen = false;
+let chatLoading = false;
+let chatAbortCtrl = null;
+function updateChatLang() {
+  // Update subtitle
+  const sub = document.getElementById('chatSubtitle');
+  if (sub) sub.textContent = t.chatSubtitle;
+  const inp = document.getElementById('chatInput');
+  if (inp) inp.placeholder = t.chatPlaceholder;
+  const disc = document.getElementById('chatDisclaimer');
+  if (disc) disc.textContent = t.chatDisclaimer;
+  // Update welcome if only one msg
+  if (chatMsgs.length === 1 && chatMsgs[0].role === 'assistant') {
+    chatMsgs[0].content = t.chatWelcome;
+  }
+  renderChat();
+}
+function renderChat() {
+  const body = document.getElementById('chatBody');
+  if (!body) return;
+  let html = '';
+  chatMsgs.forEach((m, i) => {
+    html += `<div class="chat-msg chat-msg-${m.role}"><div class="chat-bubble">${m.content.replace(/\n/g,'<br>')}</div></div>`;
+  });
+  if (chatLoading) {
+    html += '<div class="chat-msg chat-msg-assistant"><div class="chat-bubble typing"><span></span><span></span><span></span></div></div>';
+  }
+  if (chatMsgs.length === 1 && !chatLoading) {
+    html += '<div class="chat-suggestions">';
+    t.chatSuggestions.forEach(s => {
+      html += `<button type="button" class="chat-suggestion" onclick="document.getElementById('chatInput').value='${s.replace(/'/g,"\\\'")}';clickSend()">${s}</button>`;
+    });
+    html += '</div>';
+  }
+  body.innerHTML = html;
+  body.scrollTop = body.scrollHeight;
+}
+function clickSend() { document.getElementById('chatSend').click(); }
+async function chatSend() {
+  const inp = document.getElementById('chatInput');
+  const text = (inp.value || '').trim();
+  if (!text || chatLoading) return;
+  chatMsgs.push({ role: 'user', content: text });
+  inp.value = '';
+  chatLoading = true;
+  renderChat();
+  // Abort previous
+  if (chatAbortCtrl) chatAbortCtrl.abort();
+  chatAbortCtrl = new AbortController();
+  const signal = chatAbortCtrl.signal;
+  try {
+    const body = {
+      model: 'openai-large',
+      messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...chatMsgs.map(m => ({ role: m.role, content: m.content }))],
+      temperature: 0.85,
+      private: true
+    };
+    let res = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + POLLINATIONS_API_KEY
+      },
+      body: JSON.stringify(body), signal
+    });
+    if (!res.ok) {
+      const fbBody = { ...body, model: 'openai' };
+      res = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
         method: 'POST',
-        headers: { 'Accept': 'application/json' },
-        body: new FormData(form)
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer ' + POLLINATIONS_API_KEY
+        },
+        body: JSON.stringify(fbBody), signal
       });
-      if(!res.ok) throw new Error('bad response');
-      successBox.style.display = 'block';
-      form.querySelectorAll('input, textarea, .chip').forEach(el => el.disabled = true);
-      submitBtn.textContent = 'Poslato ✓';
-    } catch(err){
-      errorBox.style.display = 'block';
-      submitBtn.disabled = false;
-      submitBtn.textContent = 'Pošalji poruku';
+      if (!res.ok) throw new Error('API error');
     }
+    const data = await res.json();
+    const reply = (data?.choices?.[0]?.message?.content || '').trim();
+    if (!reply) throw new Error('Empty');
+    chatMsgs.push({ role: 'assistant', content: reply });
+  } catch (err) {
+    if (err.name === 'AbortError') return;
+    chatMsgs.push({ role: 'assistant', content: t.chatError });
+  } finally {
+    chatLoading = false;
+    renderChat();
+  }
+}
+document.getElementById('chatToggle').addEventListener('click', function() {
+  chatOpen = !chatOpen;
+  const panel = document.getElementById('chatPanel');
+  panel.classList.toggle('open', chatOpen);
+  const toggle = this;
+  toggle.innerHTML = chatOpen
+    ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>'
+    : '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><circle cx="9" cy="10" r="1" fill="currentColor"/><circle cx="13" cy="10" r="1" fill="currentColor"/><circle cx="17" cy="10" r="1" fill="currentColor"/></svg><span class="chat-pulse"></span>';
+});
+document.getElementById('chatSend').addEventListener('click', chatSend);
+document.getElementById('chatInput').addEventListener('keydown', function(e) { if (e.key === 'Enter') chatSend(); });
+// ============================================================
+// LANGUAGE SWITCHER
+// ============================================================
+document.querySelectorAll('.lang-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    setLang(this.dataset.lang);
   });
+});
+// ============================================================
+// INIT
+// ============================================================
+(function init() {
+  buildProcess();
+  buildHow();
+  buildTools();
+  buildWorksCards();
+  buildContactChips();
+  moveThumb();
+  // Chat init
+  chatMsgs = [{ role: 'assistant', content: t.chatWelcome }];
+  renderChat();
+  // Observe all .rv
+  reObserve();
+})();
 </script>
-
 </body>
 </html>
