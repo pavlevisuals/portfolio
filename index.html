@@ -699,13 +699,14 @@ document.querySelectorAll('.seg-btn').forEach(btn => {
 // ============================================================
 // AI CHATBOT
 // ============================================================
-// ⚠️ VAŽNO: Ovde stavi svoj pollinations.ai API key.
-// Napravi nalog na https://enter.pollinations.ai i uzmi ključ.
-// Pošto je ovo frontend kod, svako ko otvori "View Source" na sajtu
-// može tehnički da vidi ovaj ključ — za ozbiljniji sajt sa vise saobracaja
-// bolje je da ovo ide preko backend proxy-ja (npr. Cloudflare Worker),
-// ali za licni portfolio sajt sa umerenim saobracajem ovo je ok resenje.
-const POLLINATIONS_API_KEY = "sk_wMdW1RNg8BezAZQRbW9Lu2OHP8aPKT1M";
+// ⚠️ VAŽNO: Ovde ide BESPLATAN "Publishable" (pk_) key sa enter.pollinations.ai,
+// NE sekretni (sk_) key! pk_ je namenski napravljen da bude javan/vidljiv u
+// frontend kodu (bezbedno je da stoji ovde) i besplatan je.
+// Limit besplatnog pk_ tier-a: ~1 poruka na sat po IP adresi posetioca.
+// To znači: svaki posetilac može da pošalje ~1 poruku botu na sat, besplatno.
+// Ako ti zatreba više od toga, jedina opcija je da platiš pollen kredite
+// preko sk_ key-a (kao malopre) ili da koristiš neki drugi AI servis.
+const POLLINATIONS_API_KEY = "pk_ttyRDTqWnx2srKSM";
 const SYSTEM_PROMPT = `You are the AI assistant living inside PavleVisuals — the personal website of Pavle Ćirović, a freelance video editor based in Belgrade, Serbia, with 6 years of experience on the timeline.
 YOUR IDENTITY:
 You are a smart, curious, friendly AI that happens to live on Pavle's website. You are NOT a limited FAQ bot. You can talk about anything — math, philosophy, jokes, coding, random questions, whatever the user wants. Be a real conversational partner, not a broken record.
@@ -803,7 +804,7 @@ async function chatSend() {
   const signal = chatAbortCtrl.signal;
   try {
     const body = {
-      model: 'openai-large',
+      model: 'openai',
       messages: [{ role: 'system', content: SYSTEM_PROMPT }, ...chatMsgs.map(m => ({ role: m.role, content: m.content }))],
       temperature: 0.85,
       private: true
@@ -817,7 +818,7 @@ async function chatSend() {
       body: JSON.stringify(body), signal
     });
     if (!res.ok) {
-      const fbBody = { ...body, model: 'openai' };
+      const fbBody = { ...body, model: 'mistral' };
       res = await fetch('https://gen.pollinations.ai/v1/chat/completions', {
         method: 'POST',
         headers: {
