@@ -71,6 +71,7 @@ a{color:inherit}
 .seg-btn.active{color:#000}
 .seg-thumb{position:absolute;z-index:1;top:4px;bottom:4px;left:4px;width:0;background:#fff;border-radius:999px;transition:left .38s cubic-bezier(.65,0,.35,1),width .38s cubic-bezier(.65,0,.35,1);box-shadow:0 6px 18px -6px rgba(255,255,255,.4)}
 .gallery-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:1.4rem;margin-top:3.6rem}
+.wcard.hidden-card{display:none}
 .wcard{position:relative;border-radius:22px;overflow:hidden;background:#0a0a0c;border:1px solid var(--line-d);transition:transform .3s ease,box-shadow .3s ease;cursor:pointer}
 .wcard:hover{transform:translateY(-4px);box-shadow:0 24px 50px -20px rgba(0,0,0,.6)}
 .wcard.anim{animation:cardIn .55s cubic-bezier(.16,1,.3,1) both}
@@ -658,6 +659,42 @@ document.querySelectorAll('.seg-btn').forEach(btn => {
   }
   window.addEventListener('scroll', onScroll, { passive: true });
   requestAnimationFrame(animate);
+})();
+// ============================================================
+// SMOOTH INERTIA SCROLL (desktop mouse wheel)
+// ============================================================
+(function() {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isTouch = window.matchMedia('(pointer: coarse)').matches;
+  if (reduceMotion || isTouch) return; // ostavi nativni skrol na telefonu/touch-u
+  let current = window.scrollY;
+  let target = window.scrollY;
+  let raf = null;
+  const ease = 0.085;
+  function getMax() {
+    return document.documentElement.scrollHeight - window.innerHeight;
+  }
+  function loop() {
+    current += (target - current) * ease;
+    if (Math.abs(target - current) < 0.4) {
+      current = target;
+      window.scrollTo(0, current);
+      raf = null;
+      return;
+    }
+    window.scrollTo(0, current);
+    raf = requestAnimationFrame(loop);
+  }
+  function onWheel(e) {
+    e.preventDefault();
+    target += e.deltaY;
+    target = Math.max(0, Math.min(target, getMax()));
+    if (!raf) raf = requestAnimationFrame(loop);
+  }
+  // ako korisnik skroluje na neki drugi način (tastatura, drag scrollbar-a),
+  // uskladi target da ne bi bilo skoka pri sledećem wheel eventu
+  window.addEventListener('scroll', () => { if (!raf) { current = window.scrollY; target = window.scrollY; } }, { passive: true });
+  window.addEventListener('wheel', onWheel, { passive: false });
 })();
 // ============================================================
 // SOUND WAVES
