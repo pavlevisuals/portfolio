@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>PavleVisuals - Pavle Ćirović | Video Editor</title>
+<title>pavlevisuals - Pavle Ćirović | Video Editor</title>
 <meta name="description" content="PavleVisuals - video montaža. Short form koji zaustavlja skrol, long form koji se gleda do kraja." />
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23000000'/%3E%3Cpath d='M24 17v30l26-15z' fill='%232997ff'/%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
@@ -376,12 +377,13 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
       <h2 id="contactTitle1">Let's make<br><span class="grad-dark" id="contactTitle2">something big.</span></h2>
     </div>
     <div class="rv d1"><p class="lede" id="contactLede">Currently taking new projects. Reach out, let's make something great.</p></div>
-    <form class="rv d2 form-card" action="https://formsubmit.co/pavlevisuals0@gmail.com" method="POST">
+    <form class="rv d2 form-card" id="contactForm" action="https://formsubmit.co/pavlevisuals0@gmail.com" method="POST">
       <input type="hidden" name="_subject" value="Novi upit - PavleVisuals sajt">
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="Tip projekta / Project type" id="hiddenType" value="Short Form">
       <input type="hidden" name="Budžet / Budget" id="hiddenBudget" value="€60 – €200">
+      <div id="contactFormFields">
       <div class="form-row two">
         <input required placeholder="Full name" type="text" name="Ime / Name" id="inputName">
         <input required placeholder="Email address" type="email" name="Email" id="inputEmail">
@@ -400,6 +402,14 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
       <div style="margin-top:1.6rem;display:flex;flex-direction:column;align-items:center;gap:.8rem">
         <button type="submit" class="form-submit" id="submitBtn">Send message</button>
         <p style="font-size:12.5px;color:var(--muted);text-align:center;margin:0" id="contactOr">Or directly: <a href="mailto:pavlevisuals0@gmail.com" style="color:var(--blue);text-decoration:none">pavlevisuals0@gmail.com</a></p>
+      </div>
+      </div>
+      <div id="contactSuccess" style="display:none;text-align:center;padding:1.4rem 0">
+        <div style="width:52px;height:52px;border-radius:50%;background:rgba(0,113,227,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 1rem">
+          <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="#0071e3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+        </div>
+        <h3 id="contactSuccessTitle" style="font-size:20px;font-weight:700;color:var(--text);margin:0">Message sent.</h3>
+        <p id="contactSuccessDesc" style="font-size:14.5px;color:var(--muted);margin-top:.5rem">Thanks for reaching out. I'll get back to you soon.</p>
       </div>
     </form>
   </div>
@@ -458,6 +468,7 @@ const TR = {
     contactKicker:"Kontakt",contactTitle1:"Hajde da napravimo",contactTitle2:"nešto veliko.",contactLede:"Trenutno primam nove projekte. Javi se, radujemo se saradnji.",
     labelType:"Tip projekta",typeOpts:["Short Form","Long Form","Oba"],labelBudget:"Budžet",budgetOpts:["60 – 200 €","200 – 500 €","500 €+"],
     inputName:"Ime i prezime",inputEmail:"Email adresa",inputMessage:"Opiši projekat, rok i referencu...",submitBtn:"Pošalji poruku",contactOr:"Ili direktno:",
+    contactSuccessTitle:"Poruka je poslata.",contactSuccessDesc:"Hvala što si se javio/la. Javiću ti se uskoro.",contactErrorMsg:"Ups, nešto nije radilo. Pokušaj ponovo ili mi piši direktno na pavlevisuals0@gmail.com.",
     footDesc:"PavleVisuals je nezavisni video editing studio. Cene su okvirne i zavise od obima projekta, rokova i broja revizija.",
     footLabelServices:"Usluge",footLabelStudio:"Studio",footLabelSocials:"Mreže",footLabelContact:"Kontakt",
     footShort:"Short Form",footLong:"Long Form",footAbout:"O meni",footProcess:"Proces",footWork:"Radovi",footHow:"Kako radim",
@@ -487,6 +498,7 @@ const TR = {
     contactKicker:"Contact",contactTitle1:"Let's make",contactTitle2:"something big.",contactLede:"Currently taking new projects. Reach out, let's make something great.",
     labelType:"Project type",typeOpts:["Short Form","Long Form","Both"],labelBudget:"Budget",budgetOpts:["€60 – €200","€200 – €500","€500+"],
     inputName:"Full name",inputEmail:"Email address",inputMessage:"Describe the project, deadline and reference...",submitBtn:"Send message",contactOr:"Or directly:",
+    contactSuccessTitle:"Message sent.",contactSuccessDesc:"Thanks for reaching out. I'll get back to you soon.",contactErrorMsg:"Oops, something went wrong. Try again or email me directly at pavlevisuals0@gmail.com.",
     footDesc:"PavleVisuals is an independent video editing studio. Prices are indicative and depend on project scope, deadlines and number of revisions.",
     footLabelServices:"Services",footLabelStudio:"Studio",footLabelSocials:"Socials",footLabelContact:"Contact",
     footShort:"Short Form",footLong:"Long Form",footAbout:"About",footProcess:"Process",footWork:"Work",footHow:"How I work",
@@ -580,6 +592,40 @@ function buildContactChips() {
   if (t.typeOpts.length) document.getElementById('hiddenType').value = t.typeOpts[0];
   if (t.budgetOpts.length) document.getElementById('hiddenBudget').value = t.budgetOpts[0];
 }
+// ============================================================
+// CONTACT FORM (AJAX, ostaje na sajtu - bez redirekta na formsubmit.co)
+// ============================================================
+(function() {
+  const form = document.getElementById('contactForm');
+  if (!form) return;
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submitBtn');
+    const fields = document.getElementById('contactFormFields');
+    const success = document.getElementById('contactSuccess');
+    const originalLabel = btn.textContent;
+    btn.disabled = true;
+    btn.style.opacity = '.7';
+    try {
+      const formData = new FormData(form);
+      const res = await fetch('https://formsubmit.co/ajax/pavlevisuals0@gmail.com', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json' },
+        body: formData
+      });
+      if (!res.ok) throw new Error('submit failed');
+      document.getElementById('contactSuccessTitle').textContent = t.contactSuccessTitle;
+      document.getElementById('contactSuccessDesc').textContent = t.contactSuccessDesc;
+      fields.style.display = 'none';
+      success.style.display = 'block';
+    } catch (err) {
+      alert(t.contactErrorMsg);
+      btn.disabled = false;
+      btn.style.opacity = '1';
+      btn.textContent = originalLabel;
+    }
+  });
+})();
 // ============================================================
 // SCROLL REVEAL
 // ============================================================
