@@ -81,6 +81,7 @@ a{color:inherit}
 .wcard .surface{position:relative;overflow:hidden}
 .wcard[data-type=short] .surface{aspect-ratio:9/16}
 .wcard[data-type=long] .surface{aspect-ratio:16/9}
+.wcard[data-type=saas] .surface{aspect-ratio:16/9}
 .wcard .bgimg{position:absolute;inset:0;transition:transform .8s cubic-bezier(.16,1,.3,1)}
 .wcard:hover .bgimg{transform:scale(1.06)}
 .wcard .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.15),rgba(0,0,0,.05) 40%,rgba(0,0,0,.85))}
@@ -94,6 +95,7 @@ a{color:inherit}
 .wcard .playdot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease,transform .3s ease}
 .wcard:hover .playdot{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .wcard .playdot svg{width:14px;height:14px;fill:#fff;margin-left:2px}
+.wcard .comingsoon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:.5rem 1.1rem;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.85);white-space:nowrap;z-index:2}
 .wcard .thumbimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
 .wcard .videoframe{position:absolute;inset:0;z-index:5;display:none;background:#000}
 .wcard .videoframe iframe{width:100%;height:100%;border:0;display:block}
@@ -285,6 +287,7 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
         <button class="seg-btn active" data-filter="all" id="segAll">All Work</button>
         <button class="seg-btn" data-filter="short" id="segShort">Short Form</button>
         <button class="seg-btn" data-filter="long" id="segLong">Long Form</button>
+        <button class="seg-btn" data-filter="saas" id="segSaas">SaaS</button>
       </div>
     </div>
     <div class="gallery-grid" id="gallery"></div>
@@ -455,7 +458,7 @@ const TR = {
     heroLede:"Short form koji zaustavlja skrol. Long form koji se gleda do kraja. Video montaža Pavla Ćirovića.",
     heroCta1:"Zakaži projekat",heroCta2:"Pogledaj radove",heroNote:"Dostupan za nove projekte - otvoren za saradnju",
     stmtKicker:"Pristup",stmtText:"Ne montiram da popunim timeline. Montiram da zadržim pažnju - kadar po kadar, ritam po ritam, do kraja.",stmtSub:"- Pravi edit se ne čuje. On se oseti.",
-    worksTitle:"Radovi.",worksDesc:"Pregledaj radove po formatu - kratak, dug, ili sve zajedno.",segAll:"Svi Radovi",segShort:"Short Form",segLong:"Long Form",worksMore:"Želiš da tvoj projekat bude sledeći",
+    worksTitle:"Radovi.",worksDesc:"Pregledaj radove po formatu - kratak, dug, ili sve zajedno.",segAll:"Svi Radovi",segShort:"Short Form",segLong:"Long Form",segSaas:"SaaS",worksMore:"Želiš da tvoj projekat bude sledeći",comingSoon:"Uskoro više",
     bentoTitle:"Usluge.",
     bentoColorTag:"Color Grading",bentoColorTitle:"Kinematografski look, na svakom ekranu.",bentoColorDesc:"Profesionalan color grading workflow. Kalibrisana slika, dosledan identitet kroz ceo video.",
     bentoRevTag:"Revizije",bentoRevTitle:"Dok ne bude savršeno.",bentoRevDesc:"Zajedno doteramo detalje kroz jasnu i iskrenu komunikaciju - bez žurbe, bez kompromisa.",
@@ -487,7 +490,9 @@ const TR = {
       {type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},
       {type:"short",tag:"Reels",dur:"0:19",title:"Restoran - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
       {type:"long",tag:"Dokumentarni",dur:"22:07",title:"Muzički Dokumentarac",sub:"YouTube · 2024"},
-      {type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"}
+      {type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
+      {type:"saas",tag:"SaaS",dur:"1:12",title:"Product Demo",sub:"SaaS Onboarding · 2026"},
+      {type:"saas",tag:"SaaS",dur:"0:48",title:"Feature Walkthrough",sub:"SaaS Marketing · 2025"}
     ]
   },
   en: {
@@ -496,7 +501,7 @@ const TR = {
     heroLede:"Short form that stops the scroll. Long form that gets watched to the end. Video editing by Pavle Ćirović.",
     heroCta1:"Book a project",heroCta2:"See the work",heroNote:"Available for new projects - open for collaboration",
     stmtKicker:"Approach",stmtText:"I don't edit to fill a timeline. I edit to hold attention - frame by frame, beat by beat - all the way to the end.",stmtSub:"- A real edit isn't heard. It's felt.",
-    worksTitle:"Work.",worksDesc:"Browse the work by format - short, long, or everything together.",segAll:"All Work",segShort:"Short Form",segLong:"Long Form",worksMore:"Want your project to be the next one",
+    worksTitle:"Work.",worksDesc:"Browse the work by format - short, long, or everything together.",segAll:"All Work",segShort:"Short Form",segLong:"Long Form",segSaas:"SaaS",worksMore:"Want your project to be the next one",comingSoon:"More soon",
     bentoTitle:"Services.",
     bentoColorTag:"Color Grading",bentoColorTitle:"Cinematic look, on every screen.",bentoColorDesc:"Professional color grading workflow. Calibrated image, consistent identity across the whole video.",
     bentoRevTag:"Revisions",bentoRevTitle:"Until it's perfect.",bentoRevDesc:"We polish the details through clear and honest communication - no rush, no compromise.",
@@ -528,7 +533,9 @@ const TR = {
       {type:"long",tag:"Commercial",dur:"3:20",title:"Corporate Film",sub:"Commercial Production · 2025"},
       {type:"short",tag:"Reels",dur:"0:19",title:"Restaurant - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
       {type:"long",tag:"Documentary",dur:"22:07",title:"Music Documentary",sub:"YouTube · 2024"},
-      {type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"}
+      {type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
+      {type:"saas",tag:"SaaS",dur:"1:12",title:"Product Demo",sub:"SaaS Onboarding · 2026"},
+      {type:"saas",tag:"SaaS",dur:"0:48",title:"Feature Walkthrough",sub:"SaaS Marketing · 2025"}
     ]
   }
 };
@@ -603,7 +610,12 @@ function buildWorksCards() {
       ? `<div class="videoframe"><iframe allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe><button class="closevid">×</button></div>`
       : '';
     const dataVideo = c.video ? ` data-video="${c.video}"` : '';
-    return `<div class="wcard anim${hidden}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}${frame}<div class="shade"></div><span class="tag"><span class="d"></span><span>${c.tag}</span></span><span class="dur">${c.dur}</span><div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div></div>`;
+    const typeLabel = c.type === 'short' ? t.segShort : (c.type === 'long' ? t.segLong : t.segSaas);
+    const centerBadge = c.video
+      ? `<div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`
+      : `<div class="comingsoon">${t.comingSoon}</div>`;
+    const durBadge = c.video ? `<span class="dur">${c.dur}</span>` : '';
+    return `<div class="wcard anim${hidden}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}${frame}<div class="shade"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
   }).join('');
   bindWorkVideos();
 }
