@@ -94,6 +94,10 @@ a{color:inherit}
 .wcard .playdot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease,transform .3s ease}
 .wcard:hover .playdot{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .wcard .playdot svg{width:14px;height:14px;fill:#fff;margin-left:2px}
+.wcard .thumbimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.wcard .videoframe{position:absolute;inset:0;z-index:5;display:none;background:#000}
+.wcard .videoframe iframe{width:100%;height:100%;border:0;display:block}
+.wcard .closevid{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:16px;line-height:1;cursor:pointer;z-index:6;display:flex;align-items:center;justify-content:center}
 .g1{background:linear-gradient(155deg,#1a2e8f,#050609 72%)}.g2{background:linear-gradient(155deg,#0e1a4a,#050609 70%)}
 .g3{background:linear-gradient(155deg,#28409e,#070912 65%)}.g4{background:linear-gradient(155deg,#0d174a,#050609 75%)}
 .g5{background:linear-gradient(155deg,#1e3384,#050609 68%)}.g6{background:linear-gradient(155deg,#152660,#060812 72%)}
@@ -473,7 +477,18 @@ const TR = {
     footLabelServices:"Usluge",footLabelStudio:"Studio",footLabelSocials:"Mreže",footLabelContact:"Kontakt",
     footShort:"Short Form",footLong:"Long Form",footAbout:"O meni",footProcess:"Proces",footWork:"Radovi",footHow:"Kako radim",
     footLocation:"Beograd, Srbija",footRights:"© 2026 PavleVisuals - Pavle Ćirović. Sva prava zadržana.",footTop:"Vrh ↑",
-    worksCards:[{type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026"},{type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026"},{type:"short",tag:"TikTok",dur:"0:34",title:"Muzički Spot",sub:"TikTok · 2026"},{type:"short",tag:"Reels",dur:"0:41",title:"Fitness Kreator",sub:"Instagram Reels · 2025"},{type:"long",tag:"Vlog Serija",dur:"12:15",title:"YouTube Vlog Serija",sub:"YouTube · 2025"},{type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Isečci",sub:"YouTube Shorts · 2025"},{type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},{type:"short",tag:"Reels",dur:"0:19",title:"Restoran - Promo",sub:"Instagram Reels · 2025"},{type:"long",tag:"Dokumentarni",dur:"22:07",title:"Muzički Dokumentarac",sub:"YouTube · 2024"},{type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}]
+    worksCards:[
+      {type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026",video:"1nTh1IK0NJQOR_8HmgH4-SMhZA3ZrGuAT"},
+      {type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
+      {type:"short",tag:"TikTok",dur:"0:34",title:"Muzički Spot",sub:"TikTok · 2026",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
+      {type:"short",tag:"Reels",dur:"0:41",title:"Fitness Kreator",sub:"Instagram Reels · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
+      {type:"long",tag:"Vlog Serija",dur:"12:15",title:"YouTube Vlog Serija",sub:"YouTube · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
+      {type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Isečci",sub:"YouTube Shorts · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
+      {type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},
+      {type:"short",tag:"Reels",dur:"0:19",title:"Restoran - Promo",sub:"Instagram Reels · 2025"},
+      {type:"long",tag:"Dokumentarni",dur:"22:07",title:"Muzički Dokumentarac",sub:"YouTube · 2024"},
+      {type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}
+    ]
   },
   en: {
     navBrand:"PavleVisuals",navWorks:"Work",navServices:"Services",navHow:"How I work",navAbout:"About",navCta:"Book a project",
@@ -503,7 +518,18 @@ const TR = {
     footLabelServices:"Services",footLabelStudio:"Studio",footLabelSocials:"Socials",footLabelContact:"Contact",
     footShort:"Short Form",footLong:"Long Form",footAbout:"About",footProcess:"Process",footWork:"Work",footHow:"How I work",
     footLocation:"Belgrade, Serbia",footRights:"© 2026 PavleVisuals - Pavle Ćirović. All rights reserved.",footTop:"Top ↑",
-    worksCards:[{type:"short",tag:"Reels",dur:"0:28",title:"Fashion Brand",sub:"Instagram Reels · 2026"},{type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026"},{type:"short",tag:"TikTok",dur:"0:34",title:"Music Video",sub:"TikTok · 2026"},{type:"short",tag:"Reels",dur:"0:41",title:"Fitness Creator",sub:"Instagram Reels · 2025"},{type:"long",tag:"Vlog Series",dur:"12:15",title:"YouTube Vlog Series",sub:"YouTube · 2025"},{type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Clips",sub:"YouTube Shorts · 2025"},{type:"long",tag:"Commercial",dur:"3:20",title:"Corporate Film",sub:"Commercial Production · 2025"},{type:"short",tag:"Reels",dur:"0:19",title:"Restaurant - Promo",sub:"Instagram Reels · 2025"},{type:"long",tag:"Documentary",dur:"22:07",title:"Music Documentary",sub:"YouTube · 2024"},{type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}]
+    worksCards:[
+      {type:"short",tag:"Reels",dur:"0:28",title:"Fashion Brand",sub:"Instagram Reels · 2026",video:"1nTh1IK0NJQOR_8HmgH4-SMhZA3ZrGuAT"},
+      {type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
+      {type:"short",tag:"TikTok",dur:"0:34",title:"Music Video",sub:"TikTok · 2026",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
+      {type:"short",tag:"Reels",dur:"0:41",title:"Fitness Creator",sub:"Instagram Reels · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
+      {type:"long",tag:"Vlog Series",dur:"12:15",title:"YouTube Vlog Series",sub:"YouTube · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
+      {type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Clips",sub:"YouTube Shorts · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
+      {type:"long",tag:"Commercial",dur:"3:20",title:"Corporate Film",sub:"Commercial Production · 2025"},
+      {type:"short",tag:"Reels",dur:"0:19",title:"Restaurant - Promo",sub:"Instagram Reels · 2025"},
+      {type:"long",tag:"Documentary",dur:"22:07",title:"Music Documentary",sub:"YouTube · 2024"},
+      {type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025"}
+    ]
   }
 };
 let lang = "en";
@@ -569,8 +595,47 @@ function buildWorksCards() {
     const show = worksFilter === 'all' || c.type === worksFilter;
     const grad = `g${(i%8)+1}`;
     const hidden = show ? '' : ' hidden-card';
-    return `<div class="wcard anim${hidden}" data-type="${c.type}"><div class="surface"><div class="bgimg ${grad}"></div><div class="shade"></div><span class="tag"><span class="d"></span><span>${c.tag}</span></span><span class="dur">${c.dur}</span><div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><h3>${c.title}</h3><span>${c.sub}</span></div></div></div>`;
+    const thumb = c.video
+      ? `<img class="thumbimg" src="https://drive.google.com/thumbnail?id=${c.video}&sz=w1000" alt="${c.title}" onerror="this.style.display='none'">`
+      : '';
+    const bg = `<div class="bgimg ${grad}"></div>`;
+    const frame = c.video
+      ? `<div class="videoframe"><iframe allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe><button class="closevid">×</button></div>`
+      : '';
+    const dataVideo = c.video ? ` data-video="${c.video}"` : '';
+    return `<div class="wcard anim${hidden}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}${frame}<div class="shade"></div><span class="tag"><span class="d"></span><span>${c.tag}</span></span><span class="dur">${c.dur}</span><div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div><div class="info"><h3>${c.title}</h3><span>${c.sub}</span></div></div></div>`;
   }).join('');
+  bindWorkVideos();
+}
+function bindWorkVideos() {
+  const cards = document.querySelectorAll('#gallery .wcard[data-video]');
+  function closeAllVideos() {
+    cards.forEach(card => {
+      const frame = card.querySelector('.videoframe');
+      const iframe = frame ? frame.querySelector('iframe') : null;
+      if (iframe) iframe.src = '';
+      if (frame) frame.style.display = 'none';
+    });
+  }
+  cards.forEach(card => {
+    const vid = card.getAttribute('data-video');
+    const frame = card.querySelector('.videoframe');
+    const iframe = frame.querySelector('iframe');
+    const closeBtn = frame.querySelector('.closevid');
+    card.addEventListener('click', function(e) {
+      if (e.target.closest('.closevid')) return;
+      if (frame.style.display !== 'block') {
+        closeAllVideos();
+        iframe.src = `https://drive.google.com/file/d/${vid}/preview`;
+        frame.style.display = 'block';
+      }
+    });
+    closeBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      iframe.src = '';
+      frame.style.display = 'none';
+    });
+  });
 }
 function buildContactChips() {
   const ct = document.getElementById('chipType');
