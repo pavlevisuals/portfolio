@@ -97,10 +97,19 @@ a{color:inherit}
 .wcard .playdot svg{width:14px;height:14px;fill:#fff;margin-left:2px}
 .wcard .comingsoon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:.5rem 1.1rem;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.85);white-space:nowrap;z-index:2}
 .wcard .thumbimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
-.wcard .videoframe{position:absolute;inset:0;z-index:5;display:none;background:#000}
-.wcard .videoframe video{width:100%;height:100%;object-fit:cover;display:block;background:#000}
-.wcard .videoframe iframe.fallback-iframe{position:absolute;top:50%;left:50%;width:180%;height:180%;border:0;display:block;transform:translate(-50%,-50%)}
-.wcard .closevid{position:absolute;top:10px;right:10px;width:30px;height:30px;border-radius:50%;background:rgba(0,0,0,.65);border:1px solid rgba(255,255,255,.3);color:#fff;font-size:16px;line-height:1;cursor:pointer;z-index:6;display:flex;align-items:center;justify-content:center}
+/* VIDEO LIGHTBOX */
+.video-lightbox{position:fixed;inset:0;z-index:3000;background:rgba(0,0,0,.9);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);display:none;align-items:center;justify-content:center;padding:2rem}
+.video-lightbox.open{display:flex;animation:vlFade .25s ease}
+@keyframes vlFade{from{opacity:0}to{opacity:1}}
+.vl-inner{position:relative;max-width:92vw;max-height:88vh;animation:vlPop .35s cubic-bezier(.16,1,.3,1)}
+@keyframes vlPop{from{opacity:0;transform:scale(.94)}to{opacity:1;transform:scale(1)}}
+.vl-inner.short{width:min(400px,92vw);aspect-ratio:9/16;height:min(88vh,711px)}
+.vl-inner.wide{width:min(920px,92vw);aspect-ratio:16/9;height:auto}
+.vl-frame{position:relative;width:100%;height:100%;border-radius:20px;overflow:hidden;background:#000;box-shadow:0 50px 120px -20px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.08)}
+.vl-frame iframe{position:absolute;top:50%;left:50%;width:106%;height:106%;transform:translate(-50%,-50%);border:0;display:block}
+.vl-close{position:absolute;top:-46px;right:0;width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:#fff;font-size:20px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s ease}
+.vl-close:hover{background:var(--blue);border-color:var(--blue)}
+@media(max-width:640px){.vl-close{top:-44px;right:0}.vl-inner.short{width:min(320px,86vw);height:min(80vh,569px)}}
 .g1{background:linear-gradient(155deg,#1a2e8f,#050609 72%)}.g2{background:linear-gradient(155deg,#0e1a4a,#050609 70%)}
 .g3{background:linear-gradient(155deg,#28409e,#070912 65%)}.g4{background:linear-gradient(155deg,#0d174a,#050609 75%)}
 .g5{background:linear-gradient(155deg,#1e3384,#050609 68%)}.g6{background:linear-gradient(155deg,#152660,#060812 72%)}
@@ -227,6 +236,14 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
 <body>
 <!-- MOUSE GLOW -->
 <div class="mouse-glow" id="mouseGlow"></div>
+
+<!-- VIDEO LIGHTBOX -->
+<div class="video-lightbox" id="videoLightbox">
+  <div class="vl-inner" id="vlInner">
+    <button class="vl-close" id="vlClose" aria-label="Close">×</button>
+    <div class="vl-frame"><iframe id="vlIframe" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe></div>
+  </div>
+</div>
 
 <!-- NAV -->
 <header class="topnav">
@@ -607,60 +624,44 @@ function buildWorksCards() {
       ? `<img class="thumbimg" src="https://drive.google.com/thumbnail?id=${c.video}&sz=w1000" alt="${c.title}" onerror="this.style.display='none'">`
       : '';
     const bg = `<div class="bgimg ${grad}"></div>`;
-    const frame = c.video
-      ? `<div class="videoframe"><video playsinline controls preload="none"></video><iframe class="fallback-iframe" style="display:none" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen></iframe><button class="closevid">×</button></div>`
-      : '';
     const dataVideo = c.video ? ` data-video="${c.video}"` : '';
     const typeLabel = c.type === 'short' ? t.segShort : (c.type === 'long' ? t.segLong : t.segSaas);
     const centerBadge = c.video
       ? `<div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`
       : `<div class="comingsoon">${t.comingSoon}</div>`;
     const durBadge = c.video ? `<span class="dur">${c.dur}</span>` : '';
-    return `<div class="wcard anim${hidden}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}${frame}<div class="shade"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
+    return `<div class="wcard anim${hidden}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}<div class="shade"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
   }).join('');
   bindWorkVideos();
 }
+// ============================================================
+// VIDEO LIGHTBOX
+// ============================================================
+const vlBox = document.getElementById('videoLightbox');
+const vlInner = document.getElementById('vlInner');
+const vlIframe = document.getElementById('vlIframe');
+const vlClose = document.getElementById('vlClose');
+function openVideoLightbox(vid, cardType) {
+  if (!vlBox) return;
+  vlInner.classList.remove('short', 'wide');
+  vlInner.classList.add(cardType === 'short' ? 'short' : 'wide');
+  vlIframe.src = `https://drive.google.com/file/d/${vid}/preview`;
+  vlBox.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeVideoLightbox() {
+  if (!vlBox) return;
+  vlBox.classList.remove('open');
+  vlIframe.src = '';
+  document.body.style.overflow = '';
+}
+if (vlClose) vlClose.addEventListener('click', closeVideoLightbox);
+if (vlBox) vlBox.addEventListener('click', function(e) { if (e.target === vlBox) closeVideoLightbox(); });
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeVideoLightbox(); });
 function bindWorkVideos() {
-  const cards = document.querySelectorAll('#gallery .wcard[data-video]');
-  function closeAllVideos() {
-    cards.forEach(card => {
-      const frame = card.querySelector('.videoframe');
-      const video = frame ? frame.querySelector('video') : null;
-      const fbIframe = frame ? frame.querySelector('.fallback-iframe') : null;
-      if (video) { video.pause(); video.removeAttribute('src'); video.load(); video.style.display = 'block'; }
-      if (fbIframe) { fbIframe.src = ''; fbIframe.style.display = 'none'; }
-      if (frame) frame.style.display = 'none';
-    });
-  }
-  cards.forEach(card => {
-    const vid = card.getAttribute('data-video');
-    const frame = card.querySelector('.videoframe');
-    const video = frame.querySelector('video');
-    const fbIframe = frame.querySelector('.fallback-iframe');
-    const closeBtn = frame.querySelector('.closevid');
-    video.addEventListener('error', function() {
-      video.style.display = 'none';
-      fbIframe.src = `https://drive.google.com/file/d/${vid}/preview`;
-      fbIframe.style.display = 'block';
-    });
-    card.addEventListener('click', function(e) {
-      if (e.target.closest('.closevid')) return;
-      if (frame.style.display !== 'block') {
-        closeAllVideos();
-        video.src = `https://drive.google.com/uc?export=download&id=${vid}`;
-        frame.style.display = 'block';
-        video.play().catch(() => {});
-      }
-    });
-    closeBtn.addEventListener('click', function(e) {
-      e.stopPropagation();
-      video.pause();
-      video.removeAttribute('src');
-      video.load();
-      video.style.display = 'block';
-      fbIframe.src = '';
-      fbIframe.style.display = 'none';
-      frame.style.display = 'none';
+  document.querySelectorAll('#gallery .wcard[data-video]').forEach(card => {
+    card.addEventListener('click', function() {
+      openVideoLightbox(card.getAttribute('data-video'), card.getAttribute('data-type'));
     });
   });
 }
