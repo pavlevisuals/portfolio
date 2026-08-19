@@ -230,12 +230,22 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
 .mouse-glow{position:fixed;top:0;left:0;width:600px;height:600px;pointer-events:none;z-index:0;background:radial-gradient(circle,rgba(41,151,255,.18),transparent 60%);filter:blur(60px);transform:translate(-50%,-50%);mix-blend-mode:screen}
 /* SCROLL MOTION BLUR */
 #scrollBlur{will-change:filter;filter:blur(0px)}
+/* CUSTOM SCROLLBAR */
+.custom-scrollbar{position:fixed;top:0;right:0;width:18px;height:100vh;height:100dvh;z-index:9999;padding:6px 0}
+.custom-scrollbar-thumb{position:absolute;right:5px;width:6px;border-radius:5px;background:rgba(255,255,255,.3);cursor:grab;transition:background .18s ease,width .18s ease,right .18s ease}
+.custom-scrollbar-thumb:hover{background:rgba(255,255,255,.55);width:8px;right:4px}
+.custom-scrollbar-thumb.dragging{background:var(--blue2);width:8px;right:4px;cursor:grabbing}
 @media(prefers-reduced-motion:reduce){.rv,.rise{opacity:1!important;transform:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <!-- MOUSE GLOW -->
 <div class="mouse-glow" id="mouseGlow"></div>
+
+<!-- CUSTOM SCROLLBAR -->
+<div class="custom-scrollbar" id="customScrollbar">
+  <div class="custom-scrollbar-thumb" id="customScrollbarThumb"></div>
+</div>
 
 <!-- VIDEO LIGHTBOX -->
 <div class="video-lightbox" id="videoLightbox">
@@ -691,6 +701,7 @@ function buildContactChips() {
 (function() {
   const form = document.getElementById('contactForm');
   if (!form) return;
+  let resetTimer = null;
   form.addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = document.getElementById('submitBtn');
@@ -711,6 +722,16 @@ function buildContactChips() {
       document.getElementById('contactSuccessDesc').textContent = t.contactSuccessDesc;
       fields.style.display = 'none';
       success.style.display = 'block';
+      form.reset();
+      buildContactChips();
+      if (resetTimer) clearTimeout(resetTimer);
+      resetTimer = setTimeout(() => {
+        success.style.display = 'none';
+        fields.style.display = '';
+        btn.disabled = false;
+        btn.style.opacity = '1';
+        btn.textContent = originalLabel;
+      }, 4000);
     } catch (err) {
       alert(t.contactErrorMsg);
       btn.disabled = false;
@@ -834,6 +855,81 @@ document.querySelectorAll('.seg-btn').forEach(btn => {
   // uskladi target da ne bi bilo skoka pri sledećem wheel eventu
   window.addEventListener('scroll', () => { if (!raf) { current = window.scrollY; target = window.scrollY; } }, { passive: true });
   window.addEventListener('wheel', onWheel, { passive: false });
+})();
+// ============================================================
+// CUSTOM SCROLLBAR (desni slider - radi na mišu i na dodir)
+// ============================================================
+(function() {
+  const track = document.getElementById('customScrollbar');
+  const thumb = document.getElementById('customScrollbarThumb');
+  if (!track || !thumb) return;
+  const PAD = 6;
+  const MIN_THUMB = 40;
+  let dragging = false;
+  let startPointerY = 0;
+  let startScroll = 0;
+
+  function docScrollableHeight() {
+    return Math.max(document.documentElement.scrollHeight - window.innerHeight, 1);
+  }
+  function trackUsableHeight() {
+    return track.clientHeight - PAD * 2;
+  }
+  function update() {
+    const scrollable = docScrollableHeight();
+    const trackH = trackUsableHeight();
+    const ratio = window.innerHeight / document.documentElement.scrollHeight;
+    const thumbH = Math.min(Math.max(ratio * trackH, MIN_THUMB), trackH);
+    const maxThumbTop = trackH - thumbH;
+    const progress = Math.min(Math.max(window.scrollY / scrollable, 0), 1);
+    thumb.style.height = thumbH + 'px';
+    thumb.style.top = (PAD + progress * maxThumbTop) + 'px';
+  }
+  function scrollFromPointer(clientY) {
+    const trackH = trackUsableHeight();
+    const thumbH = thumb.offsetHeight;
+    const maxThumbTop = trackH - thumbH;
+    const deltaY = clientY - startPointerY;
+    const deltaScroll = maxThumbTop > 0 ? (deltaY / maxThumbTop) * docScrollableHeight() : 0;
+    window.scrollTo(0, startScroll + deltaScroll);
+  }
+  function beginDrag(clientY) {
+    dragging = true;
+    thumb.classList.add('dragging');
+    startPointerY = clientY;
+    startScroll = window.scrollY;
+    document.body.style.userSelect = 'none';
+  }
+  function endDrag() {
+    if (!dragging) return;
+    dragging = false;
+    thumb.classList.remove('dragging');
+    document.body.style.userSelect = '';
+  }
+  // Mouse
+  thumb.addEventListener('mousedown', function(e) { beginDrag(e.clientY); e.preventDefault(); });
+  window.addEventListener('mousemove', function(e) { if (dragging) scrollFromPointer(e.clientY); });
+  window.addEventListener('mouseup', endDrag);
+  // Touch
+  thumb.addEventListener('touchstart', function(e) { beginDrag(e.touches[0].clientY); }, { passive: true });
+  window.addEventListener('touchmove', function(e) { if (dragging) scrollFromPointer(e.touches[0].clientY); }, { passive: true });
+  window.addEventListener('touchend', endDrag);
+  // Klik na trag (van thumb-a) - skoči na tu poziciju
+  track.addEventListener('click', function(e) {
+    if (e.target === thumb) return;
+    const rect = track.getBoundingClientRect();
+    const clickY = e.clientY - rect.top;
+    const trackH = trackUsableHeight();
+    const thumbH = thumb.offsetHeight;
+    const maxThumbTop = trackH - thumbH;
+    const progress = Math.min(Math.max((clickY - PAD - thumbH / 2) / maxThumbTop, 0), 1);
+    window.scrollTo({ top: progress * docScrollableHeight(), behavior: 'smooth' });
+  });
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  const ro = new ResizeObserver(update);
+  ro.observe(document.body);
+  update();
 })();
 // ============================================================
 // SOUND WAVES
