@@ -71,11 +71,10 @@ a{color:inherit}
 .seg-btn{position:relative;z-index:2;border:none;background:none;color:rgba(255,255,255,.6);font-size:13.5px;font-weight:500;padding:.55rem 1.3rem;border-radius:999px;cursor:pointer;transition:color .3s ease;white-space:nowrap;font-family:inherit}
 .seg-btn.active{color:#000}
 .seg-thumb{position:absolute;z-index:1;top:4px;bottom:4px;left:4px;width:0;background:#fff;border-radius:999px;transition:left .38s cubic-bezier(.65,0,.35,1),width .38s cubic-bezier(.65,0,.35,1);box-shadow:0 6px 18px -6px rgba(255,255,255,.4)}
-.gallery-grid{column-count:3;column-gap:1.4rem;margin-top:3.6rem}
-@media(min-width:900px){.gallery-grid{column-count:4}}
-@media(max-width:899px) and (min-width:641px){.gallery-grid{column-count:3}}
+.gallery-grid{display:flex;gap:1.4rem;margin-top:3.6rem;align-items:flex-start}
+.gallery-col{flex:1;min-width:0;display:flex;flex-direction:column;gap:1.4rem}
 .wcard.hidden-card{display:none}
-.wcard{position:relative;border-radius:22px;overflow:hidden;background:#0a0a0c;border:1px solid var(--line-d);transition:transform .3s ease,box-shadow .3s ease;cursor:pointer;break-inside:avoid;-webkit-column-break-inside:avoid;margin-bottom:1.4rem;width:100%;display:block}
+.wcard{position:relative;border-radius:22px;overflow:hidden;background:#0a0a0c;border:1px solid var(--line-d);transition:transform .3s ease,box-shadow .3s ease;cursor:pointer;width:100%;display:block}
 .wcard:hover{transform:translateY(-4px);box-shadow:0 24px 50px -20px rgba(0,0,0,.6)}
 .wcard.anim{animation:cardIn .55s cubic-bezier(.16,1,.3,1) both}
 @keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.96)}to{opacity:1;transform:none}}
@@ -110,8 +109,9 @@ a{color:inherit}
   .wcard .playdot{transition:none}
 }
 @media(max-width:640px){
-  .gallery-grid{column-count:2;column-gap:.8rem;margin-top:2.6rem}
-  .wcard{border-radius:16px;margin-bottom:.8rem}
+  .gallery-grid{gap:.8rem;margin-top:2.6rem}
+  .gallery-col{gap:.8rem}
+  .wcard{border-radius:16px}
   .wcard .tag{top:10px;left:10px;padding:.2rem .5rem}
   .wcard .tag span{font-size:9px}
   .wcard .dur{top:10px;right:10px;padding:.2rem .45rem;font-size:9.5px}
@@ -638,14 +638,33 @@ function buildTools() {
   wrap.innerHTML = t.aboutPills.map(p => `<span class="tool-pill">${p}</span>`).join('');
 }
 let worksFilter = 'all';
+function getGalleryColumnCount() {
+  const w = window.innerWidth;
+  if (w <= 640) return 2;
+  if (w <= 899) return 3;
+  return 4;
+}
 function buildWorksCards() {
   const gal = document.getElementById('gallery');
   if (!gal) return;
-  const cards = t.worksCards;
-  gal.innerHTML = cards.map((c, i) => {
-    const show = worksFilter === 'all' || c.type === worksFilter;
-    const grad = `g${(i%8)+1}`;
-    const hidden = show ? '' : ' hidden-card';
+  const allCards = t.worksCards.map((c, i) => ({ ...c, i }));
+  const visible = allCards.filter(c => worksFilter === 'all' || c.type === worksFilter);
+  const colCount = getGalleryColumnCount();
+
+  gal.innerHTML = '';
+  const cols = [];
+  for (let k = 0; k < colCount; k++) {
+    const col = document.createElement('div');
+    col.className = 'gallery-col';
+    gal.appendChild(col);
+    cols.push(col);
+  }
+  const colHeights = new Array(colCount).fill(0);
+  const colLastType = new Array(colCount).fill(null);
+  const tmp = document.createElement('div');
+
+  visible.forEach(c => {
+    const grad = `g${(c.i % 8) + 1}`;
     const thumb = c.video
       ? `<img class="thumbimg" src="https://drive.google.com/thumbnail?id=${c.video}&sz=w1000" alt="${c.title}" onerror="this.style.display='none'">`
       : '';
@@ -656,10 +675,32 @@ function buildWorksCards() {
       ? `<div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`
       : `<div class="comingsoon">${t.comingSoon}</div>`;
     const durBadge = c.video ? `<span class="dur">${c.dur}</span>` : '';
-    return `<div class="wcard anim${hidden}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}<div class="shine"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
-  }).join('');
+    tmp.innerHTML = `<div class="wcard anim" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}<div class="shine"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
+    const cardEl = tmp.firstElementChild;
+
+    // Estimate card height from aspect ratio (short = 9:16, long/saas = 16:9)
+    // so we don't need to measure a hidden node - keeps this in original visual order.
+    const ratio = c.type === 'short' ? 16 / 9 : 9 / 16;
+    const order = Array.from({ length: colCount }, (_, k) => k).sort((a, b) => colHeights[a] - colHeights[b]);
+    let chosenIdx = order.find(k => colLastType[k] !== c.type);
+    if (chosenIdx === undefined) chosenIdx = order[0];
+    cols[chosenIdx].appendChild(cardEl);
+    colHeights[chosenIdx] += ratio + 0.08; // + gap factor
+    colLastType[chosenIdx] = c.type;
+  });
+
   bindWorkVideos();
 }
+let galleryResizeTimer = null;
+window.addEventListener('resize', () => {
+  clearTimeout(galleryResizeTimer);
+  galleryResizeTimer = setTimeout(() => {
+    const newCount = getGalleryColumnCount();
+    if (newCount !== (document.querySelectorAll('.gallery-col').length || 0)) {
+      buildWorksCards();
+    }
+  }, 200);
+});
 // ============================================================
 // VIDEO LIGHTBOX
 // ============================================================
