@@ -12,10 +12,8 @@
 <style>
 :root{--bg:#000;--light:#fbfbfd;--gray:#f5f5f7;--text:#1d1d1f;--muted:#6e6e73;--line-d:rgba(255,255,255,.12);--line-l:rgba(0,0,0,.08);--blue:#0071e3;--blue2:#2997ff}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth}
-html,body{overflow-x:hidden;overscroll-behavior-x:none;max-width:100%}
-html{background:#000}
-body{margin:0;background:var(--bg);color:var(--light);font-family:'Inter',-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em;overscroll-behavior-y:none;width:100%;position:relative}
+html{scroll-behavior:smooth;background:#000}
+body{margin:0;background:var(--bg);color:var(--light);font-family:'Inter',-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;-webkit-font-smoothing:antialiased;letter-spacing:-0.01em;overflow-x:hidden;overscroll-behavior-x:none;width:100%;position:relative}
 ::selection{background:var(--blue2);color:#fff}
 ::-webkit-scrollbar{width:0;display:none}
 img,svg{display:block}
@@ -657,7 +655,7 @@ function buildWorksCards() {
       ? `<div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`
       : `<div class="comingsoon">${t.comingSoon}</div>`;
     const durBadge = c.video ? `<span class="dur">${c.dur}</span>` : '';
-    return `<div class="wcard anim${hidden}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}<div class="shade"></div><div class="shine"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
+    return `<div class="wcard anim${hidden}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}<div class="shine"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
   }).join('');
   bindWorkVideos();
 }
