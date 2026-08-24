@@ -672,11 +672,12 @@ function buildWorksCards() {
       : '';
     const bg = `<div class="bgimg ${grad}"></div>`;
     const dataVideo = c.video ? ` data-video="${c.video}"` : '';
-    const typeLabel = c.type === 'short' ? t.segShort : (c.type === 'long' ? t.segLong : t.segSaas);
+    const formatLabel = c.type === 'short' ? t.segShort : (c.type === 'long' ? t.segLong : t.segSaas);
+    const typeLabel = c.video === '1M3vW-Wo-7MfUDlIt3vgjY1vsDwHaUd9Q' ? c.tag : formatLabel;
     const centerBadge = c.video
       ? `<div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`
       : `<div class="comingsoon">${t.comingSoon}</div>`;
-    const durBadge = c.video ? `<span class="dur">${c.dur}</span>` : '';
+    const durBadge = (c.video && c.dur) ? `<span class="dur">${c.dur}</span>` : '';
     tmp.innerHTML = `<div class="wcard anim" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}<div class="shine"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
     const cardEl = tmp.firstElementChild;
 
