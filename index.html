@@ -105,17 +105,17 @@ a{color:inherit}
 .wcard .bgimg{position:absolute;inset:0;transition:transform .8s cubic-bezier(.16,1,.3,1)}
 .wcard:hover .bgimg{transform:scale(1.06)}
 .wcard .shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.08) 0%,rgba(0,0,0,0) 32%,rgba(0,0,0,.1) 62%,rgba(0,0,0,.5) 100%)}
-.wcard .tag{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:.35rem;background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:.25rem .6rem;border-radius:7px}
+.wcard .tag{position:absolute;top:14px;left:14px;display:inline-flex;align-items:center;gap:.35rem;background:rgba(10,10,12,.85);backdrop-filter:blur(6px);padding:.25rem .6rem;border-radius:7px}
 .wcard .tag .d{width:6px;height:6px;border-radius:50%;background:var(--blue2)}
 .wcard .tag span{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:rgba(255,255,255,.8)}
-.wcard .dur{position:absolute;top:14px;right:14px;font-size:10.5px;color:rgba(255,255,255,.7);background:rgba(0,0,0,.5);backdrop-filter:blur(6px);padding:.25rem .55rem;border-radius:7px}
+.wcard .dur{position:absolute;top:14px;right:14px;font-size:10.5px;color:rgba(255,255,255,.85);background:rgba(10,10,12,.85);backdrop-filter:blur(6px);padding:.25rem .55rem;border-radius:7px}
 .wcard .info{position:absolute;left:0;right:0;bottom:0;padding:1rem 1.1rem}
 .wcard .info h3{font-size:16px;font-weight:600;color:#fff;margin:0;letter-spacing:-.01em}
 .wcard .info span{font-size:11.5px;color:rgba(255,255,255,.55)}
 .wcard .playdot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.8);width:46px;height:46px;border-radius:50%;background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.28);backdrop-filter:blur(6px);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .3s ease,transform .3s ease}
 .wcard:hover .playdot{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .wcard .playdot svg{width:14px;height:14px;fill:#fff;margin-left:2px}
-.wcard .comingsoon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(0,0,0,.55);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:.5rem 1.1rem;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.85);white-space:nowrap;z-index:2}
+.wcard .comingsoon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(10,10,12,.85);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:.5rem 1.1rem;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.85);white-space:nowrap;z-index:2}
 .wcard .thumbimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.16,1,.3,1),filter .5s ease}
 .wcard:hover .thumbimg{transform:scale(1.09);filter:brightness(1.06) saturate(1.08)}
 .wcard .shine{position:absolute;top:0;left:-160%;width:55%;height:100%;background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.12) 45%,rgba(255,255,255,.28) 50%,rgba(255,255,255,.12) 55%,transparent 100%);transform:skewX(-20deg);pointer-events:none;z-index:2}
@@ -551,16 +551,16 @@ const TR = {
     worksCards:[
       {type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026",video:"1nTh1IK0NJQOR_8HmgH4-SMhZA3ZrGuAT"},
       {type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026"},
-      {type:"short",tag:"TikTok",dur:"0:34",title:"Muzički Spot",sub:"TikTok · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
-      {type:"short",tag:"Reels",dur:"0:41",title:"Fitness Kreator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
-      {type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Isečci",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
+      {type:"short",tag:"TikTok",dur:"0:36",title:"Muzički Spot",sub:"TikTok · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
+      {type:"short",tag:"Reels",dur:"0:27",title:"Fitness Kreator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
+      {type:"short",tag:"Shorts",dur:"0:22",title:"Podcast Isečci",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
       {type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},
-      {type:"short",tag:"Reels",dur:"0:19",title:"Restoran - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
+      {type:"short",tag:"Reels",dur:"0:52",title:"Restoran - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
       {type:"long",tag:"Dokumentarni",dur:"22:07",title:"Muzički Dokumentarac",sub:"YouTube · 2024"},
-      {type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
-      {type:"saas",tag:"SaaS",dur:"1:12",title:"Product Demo",sub:"SaaS Onboarding · 2026",video:"1Gotj4Es5x2mfymojboyV6131g7r6_Q-x"},
+      {type:"short",tag:"TikTok",dur:"0:52",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
+      {type:"saas",tag:"SaaS",dur:"0:24",title:"Product Demo",sub:"SaaS Onboarding · 2026",video:"1Gotj4Es5x2mfymojboyV6131g7r6_Q-x"},
       {type:"saas",tag:"SaaS",dur:"0:48",title:"Feature Walkthrough",sub:"SaaS Marketing · 2025"},
-      {type:"long",tag:"Dokumentarni",dur:"",title:"Novi Dokumentarac",sub:"YouTube · 2026",video:"1M3vW-Wo-7MfUDlIt3vgjY1vsDwHaUd9Q"}
+      {type:"long",tag:"Dokumentarni",dur:"0:21",title:"Novi Dokumentarac",sub:"YouTube · 2026",video:"1M3vW-Wo-7MfUDlIt3vgjY1vsDwHaUd9Q"}
     ]
   },
   en: {
@@ -594,16 +594,16 @@ const TR = {
     worksCards:[
       {type:"short",tag:"Reels",dur:"0:28",title:"Fashion Brand",sub:"Instagram Reels · 2026",video:"1nTh1IK0NJQOR_8HmgH4-SMhZA3ZrGuAT"},
       {type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026"},
-      {type:"short",tag:"TikTok",dur:"0:34",title:"Music Video",sub:"TikTok · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
-      {type:"short",tag:"Reels",dur:"0:41",title:"Fitness Creator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
-      {type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Clips",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
+      {type:"short",tag:"TikTok",dur:"0:36",title:"Music Video",sub:"TikTok · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
+      {type:"short",tag:"Reels",dur:"0:27",title:"Fitness Creator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
+      {type:"short",tag:"Shorts",dur:"0:22",title:"Podcast Clips",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
       {type:"long",tag:"Commercial",dur:"3:20",title:"Corporate Film",sub:"Commercial Production · 2025"},
-      {type:"short",tag:"Reels",dur:"0:19",title:"Restaurant - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
+      {type:"short",tag:"Reels",dur:"0:52",title:"Restaurant - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
       {type:"long",tag:"Documentary",dur:"22:07",title:"Music Documentary",sub:"YouTube · 2024"},
-      {type:"short",tag:"TikTok",dur:"0:37",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
-      {type:"saas",tag:"SaaS",dur:"1:12",title:"Product Demo",sub:"SaaS Onboarding · 2026",video:"1Gotj4Es5x2mfymojboyV6131g7r6_Q-x"},
+      {type:"short",tag:"TikTok",dur:"0:52",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
+      {type:"saas",tag:"SaaS",dur:"0:24",title:"Product Demo",sub:"SaaS Onboarding · 2026",video:"1Gotj4Es5x2mfymojboyV6131g7r6_Q-x"},
       {type:"saas",tag:"SaaS",dur:"0:48",title:"Feature Walkthrough",sub:"SaaS Marketing · 2025"},
-      {type:"long",tag:"Documentary",dur:"",title:"New Documentary",sub:"YouTube · 2026",video:"1M3vW-Wo-7MfUDlIt3vgjY1vsDwHaUd9Q"}
+      {type:"long",tag:"Documentary",dur:"0:21",title:"New Documentary",sub:"YouTube · 2026",video:"1M3vW-Wo-7MfUDlIt3vgjY1vsDwHaUd9Q"}
     ]
   }
 };
