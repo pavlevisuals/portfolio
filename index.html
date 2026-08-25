@@ -72,9 +72,10 @@ a{color:inherit}
 #radovi{background:#000;padding:6rem 0 7rem}
 .radovi-head h2{font-size:clamp(2.1rem,6vw,3.6rem);font-weight:700;text-align:center;color:#fff;letter-spacing:-.03em;margin:0 auto;max-width:760px}
 .radovi-head p{text-align:center;font-size:17px;color:var(--muted);line-height:1.55;max-width:520px;margin:1rem auto 0}
-.segwrap{display:flex;justify-content:center;margin-top:3rem}
-.segmented{position:relative;display:inline-flex;background:rgba(255,255,255,.06);border:1px solid var(--line-d);border-radius:999px;padding:4px;gap:2px}
-.seg-btn{position:relative;z-index:2;border:none;background:none;color:rgba(255,255,255,.6);font-size:13.5px;font-weight:500;padding:.55rem 1.3rem;border-radius:999px;cursor:pointer;transition:color .3s ease;white-space:nowrap;font-family:inherit}
+.segwrap{display:flex;justify-content:center;margin-top:3rem;width:100%}
+.segmented{position:relative;display:inline-flex;background:rgba(255,255,255,.06);border:1px solid var(--line-d);border-radius:999px;padding:4px;gap:2px;max-width:100%;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.segmented::-webkit-scrollbar{display:none}
+.seg-btn{position:relative;z-index:2;border:none;background:none;color:rgba(255,255,255,.6);font-size:13.5px;font-weight:500;padding:.55rem 1.3rem;border-radius:999px;cursor:pointer;transition:color .3s ease;white-space:nowrap;font-family:inherit;flex-shrink:0}
 .seg-btn.active{color:#000}
 .seg-thumb{position:absolute;z-index:1;top:4px;bottom:4px;left:4px;width:0;background:#fff;border-radius:999px;transition:left .38s cubic-bezier(.65,0,.35,1),width .38s cubic-bezier(.65,0,.35,1);box-shadow:0 6px 18px -6px rgba(255,255,255,.4)}
 .gallery-grid{display:flex;gap:1.4rem;margin-top:3.6rem;align-items:flex-start}
@@ -113,6 +114,10 @@ a{color:inherit}
   .wcard:hover .thumbimg{transform:none;filter:none}
   .wcard:hover .shine{animation:none}
   .wcard .playdot{transition:none}
+}
+@media(max-width:640px){
+  .segmented{padding:3px;gap:1px}
+  .seg-btn{font-size:12px;padding:.5rem .85rem}
 }
 @media(max-width:640px){
   .gallery-grid{gap:.8rem;margin-top:2.6rem}
@@ -535,7 +540,6 @@ const TR = {
       {type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026"},
       {type:"short",tag:"TikTok",dur:"0:34",title:"Muzički Spot",sub:"TikTok · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
       {type:"short",tag:"Reels",dur:"0:41",title:"Fitness Kreator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
-      {type:"long",tag:"Vlog Serija",dur:"12:15",title:"YouTube Vlog Serija",sub:"YouTube · 2025"},
       {type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Isečci",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
       {type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},
       {type:"short",tag:"Reels",dur:"0:19",title:"Restoran - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
@@ -579,7 +583,6 @@ const TR = {
       {type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026"},
       {type:"short",tag:"TikTok",dur:"0:34",title:"Music Video",sub:"TikTok · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
       {type:"short",tag:"Reels",dur:"0:41",title:"Fitness Creator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
-      {type:"long",tag:"Vlog Series",dur:"12:15",title:"YouTube Vlog Series",sub:"YouTube · 2025"},
       {type:"short",tag:"Shorts",dur:"0:52",title:"Podcast Clips",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
       {type:"long",tag:"Commercial",dur:"3:20",title:"Corporate Film",sub:"Commercial Production · 2025"},
       {type:"short",tag:"Reels",dur:"0:19",title:"Restaurant - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
