@@ -279,6 +279,12 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
 .custom-scrollbar-thumb:hover{background:rgba(255,255,255,.55);width:8px;right:4px}
 .custom-scrollbar-thumb.dragging{background:var(--blue2);width:8px;right:4px;cursor:grabbing}
 @media(max-width:860px){.custom-scrollbar{display:none}}
+/* BACK TO TOP FAB */
+.backtotop-fab{position:fixed;right:1.4rem;bottom:1.4rem;z-index:2000;width:46px;height:46px;border-radius:50%;background:rgba(20,20,22,.75);backdrop-filter:blur(14px) saturate(180%);-webkit-backdrop-filter:blur(14px) saturate(180%);border:1px solid rgba(255,255,255,.14);display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0;visibility:hidden;transform:translateY(10px) scale(.9);transition:opacity .3s ease,transform .3s ease,visibility .3s ease,border-color .2s ease,background .2s ease}
+.backtotop-fab.show{opacity:1;visibility:visible;transform:translateY(0) scale(1)}
+.backtotop-fab:hover{background:var(--blue);border-color:var(--blue)}
+.backtotop-fab svg{width:18px;height:18px;stroke:#fff;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+@media(max-width:640px){.backtotop-fab{right:1rem;bottom:1rem;width:42px;height:42px}}
 @media(prefers-reduced-motion:reduce){.rv,.rise{opacity:1!important;transform:none!important;animation:none!important}}
 </style>
 </head>
@@ -290,6 +296,11 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
 <div class="custom-scrollbar" id="customScrollbar">
   <div class="custom-scrollbar-thumb" id="customScrollbarThumb"></div>
 </div>
+
+<!-- BACK TO TOP FAB -->
+<button class="backtotop-fab" id="backToTopFab" aria-label="Back to top">
+  <svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg>
+</button>
 
 <!-- VIDEO LIGHTBOX -->
 <div class="video-lightbox" id="videoLightbox">
@@ -502,9 +513,6 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
       <div><p class="h" id="footLabelStudio">Studio</p><div class="foot-col">
         <a href="#o-meni" id="footAbout">About</a><a href="#process" id="footProcess">Process</a><a href="#radovi" id="footWork">Work</a><a href="#how" id="footHow">How I work</a>
       </div></div>
-      <div><p class="h" id="footLabelSocials">Socials</p><div class="foot-col">
-        <a href="https://instagram.com/pavlevisuals" target="_blank" rel="noreferrer">Instagram</a><a href="#">YouTube</a><a href="#">TikTok</a>
-      </div></div>
       <div><p class="h" id="footLabelContact">Contact</p><div class="foot-col">
         <a href="mailto:pavlevisuals0@gmail.com">pavlevisuals0@gmail.com</a><span id="footLocation">Belgrade, Serbia</span>
       </div></div>
@@ -545,12 +553,12 @@ const TR = {
     inputName:"Ime i prezime",inputEmail:"Email adresa",inputMessage:"Opiši projekat, rok i referencu...",submitBtn:"Pošalji poruku",contactOr:"Ili direktno:",
     contactSuccessTitle:"Poruka je poslata.",contactSuccessDesc:"Hvala što si se javio/la. Javiću ti se uskoro.",contactErrorMsg:"Ups, nešto nije radilo. Pokušaj ponovo ili mi piši direktno na pavlevisuals0@gmail.com.",
     footDesc:"PavleVisuals je nezavisni video editing studio. Cene su okvirne i zavise od obima projekta, rokova i broja revizija.",
-    footLabelServices:"Usluge",footLabelStudio:"Studio",footLabelSocials:"Mreže",footLabelContact:"Kontakt",
+    footLabelServices:"Usluge",footLabelStudio:"Studio",footLabelContact:"Kontakt",
     footShort:"Short Form",footLong:"Long Form",footAbout:"O meni",footProcess:"Proces",footWork:"Radovi",footHow:"Kako radim",
     footLocation:"Beograd, Srbija",footRights:"© 2026 PavleVisuals - Pavle Ćirović. Sva prava zadržana.",footTop:"Vrh ↑",
     worksCards:[
       {type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026",video:"1nTh1IK0NJQOR_8HmgH4-SMhZA3ZrGuAT"},
-      {type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026"},
+      {type:"long",tag:"Dokumentarni",dur:"18:42",title:"Ulice Beograda",sub:"YouTube · 2026",video:"1dKK1UtOY7BzVjsIS0L3NojJyd8KCoccl"},
       {type:"short",tag:"TikTok",dur:"0:36",title:"Muzički Spot",sub:"TikTok · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
       {type:"short",tag:"Reels",dur:"0:27",title:"Fitness Kreator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
       {type:"short",tag:"Shorts",dur:"0:22",title:"Podcast Isečci",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
@@ -588,12 +596,12 @@ const TR = {
     inputName:"Full name",inputEmail:"Email address",inputMessage:"Describe the project, deadline and reference...",submitBtn:"Send message",contactOr:"Or directly:",
     contactSuccessTitle:"Message sent.",contactSuccessDesc:"Thanks for reaching out. I'll get back to you soon.",contactErrorMsg:"Oops, something went wrong. Try again or email me directly at pavlevisuals0@gmail.com.",
     footDesc:"PavleVisuals is an independent video editing studio. Prices are indicative and depend on project scope, deadlines and number of revisions.",
-    footLabelServices:"Services",footLabelStudio:"Studio",footLabelSocials:"Socials",footLabelContact:"Contact",
+    footLabelServices:"Services",footLabelStudio:"Studio",footLabelContact:"Contact",
     footShort:"Short Form",footLong:"Long Form",footAbout:"About",footProcess:"Process",footWork:"Work",footHow:"How I work",
     footLocation:"Belgrade, Serbia",footRights:"© 2026 PavleVisuals - Pavle Ćirović. All rights reserved.",footTop:"Top ↑",
     worksCards:[
       {type:"short",tag:"Reels",dur:"0:28",title:"Fashion Brand",sub:"Instagram Reels · 2026",video:"1nTh1IK0NJQOR_8HmgH4-SMhZA3ZrGuAT"},
-      {type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026"},
+      {type:"long",tag:"Documentary",dur:"18:42",title:"Streets of Belgrade",sub:"YouTube · 2026",video:"1dKK1UtOY7BzVjsIS0L3NojJyd8KCoccl"},
       {type:"short",tag:"TikTok",dur:"0:36",title:"Music Video",sub:"TikTok · 2026",video:"1ipwXv9NZhYkXbDwRd_eQzXUabYRV_4JT"},
       {type:"short",tag:"Reels",dur:"0:27",title:"Fitness Creator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
       {type:"short",tag:"Shorts",dur:"0:22",title:"Podcast Clips",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
@@ -981,6 +989,22 @@ document.querySelectorAll('.seg-btn').forEach(btn => {
   const ro = new ResizeObserver(update);
   ro.observe(document.body);
   update();
+})();
+// ============================================================
+// BACK TO TOP FAB
+// ============================================================
+(function() {
+  const fab = document.getElementById('backToTopFab');
+  if (!fab) return;
+  function toggleFab() {
+    if (window.scrollY > window.innerHeight * 0.6) fab.classList.add('show');
+    else fab.classList.remove('show');
+  }
+  fab.addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+  window.addEventListener('scroll', toggleFab, { passive: true });
+  toggleFab();
 })();
 // ============================================================
 // SOUND WAVES
