@@ -53,6 +53,11 @@ a{color:inherit}
 .navlinks a:hover{color:#fff}
 .nav-cta{font-size:12.5px;color:#fff;background:var(--blue);padding:.4rem 1rem;border-radius:999px;text-decoration:none;transition:background .2s ease}
 .nav-cta:hover{background:#0077ed}
+.navlinks a{position:relative}
+.navlinks a.current{color:#fff}
+.navlinks a.current::after{content:"";position:absolute;left:0;right:0;bottom:-8px;height:2px;border-radius:2px;background:var(--blue2);box-shadow:0 0 8px var(--blue2)}
+.scroll-progress{position:fixed;top:0;left:0;height:2px;width:0%;background:linear-gradient(90deg,var(--blue),var(--blue2));z-index:9998;transition:width .08s linear}
+.btn-blue:active,.nav-cta:active,.chip:active,.seg-btn:active,.form-submit:active,.hcard .cta:active,.tool-pill:active,.copy-email-btn:active,.gallery-nav:active,.backtotop-fab:active{transform:scale(.94)}
 @media(max-width:860px){.navlinks .navlink,.navlinks .lang-switch{display:none}}
 .lang-switch{display:inline-flex;background:rgba(255,255,255,.06);border:1px solid var(--line-d);border-radius:999px;padding:2px;gap:2px}
 .lang-btn{border:none;background:transparent;color:rgba(255,255,255,.55);font-size:11px;font-weight:600;padding:.25rem .6rem;border-radius:999px;cursor:pointer;transition:all .25s ease;letter-spacing:.04em;font-family:inherit}
@@ -77,6 +82,11 @@ a{color:inherit}
 .hero-note{font-size:12px;letter-spacing:.08em;color:rgba(255,255,255,.35);margin-top:1.4rem;text-transform:uppercase;display:inline-flex;align-items:center;gap:.5rem}
 .hero-note::before{content:"";width:6px;height:6px;border-radius:50%;background:#34d399;box-shadow:0 0 12px #34d399;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.scroll-cue{position:absolute;left:50%;bottom:1.6rem;transform:translateX(-50%);color:rgba(255,255,255,.35);display:flex;transition:opacity .3s ease,color .2s ease;animation:cueBounce 2.2s ease-in-out infinite;opacity:1}
+.scroll-cue:hover{color:var(--blue2)}
+.scroll-cue.hide{opacity:0;pointer-events:none}
+.scroll-cue svg{width:20px;height:20px}
+@keyframes cueBounce{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(8px)}}
 /* STATEMENT */
 #statement{background:var(--light)}
 .statement-text{font-size:clamp(1.5rem,3.6vw,2.3rem);font-weight:500;line-height:1.4;letter-spacing:-.02em;color:var(--text);max-width:820px;margin:0 auto;text-align:center}
@@ -116,8 +126,12 @@ a{color:inherit}
 .wcard:hover .playdot{opacity:1;transform:translate(-50%,-50%) scale(1)}
 .wcard .playdot svg{width:14px;height:14px;fill:#fff;margin-left:2px}
 .wcard .comingsoon{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);background:rgba(10,10,12,.85);border:1px solid rgba(255,255,255,.22);backdrop-filter:blur(6px);padding:.5rem 1.1rem;border-radius:999px;font-size:12.5px;font-weight:600;letter-spacing:.03em;color:rgba(255,255,255,.85);white-space:nowrap;z-index:2}
-.wcard .thumbimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.16,1,.3,1),filter .5s ease}
+.wcard .thumbimg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;transition:transform .9s cubic-bezier(.16,1,.3,1),filter .5s ease,opacity .5s ease;opacity:0}
+.wcard.loaded .thumbimg{opacity:1}
 .wcard:hover .thumbimg{transform:scale(1.09);filter:brightness(1.06) saturate(1.08)}
+.wcard .shimmer{position:absolute;inset:0;background:linear-gradient(100deg,transparent 30%,rgba(255,255,255,.14) 50%,transparent 70%);background-size:200% 100%;animation:shimmerSweep 1.6s ease-in-out infinite;pointer-events:none;z-index:1;opacity:1;transition:opacity .4s ease}
+.wcard.loaded .shimmer{opacity:0}
+@keyframes shimmerSweep{0%{background-position:150% 0}100%{background-position:-50% 0}}
 .wcard .shine{position:absolute;top:0;left:-160%;width:55%;height:100%;background:linear-gradient(115deg,transparent 0%,rgba(255,255,255,.12) 45%,rgba(255,255,255,.28) 50%,rgba(255,255,255,.12) 55%,transparent 100%);transform:skewX(-20deg);pointer-events:none;z-index:2}
 .wcard:hover .shine{animation:shineSweep 1s ease forwards}
 @keyframes shineSweep{from{left:-160%}to{left:160%}}
@@ -300,6 +314,9 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
 </style>
 </head>
 <body>
+<!-- SCROLL PROGRESS -->
+<div class="scroll-progress" id="scrollProgress"></div>
+
 <!-- MOUSE GLOW -->
 <div class="mouse-glow" id="mouseGlow"></div>
 
@@ -356,6 +373,9 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
     </div>
     <p class="rise d5 hero-note" id="heroNote">Available for new projects - open for collaboration</p>
   </div>
+  <a href="#statement" class="scroll-cue" id="scrollCue" aria-label="Scroll down">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M6 13l6 6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </a>
 </div>
 </section>
 <!-- STATEMENT -->
@@ -713,9 +733,10 @@ function buildWorksCards() {
   visible.forEach(c => {
     const grad = `g${(c.i % 8) + 1}`;
     const thumb = c.video
-      ? `<img class="thumbimg" src="https://drive.google.com/thumbnail?id=${c.video}&sz=w1000" alt="${c.title}" onerror="this.style.display='none'">`
+      ? `<img class="thumbimg" src="https://drive.google.com/thumbnail?id=${c.video}&sz=w1000" alt="${c.title}" onload="this.closest('.wcard').classList.add('loaded')" onerror="this.style.display='none';this.closest('.wcard').classList.add('loaded')">`
       : '';
     const bg = `<div class="bgimg ${grad}"></div>`;
+    const shimmer = c.video ? `<div class="shimmer"></div>` : '';
     const dataVideo = c.video ? ` data-video="${c.video}"` : '';
     const formatLabel = c.type === 'short' ? t.segShort : (c.type === 'long' ? t.segLong : t.segSaas);
     const typeLabel = c.video === '1M3vW-Wo-7MfUDlIt3vgjY1vsDwHaUd9Q' ? c.tag : formatLabel;
@@ -723,7 +744,7 @@ function buildWorksCards() {
       ? `<div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`
       : `<div class="comingsoon">${t.comingSoon}</div>`;
     const durBadge = (c.video && c.dur) ? `<span class="dur">${c.dur}</span>` : '';
-    tmp.innerHTML = `<div class="wcard anim" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}<div class="shine"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
+    tmp.innerHTML = `<div class="wcard anim${c.video ? '' : ' loaded'}" data-type="${c.type}"${dataVideo}><div class="surface">${bg}${thumb}${shimmer}<div class="shine"></div><span class="tag"><span class="d"></span><span>${typeLabel}</span></span>${durBadge}${centerBadge}</div></div>`;
     const cardEl = tmp.firstElementChild;
 
     // Estimate card height from aspect ratio (short = 9:16, long/saas = 16:9)
@@ -880,6 +901,47 @@ document.querySelectorAll('.seg-btn').forEach(btn => {
     buildWorksCards();
   });
 });
+// ============================================================
+// SCROLL PROGRESS BAR
+// ============================================================
+(function() {
+  const bar = document.getElementById('scrollProgress');
+  if (!bar) return;
+  function update() {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+    bar.style.width = pct + '%';
+  }
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+})();
+// ============================================================
+// ACTIVE NAV LINK + HERO SCROLL CUE
+// ============================================================
+(function() {
+  const map = { radovi: 'navWorks', bento: 'navServices', how: 'navHow', 'o-meni': 'navAbout' };
+  const sections = Object.keys(map).map(id => document.getElementById(id)).filter(Boolean);
+  const navIo = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      const linkId = map[e.target.id];
+      const link = document.getElementById(linkId);
+      if (!link) return;
+      if (e.isIntersecting) {
+        document.querySelectorAll('.navlink').forEach(a => a.classList.remove('current'));
+        link.classList.add('current');
+      }
+    });
+  }, { threshold: 0, rootMargin: '-45% 0px -50% 0px' });
+  sections.forEach(s => navIo.observe(s));
+
+  const cue = document.getElementById('scrollCue');
+  if (cue) {
+    window.addEventListener('scroll', () => {
+      cue.classList.toggle('hide', window.scrollY > 120);
+    }, { passive: true });
+  }
+})();
 // ============================================================
 // MOUSE GLOW (desktop only)
 // ============================================================
