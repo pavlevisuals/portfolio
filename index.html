@@ -290,6 +290,7 @@ body{
   const driveThumbnail = id => `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1600`;
   const drivePreview = id => `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview?autoplay=1`;
   const driveStream = id => `https://drive.google.com/uc?export=download&confirm=t&id=${encodeURIComponent(id)}`;
+  const driveView = id => `https://drive.google.com/file/d/${encodeURIComponent(id)}/view?usp=sharing`;
 
   function refreshDriveThumbnails() {
     document.querySelectorAll('#gallery .wcard[data-video]').forEach(card => {
@@ -323,6 +324,13 @@ body{
     function openDriveVideo(card) {
       const id = card.getAttribute('data-video');
       if (!id) return;
+      const isLongForm = card.getAttribute('data-type') === 'long';
+      const isMobile = window.matchMedia('(max-width: 640px), (pointer: coarse)').matches;
+      if (isLongForm && isMobile) {
+        const driveWindow = window.open(driveView(id), '_blank');
+        if (!driveWindow) window.location.href = driveView(id);
+        return;
+      }
       inner.classList.remove('short', 'wide');
       inner.classList.add(card.getAttribute('data-type') === 'short' ? 'short' : 'wide');
       activeVideoId = id;
