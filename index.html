@@ -1,4 +1,67 @@
 <!doctype html>
+<style>
+/* Mobile video frame fix */
+.video-lightbox{min-height:100dvh!important;height:100dvh!important;overflow:hidden!important;overscroll-behavior:contain}
+@media(max-width:640px){
+  .video-lightbox{padding:calc(1rem + env(safe-area-inset-top)) calc(1rem + env(safe-area-inset-right)) calc(1rem + env(safe-area-inset-bottom)) calc(1rem + env(safe-area-inset-left))!important}
+  .vl-inner.wide{width:min(94vw,600px,calc(82dvh * 16 / 9))!important;max-height:none!important}
+  .vl-frame{border-radius:14px!important}
+}
+@media(max-width:640px) and (orientation:landscape){
+  .video-lightbox{padding:1rem!important}
+  .vl-inner.wide{width:min(94vw,calc(82dvh * 16 / 9))!important}
+}
+</style>
+<script>
+(function() {
+  const driveThumbnail = id => `https://drive.google.com/thumbnail?id=${encodeURIComponent(id)}&sz=w1600`;
+  const drivePreview = id => `https://drive.google.com/file/d/${encodeURIComponent(id)}/preview?autoplay=1`;
+
+  function refreshDriveThumbnails() {
+    document.querySelectorAll('#gallery .wcard[data-video]').forEach(card => {
+      const id = card.getAttribute('data-video');
+      const image = card.querySelector('.thumbimg');
+      if (!id || !image || image.dataset.driveThumbnail === '1') return;
+      image.dataset.driveThumbnail = '1';
+      image.src = driveThumbnail(id);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const gallery = document.getElementById('gallery');
+    const lightbox = document.getElementById('videoLightbox');
+    const inner = document.getElementById('vlInner');
+    const iframe = document.getElementById('vlIframe');
+    if (!gallery || !lightbox || !inner || !iframe) return;
+
+    function openDriveVideo(card) {
+      const id = card.getAttribute('data-video');
+      if (!id) return;
+      inner.classList.remove('short', 'wide');
+      inner.classList.add(card.getAttribute('data-type') === 'short' ? 'short' : 'wide');
+      iframe.src = drivePreview(id);
+      lightbox.classList.add('open');
+      lightbox.scrollTop = 0;
+      document.body.style.overflow = 'hidden';
+    }
+
+    refreshDriveThumbnails();
+    gallery.addEventListener('click', function(event) {
+      const card = event.target.closest('.wcard[data-video]');
+      if (!card) return;
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      openDriveVideo(card);
+    }, true);
+
+    new MutationObserver(refreshDriveThumbnails).observe(gallery, {
+      childList: true,
+      subtree: true
+    });
+  });
+})();
+</script>
+<!doctype html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -346,7 +409,7 @@ footer{background:var(--gray);padding:3.4rem 0 2.2rem;color:var(--muted);font-si
 <div class="video-lightbox" id="videoLightbox">
   <div class="vl-inner" id="vlInner">
     <button class="vl-close" id="vlClose" aria-label="Close">×</button>
-    <div class="vl-frame"><iframe id="vlIframe" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>
+    <div class="vl-frame"><iframe id="vlIframe" allow="accelerometer;autoplay;clipboard-write;encrypted-media;gyroscope;picture-in-picture;web-share" allowfullscreen></iframe></div>
   </div>
 </div>
 
@@ -600,13 +663,13 @@ const TR = {
     footShort:"Short Form",footLong:"Long Form",footAbout:"O meni",footProcess:"Proces",footWork:"Radovi",footHow:"Kako radim",
     footLocation:"Beograd, Srbija",footRights:"© 2026 PavleVisuals - Pavle Ćirović. Sva prava zadržana.",footTop:"Vrh ↑",copiedTip:"Kopirano!",
     worksCards:[
-      {type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026",video:"1nTh1IK0NJQOR_8HmgH4-SMhZA3ZrGuAT"},
-      {type:"short",tag:"TikTok",dur:"0:12",title:"Muzički Spot",sub:"TikTok · 2026",video:"1avsDuENVYQYOKIuUThaBGrywRfMrKVtx"},
-      {type:"short",tag:"Reels",dur:"0:27",title:"Fitness Kreator",sub:"Instagram Reels · 2025",video:"1YZsH3gvpF69zn1fj8UPiEpWK25aCthii"},
-      {type:"short",tag:"Shorts",dur:"0:22",title:"Podcast Isečci",sub:"YouTube Shorts · 2025",video:"1T30opg-P83qlGYKwd_WaYuVHNrJXfUJB"},
-      {type:"long",tag:"Dokumentarni",dur:"3:35",title:"Ulice Beograda",sub:"YouTube · 2026",video:"1dKK1UtOY7BzVjsIS0L3NojJyd8KCoccl"},
-      {type:"short",tag:"Reels",dur:"0:52",title:"Restoran - Promo",sub:"Instagram Reels · 2025",video:"1-W92UFYmBL4F4VokB0I11AS__Hjjmrm5"},
-      {type:"long",tag:"Novi Video",dur:"0:34",title:"Novi Projekat",sub:"YouTube · 2026",video:"1KWtxYFI5gFb307fMRQ48n7b4BEbrjeSG"},
+      {type:"short",tag:"Reels",dur:"0:28",title:"Modni Brend",sub:"Instagram Reels · 2026",video:"YT_ID_fashion_brand"},
+      {type:"short",tag:"TikTok",dur:"0:12",title:"Muzički Spot",sub:"TikTok · 2026",video:"YT_ID_music_video"},
+      {type:"short",tag:"Reels",dur:"0:27",title:"Fitness Kreator",sub:"Instagram Reels · 2025",video:"YT_ID_fitness_creator"},
+      {type:"short",tag:"Shorts",dur:"0:22",title:"Podcast Isečci",sub:"YouTube Shorts · 2025",video:"YT_ID_podcast_clips"},
+      {type:"long",tag:"Dokumentarni",dur:"3:35",title:"Ulice Beograda",sub:"YouTube · 2026",video:"YT_ID_streets_of_belgrade"},
+      {type:"short",tag:"Reels",dur:"0:52",title:"Restoran - Promo",sub:"Instagram Reels · 2025",video:"YT_ID_restaurant_promo"},
+      {type:"long",tag:"Novi Video",dur:"0:34",title:"Novi Projekat",sub:"YouTube · 2026",video:"YT_ID_new_project"},
       {type:"long",tag:"Komercijalni",dur:"3:20",title:"Korporativni Film",sub:"Komercijalna Produkcija · 2025"},
       {type:"short",tag:"TikTok",dur:"0:52",title:"Lifestyle Vlog",sub:"TikTok · 2025",video:"1y7v5o60Kj7qxv0mkam-okPURPrhY4pVt"},
       {type:"saas",tag:"SaaS",dur:"0:24",title:"Product Demo",sub:"SaaS Onboarding · 2026",video:"1Gotj4Es5x2mfymojboyV6131g7r6_Q-x"},
@@ -744,15 +807,15 @@ function buildWorksCards() {
 
   visible.forEach(c => {
     const grad = `g${(c.i % 8) + 1}`;
-    // Lokalna slika (thumbnail/poster), fajl u folderu posters/ na GitHub-u, isto ime kao video bez ekstenzije
+    // Napomena: 'video' polje sad drži YouTube video ID (ne Google Drive ID)
     const thumb = c.video
-      ? `<img class="thumbimg" src="https://drive.google.com/thumbnail?id=${c.video}&sz=w1000" alt="${c.title}" onload="this.closest('.wcard').classList.add('loaded')" onerror="this.style.display='none';this.closest('.wcard').classList.add('loaded')">`
+      ? `<img class="thumbimg" src="https://img.youtube.com/vi/${c.video}/hqdefault.jpg" alt="${c.title}" onload="this.closest('.wcard').classList.add('loaded')" onerror="this.style.display='none';this.closest('.wcard').classList.add('loaded')">`
       : '';
     const bg = `<div class="bgimg ${grad}"></div>`;
     const shimmer = c.video ? `<div class="shimmer"></div>` : '';
     const dataVideo = c.video ? ` data-video="${c.video}"` : '';
     const formatLabel = c.type === 'short' ? t.segShort : (c.type === 'long' ? t.segLong : t.segSaas);
-    const typeLabel = c.video === '1M3vW-Wo-7MfUDlIt3vgjY1vsDwHaUd9Q' ? c.tag : formatLabel;
+    const typeLabel = formatLabel;
     const centerBadge = c.video
       ? `<div class="playdot"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>`
       : `<div class="comingsoon">${t.comingSoon}</div>`;
@@ -794,7 +857,7 @@ function openVideoLightbox(vid, cardType) {
   if (!vlBox) return;
   vlInner.classList.remove('short', 'wide');
   vlInner.classList.add(cardType === 'short' ? 'short' : 'wide');
-  vlIframe.src = `https://drive.google.com/file/d/${vid}/preview`;
+  vlIframe.src = `https://www.youtube.com/embed/${vid}?autoplay=1&playsinline=1&rel=0`;
   vlBox.classList.add('open');
   vlBox.scrollTop = 0;
   document.body.style.overflow = 'hidden';
