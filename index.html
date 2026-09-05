@@ -11,6 +11,34 @@
   .video-lightbox{padding:1rem!important}
   .vl-inner.wide{width:min(94vw,calc(82dvh * 16 / 9))!important}
 }
+@keyframes vlPopMobile {
+  from { opacity:0; transform:translate(-50%,-50%) scale(.94); }
+  to { opacity:1; transform:translate(-50%,-50%) scale(1); }
+}
+@media(max-width:640px){
+  .video-lightbox{padding:0!important}
+  .video-lightbox .vl-inner{
+    position:fixed!important;
+    top:50%!important;
+    left:50%!important;
+    margin:0!important;
+    max-width:none!important;
+    max-height:none!important;
+  }
+  .video-lightbox.open .vl-inner{
+    animation:vlPopMobile .35s cubic-bezier(.16,1,.3,1) both!important;
+  }
+  .video-lightbox .vl-inner.wide{
+    width:min(94vw,600px,calc(82dvh * 16 / 9))!important;
+    height:auto!important;
+    aspect-ratio:16/9!important;
+  }
+  .video-lightbox .vl-inner.short{
+    width:min(90vw,320px)!important;
+    height:min(78dvh,569px)!important;
+    aspect-ratio:9/16!important;
+  }
+}
 </style>
 <script>
 (function() {
