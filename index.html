@@ -1172,6 +1172,51 @@ body{
     font-size:clamp(1.8rem,9vw,2.3rem)!important;
   }
 }
+/* Shared blue surface treatment — glow + CC LightSweep */
+.hcard .cta.solid,
+.chip.active,
+.hcard .pill{
+  position:relative!important;
+  overflow:hidden!important;
+  isolation:isolate;
+  background:linear-gradient(135deg,#0071e3 0%,#2997ff 54%,#0066d6 100%)!important;
+  box-shadow:
+    0 12px 32px -14px rgba(41,151,255,.9),
+    inset 0 1px 0 rgba(255,255,255,.3)!important;
+}
+.hcard .cta.solid:hover,
+.chip.active:hover{
+  background:linear-gradient(135deg,#1582ee 0%,#5bb4ff 52%,#0071e3 100%)!important;
+  box-shadow:
+    0 16px 42px -14px rgba(41,151,255,1),
+    inset 0 1px 0 rgba(255,255,255,.38)!important;
+}
+.hcard .cta.solid::after,
+.chip.active::after,
+.hcard .pill::after{
+  content:"";
+  position:absolute;
+  top:-70%;
+  bottom:-70%;
+  left:-42%;
+  width:24%;
+  pointer-events:none;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.46),rgba(190,231,255,.22),transparent);
+  transform:skewX(-18deg);
+  animation:ccLightSweep 5.4s cubic-bezier(.22,.61,.36,1) infinite;
+  mix-blend-mode:screen;
+}
+.hcard .cta.solid:hover::after,
+.chip.active:hover::after{
+  animation-duration:2.2s;
+}
+@media(prefers-reduced-motion:reduce){
+  .hcard .cta.solid::after,
+  .chip.active::after,
+  .hcard .pill::after{
+    animation:none!important;
+  }
+}
 </style>
 </head>
 <body>
