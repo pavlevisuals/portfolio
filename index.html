@@ -565,6 +565,7 @@ body{
   letter-spacing:normal!important;
 }
 .navlinks a.current{
+  color:#fff!important;
   text-shadow:none!important;
 }
 .navlinks a.current::after{
@@ -1215,6 +1216,40 @@ body{
   .chip.active::after,
   .hcard .pill::after{
     animation:none!important;
+  }
+}
+/* --- FIX: vidljivost hero naslova na mobilnom (Editing. / Down to the last frame.) --- */
+@media (max-width:640px){
+  #hero, .hero-copy{ overflow:visible !important; }
+  #hero .hero-copy{ position:relative !important; z-index:2 !important; }
+  #hero .hero-copy h1{
+    display:block !important;
+    position:relative !important;
+    z-index:2 !important;
+    opacity:1 !important;
+    visibility:visible !important;
+    color:#fff !important;
+    width:100% !important;
+    max-width:100% !important;
+    white-space:normal !important;
+    word-break:break-word !important;
+    font-size:clamp(2.1rem,10vw,3.4rem) !important;
+    line-height:1.08 !important;
+    letter-spacing:-0.03em !important;
+  }
+  #hero .hero-copy h1.grad-blue,
+  #hero .hero-copy h1#heroTitle2{
+    background:linear-gradient(92deg,#2997ff 0%,#7dc4ff 40%,#a1a1ff 70%,#2997ff 100%) !important;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-fill-color:transparent !important;
+    color:transparent !important;
+  }
+}
+@supports not (background-clip:text){
+  #hero .hero-copy h1.grad-blue{
+    color:#7dc4ff !important;
+    -webkit-text-fill-color:unset !important;
   }
 }
 </style>
