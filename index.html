@@ -764,6 +764,8 @@ body{
       video.load();
       frame.classList.remove('video-native');
       iframe.src = '';
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
     }
 
     refreshDriveThumbnails();
