@@ -1076,6 +1076,11 @@ a{color:inherit}
 .chip:hover{border-color:var(--blue);color:var(--blue)}
 .chip.active{background:var(--blue);color:#fff;border-color:var(--blue)}
 .chip.active:hover{color:#fff}
+.budget-row{display:flex;gap:.5rem}
+.budget-amount{flex:1;min-width:0;border-radius:10px!important;border:1px solid rgba(0,0,0,.18)!important;padding:.5rem .7rem!important}
+.budget-amount:focus{box-shadow:none!important}
+.budget-currency{border-radius:10px;border:1px solid rgba(0,0,0,.18);background:#fff;color:var(--text);padding:.5rem .6rem;font-size:14px;font-family:inherit;outline:none;cursor:pointer;transition:border-color .2s ease}
+.budget-currency:focus{border-color:var(--blue)}
 .form-submit{width:100%;border-radius:999px;background:var(--blue);color:#fff;font-size:16px;font-weight:500;padding:.75rem 1.4rem;border:none;cursor:pointer;transition:background .25s ease,transform .25s ease,box-shadow .25s ease;font-family:inherit;box-shadow:0 12px 26px -12px rgba(0,113,227,.55)}
 .form-submit:hover{background:#0077ed;transform:translateY(-2px);box-shadow:0 16px 34px -12px rgba(0,113,227,.7)}
 /* FOOTER */
@@ -1491,7 +1496,7 @@ body{
       <input type="hidden" name="_template" value="table">
       <input type="hidden" name="_captcha" value="false">
       <input type="hidden" name="Tip projekta / Project type" id="hiddenType" value="Short Form">
-      <input type="hidden" name="Budžet / Budget" id="hiddenBudget" value="€60 – €200">
+      <input type="hidden" name="Budžet / Budget" id="hiddenBudget" value="">
       <div id="contactFormFields">
       <div class="form-row two">
         <input required placeholder="Full name" type="text" name="Ime / Name" id="inputName">
@@ -1505,6 +1510,13 @@ body{
         <div>
           <p style="font-size:12.5px;font-weight:600;margin:0 0 .5rem;color:var(--text)" id="labelBudget">Budget</p>
           <div class="chiprow" id="chipBudget"></div>
+          <div class="budget-row" id="budgetCustomRow" style="display:none;margin-top:.6rem">
+            <input type="number" min="0" step="1" inputmode="numeric" placeholder="0" id="budgetAmount" class="budget-amount" aria-label="Budget amount">
+            <select id="budgetCurrency" class="budget-currency" aria-label="Currency">
+              <option value="EUR">EUR €</option>
+              <option value="USD">USD $</option>
+            </select>
+          </div>
         </div>
       </div>
       <textarea required rows="4" style="margin-top:1.6rem" name="Poruka / Message" id="inputMessage" placeholder="Describe the project, deadline and reference..."></textarea>
@@ -1570,7 +1582,7 @@ const TR = {
     aboutP1:"Radim sa kreatorima i brendovima koji žele da im video zaista bude odgledan, ne samo okačen. Od vertikalnih Reels kampanja do dugometražnih YouTube epizoda, svaki projekat dobija istu pažnju.",
     aboutP2:"Ne šaljem samo fajl. Šaljem video koji ima jasan cilj: da ga ljudi ne preskoče.",aboutTools:"Stack koji koristim:",aboutPills:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],
     contactKicker:"Kontakt",contactTitle1:"Hajde da napravimo",contactTitle2:"nešto veliko.",contactLede:"Trenutno primam nove projekte. Javi se, radujemo se saradnji.",
-    labelType:"Tip projekta",typeOpts:["Short Form","Long Form","Oba"],labelBudget:"Budžet",budgetOpts:["60 – 200 €","200 – 500 €","500 €+"],
+    labelType:"Tip projekta",typeOpts:["Short Form","Long Form","SaaS","Oba"],labelBudget:"Budžet",budgetOpts:["60 – 200 €","200 – 500 €","500 €+","Prilagođeno"],
     inputName:"Ime i prezime",inputEmail:"Email adresa",inputMessage:"Opiši projekat, rok i referencu...",submitBtn:"Pošalji poruku",contactOr:"Ili direktno:",
     contactSuccessTitle:"Poruka je poslata.",contactSuccessDesc:"Hvala što si se javio/la. Javiću ti se uskoro.",contactErrorMsg:"Ups, nešto nije radilo. Pokušaj ponovo ili mi piši direktno na pavlevisuals0@gmail.com.",
     footDesc:"PavleVisuals je nezavisni video editing studio. Cene su okvirne i zavise od obima projekta, rokova i broja revizija.",
@@ -1615,7 +1627,7 @@ const TR = {
     aboutP1:"I work with creators and brands who want their videos actually watched, not just uploaded. From vertical Reels campaigns to long YouTube episodes, every project gets the same attention.",
     aboutP2:"I don't just deliver a file. I deliver a video with a clear goal: people won't skip it.",aboutTools:"Stack I use:",aboutPills:["Premiere Pro","After Effects","CapCut Pro","AI Tools"],
     contactKicker:"Contact",contactTitle1:"Let's make",contactTitle2:"something big.",contactLede:"Currently taking new projects. Reach out, let's make something great.",
-    labelType:"Project type",typeOpts:["Short Form","Long Form","Both"],labelBudget:"Budget",budgetOpts:["€60 – €200","€200 – €500","€500+"],
+    labelType:"Project type",typeOpts:["Short Form","Long Form","SaaS","Both"],labelBudget:"Budget",budgetOpts:["€60 – €200","€200 – €500","€500+","Custom"],
     inputName:"Full name",inputEmail:"Email address",inputMessage:"Describe the project, deadline and reference...",submitBtn:"Send message",contactOr:"Or directly:",
     contactSuccessTitle:"Message sent.",contactSuccessDesc:"Thanks for reaching out. I'll get back to you soon.",contactErrorMsg:"Oops, something went wrong. Try again or email me directly at pavlevisuals0@gmail.com.",
     footDesc:"PavleVisuals is an independent video editing studio. Prices are indicative and depend on project scope, deadlines and number of revisions.",
@@ -1771,22 +1783,52 @@ function bindWorkVideos() {
   // Binding se sada radi u glavnom Drive-lightbox skriptu (na vrhu fajla),
   // koji koristi delegirani click handler na #gallery i data-video atribut.
 }
+const CUSTOM_BUDGET_LABELS = ['Prilagođeno', 'Custom'];
+function updateBudgetValue() {
+  const hiddenBudget = document.getElementById('hiddenBudget');
+  const activeChip = document.querySelector('#chipBudget .chip.active');
+  if (!hiddenBudget || !activeChip) return;
+  if (!CUSTOM_BUDGET_LABELS.includes(activeChip.dataset.value)) {
+    hiddenBudget.value = activeChip.dataset.value;
+    return;
+  }
+  const amountEl = document.getElementById('budgetAmount');
+  const currencyEl = document.getElementById('budgetCurrency');
+  if (!amountEl || !currencyEl) return;
+  const symbol = currencyEl.value === 'USD' ? '$' : '€';
+  const amount = amountEl.value ? amountEl.value.trim() : '';
+  hiddenBudget.value = amount ? `${symbol}${amount}` : '';
+}
+function bindBudgetFields() {
+  const amountEl = document.getElementById('budgetAmount');
+  const currencyEl = document.getElementById('budgetCurrency');
+  if (!amountEl || !currencyEl) return;
+  amountEl.addEventListener('input', updateBudgetValue);
+  currencyEl.addEventListener('change', updateBudgetValue);
+}
 function buildContactChips() {
   const ct = document.getElementById('chipType');
   const cb = document.getElementById('chipBudget');
+  const customRow = document.getElementById('budgetCustomRow');
   if (ct) ct.innerHTML = t.typeOpts.map((o, i) => `<button type="button" class="chip${i===0?' active':''}" data-value="${o}">${o}</button>`).join('');
   if (cb) cb.innerHTML = t.budgetOpts.map((o, i) => `<button type="button" class="chip${i===0?' active':''}" data-value="${o}">${o}</button>`).join('');
-  // Re-bind chips
+  // Re-bind type chips
   document.querySelectorAll('#chipType .chip').forEach(c => c.addEventListener('click', function() {
     document.querySelectorAll('#chipType .chip').forEach(cc => cc.classList.remove('active'));
     this.classList.add('active');
     document.getElementById('hiddenType').value = this.dataset.value;
   }));
+  // Re-bind budget chips
   document.querySelectorAll('#chipBudget .chip').forEach(c => c.addEventListener('click', function() {
     document.querySelectorAll('#chipBudget .chip').forEach(cc => cc.classList.remove('active'));
     this.classList.add('active');
-    document.getElementById('hiddenBudget').value = this.dataset.value;
+    const isCustom = CUSTOM_BUDGET_LABELS.includes(this.dataset.value);
+    if (customRow) customRow.style.display = isCustom ? 'flex' : 'none';
+    updateBudgetValue();
   }));
+  if (customRow) customRow.style.display = 'none';
+  const amountEl = document.getElementById('budgetAmount');
+  if (amountEl) amountEl.value = '';
   // Set hidden values
   if (t.typeOpts.length) document.getElementById('hiddenType').value = t.typeOpts[0];
   if (t.budgetOpts.length) document.getElementById('hiddenBudget').value = t.budgetOpts[0];
@@ -2117,6 +2159,7 @@ document.querySelectorAll('.lang-btn').forEach(btn => {
   buildHow();
   buildTools();
   buildWorksCards();
+  bindBudgetFields();
   buildContactChips();
   moveThumb();
   // Observe all .rv
